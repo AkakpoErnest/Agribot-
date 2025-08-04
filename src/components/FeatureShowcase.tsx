@@ -79,7 +79,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
       description: {
         en: "Take photos to identify plant diseases instantly",
         tw: "Gye mfoni na hu aduan yadeɛ ntɛm",
-        ee: "Ɖe foto be nàdze nuku ƒe dɔléle enumake",
+        ee: "Ɖe foto be nàdze nuku Ƒe dɔléle enumake",
         ga: "Gye mfoni na hu aduan yadeɛ ntɛm"
       },
       status: "coming-soon"
@@ -95,7 +95,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
       description: {
         en: "Get weather-based farming recommendations",
         tw: "Nya ewiem nsɛm a ɛfa kuayɛ ho",
-        ee: "Xɔ agblẽnɔnɔ ɖoɖo si ɖo yame ƒe nɔnɔme ŋu",
+        ee: "Xɔ agblẽnɔnɔ ɖoɖo si ɖo yame Ƒe nɔnɔme ŋu",
         ga: "Nya ewiem nsɛm a ɛfa kuayɛ ho"
       },
       status: "coming-soon"
