@@ -5,7 +5,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { Bot, Zap } from 'lucide-react';
+import { Bot, Zap, Languages } from 'lucide-react';
 import heroImage from "@/assets/agribot-hero.jpg";
 
 const Index = () => {
@@ -60,7 +60,54 @@ const Index = () => {
         </div>
       </section>
 
-      {/* AI Features Showcase */}
+      {/* Language Selection Section - Now comes first */}
+      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-3 mb-4">
+              <Languages className="h-8 w-8 text-primary" />
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                {selectedLanguage === 'en' ? 'Choose Your Language' :
+                 selectedLanguage === 'tw' ? 'Paw Wo Kasa' :
+                 selectedLanguage === 'ee' ? 'Tia Wò Gbe' :
+                 selectedLanguage === 'ga' ? 'Paw Wo Kasa' : 'Choose Your Language'}
+              </h2>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {selectedLanguage === 'en' ? 'Select your preferred language to get started with Agribot' :
+               selectedLanguage === 'tw' ? 'Paw wo kasa a wo pɛ na fi Agribot ase' :
+               selectedLanguage === 'ee' ? 'Tia wò gbe si wòlɔ̃ eye nàdze Agribot gɔme' :
+               selectedLanguage === 'ga' ? 'Paw wo kasa a wo pɛ na fi Agribot ase' : 'Select your preferred language to get started with Agribot'}
+            </p>
+          </div>
+
+          {/* Language Selector */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <LanguageSelector 
+              onLanguageSelect={setSelectedLanguage}
+              selectedLanguage={selectedLanguage}
+            />
+          </div>
+
+          {/* Quick Start Button */}
+          <div className="text-center">
+            <Button 
+              variant="ghana" 
+              size="lg"
+              onClick={() => setShowChat(true)}
+              className="gap-2"
+            >
+              <Bot className="h-5 w-5" />
+              {selectedLanguage === 'en' ? 'Start AI Conversation' :
+               selectedLanguage === 'tw' ? 'Fi AI Nkɔmmɔ Ase' :
+               selectedLanguage === 'ee' ? 'Dze AI Nubiabia Gɔme' :
+               selectedLanguage === 'ga' ? 'Fi AI Nkɔmmɔ Ase' : 'Start AI Conversation'}
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Features Showcase - Now comes after language selection */}
       <FeatureShowcase language={selectedLanguage} />
 
       {/* Interactive Section */}
@@ -73,19 +120,11 @@ const Index = () => {
              selectedLanguage === 'ga' ? 'Sɔ Agribot Hwɛ' : 'Experience Agribot'}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {selectedLanguage === 'en' ? 'Choose your language and start communicating' :
-             selectedLanguage === 'tw' ? 'Paw wo kasa na fi nkitaho ase' :
-             selectedLanguage === 'ee' ? 'Tia wò gbe eye nàdze nubiabia gɔme' :
-             selectedLanguage === 'ga' ? 'Paw wo kasa na fi nkitaho ase' : 'Choose your language and start communicating'}
+            {selectedLanguage === 'en' ? 'Start communicating with our AI assistant' :
+             selectedLanguage === 'tw' ? 'Fi nkitaho ase yɛ wo AI boafoɔ' :
+             selectedLanguage === 'ee' ? 'Dze nubiabia gɔme yɛ mía AI kpeɖeŋutɔ' :
+             selectedLanguage === 'ga' ? 'Fi nkitaho ase yɛ wo AI boafoɔ' : 'Start communicating with our AI assistant'}
           </p>
-        </div>
-
-        {/* Language Selector */}
-        <div className="max-w-2xl mx-auto mb-8">
-          <LanguageSelector 
-            onLanguageSelect={setSelectedLanguage}
-            selectedLanguage={selectedLanguage}
-          />
         </div>
 
         {/* Chat Interface */}
