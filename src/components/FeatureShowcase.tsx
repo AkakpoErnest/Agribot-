@@ -11,7 +11,8 @@ import {
   Users,
   MapPin,
   Wifi,
-  MessageSquare
+  MessageSquare,
+  Volume2
 } from 'lucide-react';
 
 interface FeatureShowcaseProps {
@@ -33,6 +34,22 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
         tw: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho",
         ee: "Xɔ ŋuɖoɖo enumake tso nuku, nudzrala, kple agblẽnɔnɔ ŋu",
         ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho"
+      },
+      status: "active"
+    },
+    {
+      icon: Volume2,
+      title: {
+        en: "AI Voice Channel",
+        tw: "AI Nne Kwan",
+        ee: "AI Gbeɖoɖo Kpeɖeŋu",
+        ga: "AI Nne Kwan"
+      },
+      description: {
+        en: "Give voice commands to AI for various farming tasks",
+        tw: "Fa nne ahyɛ AI ma ayɛ kuayɛ adwuma ahoroɔ",
+        ee: "Na AI gbeɖoɖo be nàwɔ agblẽnɔnɔ dɔwɔwɔ vovovowo",
+        ga: "Fa nne ahyɛ AI ma ayɛ kuayɛ adwuma ahoroɔ"
       },
       status: "active"
     },

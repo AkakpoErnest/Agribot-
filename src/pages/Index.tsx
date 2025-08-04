@@ -10,7 +10,6 @@ import heroImage from "@/assets/agribot-hero.jpg";
 
 const Index = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
-  const [showChat, setShowChat] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-earth">
@@ -39,7 +38,7 @@ const Index = () => {
               <Button 
                 variant="harvest" 
                 size="lg"
-                onClick={() => setShowChat(true)}
+                onClick={() => document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="gap-2"
               >
                 <Bot className="h-5 w-5" />
@@ -74,10 +73,10 @@ const Index = () => {
               </h2>
             </div>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {selectedLanguage === 'en' ? 'Select your preferred language to get started with Agribot' :
-               selectedLanguage === 'tw' ? 'Paw wo kasa a wo pɛ na fi Agribot ase' :
-               selectedLanguage === 'ee' ? 'Tia wò gbe si wòlɔ̃ eye nàdze Agribot gɔme' :
-               selectedLanguage === 'ga' ? 'Paw wo kasa a wo pɛ na fi Agribot ase' : 'Select your preferred language to get started with Agribot'}
+              {selectedLanguage === 'en' ? 'Select your preferred language to enhance your experience' :
+               selectedLanguage === 'tw' ? 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo' :
+               selectedLanguage === 'ee' ? 'Tia wò gbe si wòlɔ̃ eye nàwɔ wò dɔwɔwɔ' :
+               selectedLanguage === 'ga' ? 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo' : 'Select your preferred language to enhance your experience'}
             </p>
           </div>
 
@@ -88,67 +87,39 @@ const Index = () => {
               selectedLanguage={selectedLanguage}
             />
           </div>
+        </div>
+      </section>
 
-          {/* Quick Start Button */}
-          <div className="text-center">
-            <Button 
-              variant="ghana" 
-              size="lg"
-              onClick={() => setShowChat(true)}
-              className="gap-2"
-            >
-              <Bot className="h-5 w-5" />
-              {selectedLanguage === 'en' ? 'Start AI Conversation' :
-               selectedLanguage === 'tw' ? 'Fi AI Nkɔmmɔ Ase' :
-               selectedLanguage === 'ee' ? 'Dze AI Nubiabia Gɔme' :
-               selectedLanguage === 'ga' ? 'Fi AI Nkɔmmɔ Ase' : 'Start AI Conversation'}
-            </Button>
+      {/* AI Bot Interface - Now comes after language selection */}
+      <section id="chat-section" className="py-16 bg-gradient-to-b from-muted/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-3 mb-4">
+              <Bot className="h-8 w-8 text-primary" />
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                {selectedLanguage === 'en' ? 'Chat with Agribot' :
+                 selectedLanguage === 'tw' ? 'Di Nkɔmmɔ Yɛ Agribot' :
+                 selectedLanguage === 'ee' ? 'Dze Nubiabia Yɛ Agribot' :
+                 selectedLanguage === 'ga' ? 'Di Nkɔmmɔ Yɛ Agribot' : 'Chat with Agribot'}
+              </h2>
+            </div>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {selectedLanguage === 'en' ? 'Start chatting with our AI agricultural assistant' :
+               selectedLanguage === 'tw' ? 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ' :
+               selectedLanguage === 'ee' ? 'Dze nubiabia gɔme yɛ mía AI agblẽnɔnɔ kpeɖeŋutɔ' :
+               selectedLanguage === 'ga' ? 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ' : 'Start chatting with our AI agricultural assistant'}
+            </p>
+          </div>
+
+          {/* Chat Interface */}
+          <div className="max-w-4xl mx-auto">
+            <ChatInterface language={selectedLanguage} />
           </div>
         </div>
       </section>
 
       {/* AI Features Showcase - Now comes after language selection */}
       <FeatureShowcase language={selectedLanguage} />
-
-      {/* Interactive Section */}
-      <section className="py-20 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {selectedLanguage === 'en' ? 'Experience Agribot' :
-             selectedLanguage === 'tw' ? 'Sɔ Agribot Hwɛ' :
-             selectedLanguage === 'ee' ? 'Te Agribot Kpɔ' :
-             selectedLanguage === 'ga' ? 'Sɔ Agribot Hwɛ' : 'Experience Agribot'}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {selectedLanguage === 'en' ? 'Start communicating with our AI assistant' :
-             selectedLanguage === 'tw' ? 'Fi nkitaho ase yɛ wo AI boafoɔ' :
-             selectedLanguage === 'ee' ? 'Dze nubiabia gɔme yɛ mía AI kpeɖeŋutɔ' :
-             selectedLanguage === 'ga' ? 'Fi nkitaho ase yɛ wo AI boafoɔ' : 'Start communicating with our AI assistant'}
-          </p>
-        </div>
-
-        {/* Chat Interface */}
-        {showChat ? (
-          <div className="max-w-4xl mx-auto">
-            <ChatInterface language={selectedLanguage} />
-          </div>
-        ) : (
-          <div className="text-center">
-            <Button 
-              variant="ghana" 
-              size="lg"
-              onClick={() => setShowChat(true)}
-              className="gap-2"
-            >
-              <Bot className="h-5 w-5" />
-              {selectedLanguage === 'en' ? 'Start AI Conversation' :
-               selectedLanguage === 'tw' ? 'Fi AI Nkɔmmɔ Ase' :
-               selectedLanguage === 'ee' ? 'Dze AI Nubiabia Gɔme' :
-               selectedLanguage === 'ga' ? 'Fi AI Nkɔmmɔ Ase' : 'Start AI Conversation'}
-            </Button>
-          </div>
-        )}
-      </section>
 
       {/* Statistics Section */}
       <section className="py-16 bg-primary text-primary-foreground">

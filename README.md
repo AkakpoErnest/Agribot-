@@ -8,6 +8,7 @@ Agribot is a cutting-edge AI-powered agricultural assistant designed specificall
 
 ### Key Features
 - 🤖 **AI Agricultural Assistant** - Get instant answers about crops, pests, and farming techniques
+- 🔊 **AI Voice Channel** - Give voice commands to AI for various farming tasks
 - 🎤 **Voice Communication** - Speak in your local language and get responses
 - 🌍 **Multi-language Support** - Available in Twi, Ewe, Ga, and English
 - 📱 **Modern UI/UX** - Beautiful Ghana-themed design with agricultural colors
@@ -72,18 +73,25 @@ This project is built with modern web technologies:
 - **Ewe** - Spoken in Volta Region
 - **Ga** - Spoken in Greater Accra Region
 
-### 🎤 Voice Communication
-- Real-time speech-to-text conversion
-- Voice recording and transcription
-- Language-specific speech recognition
-- Natural language processing for agricultural queries
-
 ### 🤖 AI Agricultural Assistant
 - Crop cultivation advice and timing
 - Pest management recommendations
 - Weather pattern analysis
 - Market price information
 - Local farming best practices
+
+### 🔊 AI Voice Channel
+- Voice command recognition for farming tasks
+- Hands-free operation for field work
+- Task automation through voice instructions
+- Multi-language voice command support
+- Context-aware farming assistance
+
+### 🎤 Voice Communication
+- Real-time speech-to-text conversion
+- Voice recording and transcription
+- Language-specific speech recognition
+- Natural language processing for agricultural queries
 
 ### 📱 Responsive Design
 - Mobile-first approach
