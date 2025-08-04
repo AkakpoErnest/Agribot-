@@ -1,4 +1,22 @@
-# Welcome to your Lovable project
+# Agribot - Farm Talk Ghana 🌾🇬🇭
+
+**Agribolt** - Multilingual Agricultural AI Assistant
+
+## Project Overview
+
+Agribot is a cutting-edge AI-powered agricultural assistant designed specifically for Ghanaian farmers. It bridges communication gaps in Ghana's agriculture sector by providing multilingual support in Twi, Ewe, Ga, and English.
+
+### Key Features
+- 🤖 **AI Agricultural Assistant** - Get instant answers about crops, pests, and farming techniques
+- 🎤 **Voice Communication** - Speak in your local language and get responses
+- 🌍 **Multi-language Support** - Available in Twi, Ewe, Ga, and English
+- 📱 **Modern UI/UX** - Beautiful Ghana-themed design with agricultural colors
+
+### Target Users
+- Ghanaian farmers who need agricultural advice
+- Extension officers providing farming support
+- Agricultural customers seeking market information
+- Anyone needing farming guidance in local languages
 
 ## Project info
 
