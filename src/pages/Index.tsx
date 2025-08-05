@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import heroImage from "@/assets/agribot-hero.jpg";
+import agribotLogo from "/agribot-logo.png";
 
 const Index = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -33,10 +34,10 @@ const Index = () => {
       <header className="bg-gradient-primary text-primary-foreground py-4">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Bot className="h-8 w-8" />
-              <h1 className="text-xl font-bold">Agribot</h1>
-            </div>
+                      <div className="flex items-center gap-4">
+            <img src={agribotLogo} alt="Agribot Logo" className="h-10 w-auto" />
+            <h1 className="text-xl font-bold">Agribot</h1>
+          </div>
 
             <div className="flex items-center gap-4">
               {isAuthenticated ? (
@@ -102,6 +103,9 @@ const Index = () => {
         
         <div className="relative container mx-auto px-4 py-20 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
+            <div className="flex justify-center mb-6">
+              <img src={agribotLogo} alt="Agribot Logo" className="h-24 w-auto drop-shadow-lg" />
+            </div>
             <h1 className="text-5xl md:text-6xl font-bold text-primary-foreground">
               Agribot
             </h1>
@@ -200,6 +204,9 @@ const Index = () => {
       {/* AI Features Showcase - Now comes after language selection */}
       <FeatureShowcase language={selectedLanguage} />
 
+      {/* Team Section */}
+      <TeamSection language={selectedLanguage} />
+
       {/* Statistics Section */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
@@ -244,12 +251,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Team Section */}
-      <TeamSection language={selectedLanguage} />
-
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 text-center">
+          <div className="flex justify-center mb-4">
+            <img src={agribotLogo} alt="Agribot Logo" className="h-12 w-auto" />
+          </div>
           <h3 className="text-2xl font-bold mb-4">Agribot</h3>
           <p className="text-primary-foreground/80 mb-4">
             Transforming agricultural communication across Ghana
