@@ -6,6 +6,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mic, MicOff, Send, Bot, User, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
+// Safe LLM import - won't break the app if it fails
+let llmService: any = null;
+try {
+  const llmModule = require("@/services/llm");
+  llmService = llmModule.llmService;
+  console.log('LLM service loaded successfully');
+} catch (error) {
+  console.log('LLM service not available, using built-in responses');
+}
+
 
 interface Message {
   id: string;
@@ -153,6 +163,22 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
   };
 
   const generateAIResponse = async (userMessage: string): Promise<string> => {
+    // Try LLM service first if available
+    if (llmService) {
+      try {
+        const response = await llmService.generateResponse({
+          prompt: userMessage,
+          language: language as 'en' | 'tw' | 'ee' | 'ga'
+        });
+        
+        console.log(`LLM Response: ${response.provider} (confidence: ${response.confidence})`);
+        return response.text;
+      } catch (error) {
+        console.log('LLM service failed, using built-in responses:', error);
+        // Fall through to built-in responses
+      }
+    }
+
     // Enhanced AI response with comprehensive agricultural knowledge in all languages
     const responses = {
       'en': {
