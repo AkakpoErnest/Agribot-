@@ -11,32 +11,48 @@ Agribot is a cutting-edge AI-powered agricultural assistant designed specificall
 ```mermaid
 graph TD
     A[User Opens App] --> B[Landing Page with Hero Section]
-    B --> C[Language Selection]
-    C --> D[Choose Language: Twi/Ewe/Ga/English]
-    D --> E[AI Chat Interface]
+    B --> C{User Authenticated?}
+    C -->|No| D[Show Login/Register Options]
+    C -->|Yes| E[Show User Dashboard]
     
-    E --> F{User Input Method}
-    F -->|Text Input| G[Type Message]
-    F -->|Voice Input| H[Voice Recording]
-    F -->|Quick Questions| I[Pre-defined Questions]
+    D --> F[Login/Register Form]
+    F --> G[Choose User Role]
+    G --> H[Farmer/Customer/Expert]
+    H --> I[Authentication Success]
+    I --> E
     
-    G --> J[AI Processing]
-    H --> K[Speech-to-Text]
-    I --> J
+    E --> J[Language Selection]
+    J --> K[Choose Language: Twi/Ewe/Ga/English]
+    K --> L[AI Chat Interface]
     
-    K --> J
-    J --> L{AI Response Generation}
+    L --> M{User Input Method}
+    M -->|Text Input| N[Type Message]
+    M -->|Voice Input| O[Voice Recording]
+    M -->|Quick Questions| P[Pre-defined Questions]
     
-    L -->|LLM Service Available| M[External LLM API]
-    L -->|LLM Service Unavailable| N[Built-in Responses]
+    N --> Q[AI Processing]
+    O --> R[Speech-to-Text]
+    P --> Q
     
-    M --> O[Response in Selected Language]
-    N --> O
+    R --> Q
+    Q --> S{AI Response Generation}
     
-    O --> P[Display Response]
-    P --> Q{Continue Conversation?}
-    Q -->|Yes| E
-    Q -->|No| R[End Session]
+    S -->|LLM Service Available| T[External LLM API]
+    S -->|LLM Service Unavailable| U[Built-in Responses]
+    
+    T --> V[Response in Selected Language]
+    U --> V
+    
+    V --> W[Display Response]
+    W --> X{Continue Conversation?}
+    X -->|Yes| L
+    X -->|No| Y[End Session]
+    
+    subgraph "User Roles"
+        Z1[🌾 Farmer - Crop Management]
+        Z2[🛒 Customer - Product Access]
+        Z3[👨‍🌾 Expert - Service Provider]
+    end
     
     subgraph "Language Support"
         S1[Twi - Akan Language]
@@ -67,10 +83,15 @@ graph TD
 ```mermaid
 sequenceDiagram
     participant U as User
+    participant A as Auth System
     participant L as Language Selector
     participant C as Chat Interface
     participant AI as AI Assistant
     participant V as Voice System
+    
+    U->>A: Login/Register
+    A->>A: Validate Credentials
+    A->>U: Authentication Success
     
     U->>L: Select Language (Twi/Ewe/Ga/English)
     L->>C: Update Interface Language
@@ -106,12 +127,78 @@ sequenceDiagram
 - 🎯 **Smart Response System** - Fallback from external LLM to built-in responses
 - 🔄 **Real-time Language Switching** - Seamless language transitions
 - 📊 **Quick Question Buttons** - Pre-defined agricultural queries
+- 🔐 **User Authentication** - Secure login system with role-based access
+- 👥 **Multi-role Support** - Farmers, Customers, and Service Experts
 
 ### Target Users
 - Ghanaian farmers who need agricultural advice
 - Extension officers providing farming support
 - Agricultural customers seeking market information
 - Anyone needing farming guidance in local languages
+
+## Authentication System
+
+### User Roles
+
+#### 🌾 **Farmer**
+- **Access**: Crop management, farming advice, market information
+- **Features**: 
+  - AI agricultural assistance
+  - Weather alerts and crop timing
+  - Market price tracking
+  - Pest management guidance
+  - Soil health monitoring
+
+#### 🛒 **Customer**
+- **Access**: Product browsing, farmer connections, quality assurance
+- **Features**:
+  - Browse agricultural products
+  - Connect with local farmers
+  - Quality assurance tracking
+  - Delivery monitoring
+  - Payment processing
+
+#### 👨‍🌾 **Service Expert**
+- **Access**: Expert consultations, service management, knowledge sharing
+- **Features**:
+  - Provide expert agricultural advice
+  - Manage consultation services
+  - Share knowledge and best practices
+  - Quality control oversight
+  - Service scheduling
+
+### Authentication Flow
+
+```mermaid
+graph TD
+    A[User Visits App] --> B{Authenticated?}
+    B -->|No| C[Show Login/Register]
+    B -->|Yes| D[Show User Dashboard]
+    
+    C --> E[Choose Role]
+    E --> F[Farmer/Customer/Expert]
+    F --> G[Enter Credentials]
+    G --> H[Validate & Authenticate]
+    H --> I{Success?}
+    I -->|Yes| D
+    I -->|No| J[Show Error]
+    J --> G
+    
+    D --> K[Access Role-Specific Features]
+    K --> L[AI Chat Interface]
+    K --> M[Profile Management]
+    K --> N[Role Dashboard]
+```
+
+### Demo Accounts
+
+For testing purposes, the following demo accounts are available:
+
+| Role | Email | Password | Features |
+|------|-------|----------|----------|
+| 🌾 Farmer | `farmer@agribot.com` | Any password | Crop management, AI assistance |
+| 🛒 Customer | `customer@agribot.com` | Any password | Product browsing, farmer connections |
+| 👨‍🌾 Expert | `expert@agribot.com` | Any password | Expert consultations, service management |
 
 ## Technology Architecture
 
@@ -124,31 +211,42 @@ graph TB
         D[React Router DOM]
     end
     
+    subgraph "Authentication Layer"
+        E[Auth Context]
+        F[Protected Routes]
+        G[Role-based Access]
+        H[Local Storage]
+    end
+    
     subgraph "AI Layer"
-        E[LLM Service Integration]
-        F[Built-in Response System]
-        G[Speech Recognition API]
-        H[Language Processing]
+        I[LLM Service Integration]
+        J[Built-in Response System]
+        K[Speech Recognition API]
+        L[Language Processing]
     end
     
     subgraph "State Management"
-        I[React Hooks]
-        J[Context API]
-        K[Local State]
+        M[React Hooks]
+        N[Context API]
+        O[Local State]
     end
     
     subgraph "External Services"
-        L[Web Speech API]
-        M[Optional LLM APIs]
-        N[Browser APIs]
+        P[Web Speech API]
+        Q[Optional LLM APIs]
+        R[Browser APIs]
     end
     
     A --> E
-    A --> F
-    A --> G
-    E --> M
-    F --> H
-    G --> L
+    A --> I
+    A --> J
+    A --> K
+    E --> F
+    E --> G
+    E --> H
+    I --> Q
+    J --> L
+    K --> P
 ```
 
 ## Getting Started
@@ -256,6 +354,12 @@ This project is built with modern web technologies:
 - **React Query** for data fetching and caching
 - **Context API** for global state
 
+### Authentication
+- **Custom Auth Context** for user management
+- **Protected Routes** for role-based access
+- **Local Storage** for session persistence
+- **Role-based UI** for different user types
+
 ### AI & Voice Features
 - **Web Speech API** for speech recognition
 - **Custom LLM integration** with fallback system
@@ -320,13 +424,21 @@ This project is built with modern web technologies:
 src/
 ├── components/          # React components
 │   ├── ui/             # shadcn/ui components
+│   ├── auth/           # Authentication components
+│   │   ├── LoginForm.tsx
+│   │   ├── UserProfile.tsx
+│   │   └── ProtectedRoute.tsx
 │   ├── ChatInterface.tsx    # Main chat interface
 │   ├── LanguageSelector.tsx # Language selection
 │   ├── FeatureShowcase.tsx  # Feature display
 │   └── VoiceRecorder.tsx    # Voice recording
 ├── pages/              # Page components
 │   ├── Index.tsx       # Main landing page
+│   ├── Login.tsx       # Authentication page
+│   ├── Profile.tsx     # User profile page
 │   └── NotFound.tsx    # 404 page
+├── contexts/           # React contexts
+│   └── AuthContext.tsx # Authentication context
 ├── hooks/              # Custom React hooks
 │   ├── use-mobile.tsx  # Mobile detection
 │   └── use-toast.ts    # Toast notifications
@@ -335,6 +447,7 @@ src/
 ├── services/           # External services
 │   └── llm.ts          # LLM integration
 ├── types/              # TypeScript definitions
+│   ├── auth.d.ts       # Authentication types
 │   └── speech.d.ts     # Speech API types
 └── assets/             # Static assets
     └── agribot-hero.jpg # Hero image
@@ -414,6 +527,12 @@ We welcome contributions to improve Agribot! Here's how you can help:
 - Test voice recognition in all supported languages
 - Maintain cultural sensitivity in responses
 
+### Authentication Guidelines
+- Follow security best practices for user data
+- Implement proper role-based access control
+- Test authentication flows thoroughly
+- Ensure proper error handling for auth failures
+
 ## Deployment
 
 ### Build for Production
@@ -437,6 +556,7 @@ Create a `.env` file for production:
 VITE_APP_TITLE=Agribot - Farm Talk Ghana
 VITE_LLM_API_URL=your_llm_api_url
 VITE_LLM_API_KEY=your_llm_api_key
+VITE_AUTH_SECRET=your_auth_secret_key
 ```
 
 ## Performance Optimization
@@ -446,16 +566,20 @@ VITE_LLM_API_KEY=your_llm_api_key
 - **Image Optimization** - Compressed hero image
 - **Bundle Analysis** - Optimized dependencies
 - **Caching Strategy** - React Query for data caching
+- **Authentication Caching** - Local storage for user sessions
 
 ### Future Optimizations
 - **Service Worker** - Offline functionality
 - **Progressive Web App** - Installable app
 - **CDN Integration** - Faster asset delivery
 - **Database Integration** - User session storage
+- **JWT Tokens** - Secure authentication tokens
 
 ## Testing Strategy
 
 ### Manual Testing Checklist
+- [ ] User registration and login
+- [ ] Role-based access control
 - [ ] Language switching functionality
 - [ ] Voice recognition in all languages
 - [ ] AI response generation
@@ -463,12 +587,14 @@ VITE_LLM_API_KEY=your_llm_api_key
 - [ ] Cross-browser compatibility
 - [ ] Offline functionality
 - [ ] Error handling
+- [ ] Authentication flows
 
 ### Automated Testing (Future)
 - Unit tests for components
 - Integration tests for AI features
 - E2E tests for user flows
 - Performance testing
+- Authentication testing
 
 ## License
 

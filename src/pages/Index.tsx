@@ -5,6 +5,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
+import { TeamSection } from "@/components/TeamSection";
 import { Bot, Zap, Languages, User, LogOut, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -132,13 +133,6 @@ const Index = () => {
                  selectedLanguage === 'ee' ? 'Dze AI Nubiabia Gɔme' :
                  selectedLanguage === 'ga' ? 'Fi AI Nkɔmmɔ Ase' : 'Start AI Chat'}
               </Button>
-              <Button variant="earth" size="lg" className="gap-2">
-                <Zap className="h-5 w-5" />
-                {selectedLanguage === 'en' ? 'View Features' :
-                 selectedLanguage === 'tw' ? 'Hwɛ Nneɛma' :
-                 selectedLanguage === 'ee' ? 'Kpɔ Nɔɔ̃wo' :
-                 selectedLanguage === 'ga' ? 'Hwɛ Nneɛma' : 'View Features'}
-              </Button>
             </div>
           </div>
         </div>
@@ -249,6 +243,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Team Section */}
+      <TeamSection language={selectedLanguage} />
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12">
