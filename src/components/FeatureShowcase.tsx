@@ -12,7 +12,8 @@ import {
   MapPin,
   Wifi,
   MessageSquare,
-  Volume2
+  Volume2,
+  CreditCard
 } from 'lucide-react';
 
 interface FeatureShowcaseProps {
@@ -84,6 +85,22 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
         ga: "Ɛwɔ Twi, Ewe, Ga, ne Borɔfo kasa mu"
       },
       status: "active"
+    },
+    {
+      icon: CreditCard,
+      title: {
+        en: "Payment System",
+        tw: "Sika Gua Dwumadie",
+        ee: "Gaɖoɖo Dɔwɔwɔ",
+        ga: "Sika Gua Dwumadie"
+      },
+      description: {
+        en: "Secure payments for agricultural services and products",
+        tw: "Sika gua a ɛyɛ adwuma ma kuayɛ dwumadie ne nneɛma",
+        ee: "Gaɖoɖo siwo le dɔwɔm na agblẽnɔnɔ dɔwɔwɔ kple nuwo",
+        ga: "Sika gua a ɛyɛ adwuma ma kuayɛ dwumadie ne nneɛma"
+      },
+      status: "coming-soon"
     },
     {
       icon: Camera,
