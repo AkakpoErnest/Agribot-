@@ -19,6 +19,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { llmService, LLMRequest } from "@/services/llm";
 
 interface Message {
   id: string;
@@ -28,6 +29,8 @@ interface Message {
   language?: string;
   type?: 'text' | 'weather' | 'market' | 'subsidy' | 'expert-request';
   data?: any;
+  provider?: string;
+  model?: string;
 }
 
 interface WeatherData {
@@ -195,129 +198,58 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     }
   };
 
-  const generateAIResponse = async (userMessage: string): Promise<{ content: string; type?: string; data?: any }> => {
-    // Enhanced AI response with comprehensive agricultural knowledge and real-time data
-    const responses = {
-      'en': {
-        crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield. Cassava and yam are also excellent choices for Ghana's climate.",
-        pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer. Regular monitoring helps prevent pest outbreaks.",
-        weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly. Plant during the rainy season for optimal results.",
-        market: "Check local market prices regularly. Tomatoes and cassava have good market demand. Connect with local farmers' markets for better prices.",
-        soil: "Ghana's soil varies by region. Test your soil before planting. Use organic fertilizers to improve soil health.",
-        fertilizer: "Use balanced fertilizers for better crop yield. Organic options like compost and manure are excellent for sustainable farming.",
-        irrigation: "During dry seasons, consider irrigation systems. Drip irrigation is efficient for water conservation.",
-        harvest: "Harvest timing is crucial. Monitor crop maturity and weather conditions before harvesting.",
-        storage: "Proper storage prevents post-harvest losses. Keep grains dry and use appropriate storage containers.",
-        subsidy: "Government subsidy programs are available for farmers. Check eligibility for fertilizer subsidies, mechanization support, and crop insurance.",
-        expert: "I'll connect you with an agricultural extension officer for specialized advice. They will respond within 24 hours.",
-        default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, markets, soil, fertilizers, irrigation, harvesting, storage, subsidies, or connect with experts."
-      },
-      'tw': {
-        crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Bankye ne yam nso yɛ adeɛ pa ama Ghana ewiem.",
-        pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ. Hwɛ daa na ɛkyerɛ mmoawa.",
-        weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Dua osutɔ bere mu na ɛyɛ wo.",
-        market: "Gua so: Ntoses ne bankye wɔ gua pa. Kɔ akuafo gua hɔ na wo nya bo pa.",
-        soil: "Ghana asaase sesa mpɔtam. Hwɛ wo asaase ansa wo dua. Fa organic fertilizer na ɛyɛ wo asaase.",
-        fertilizer: "Fa fertilizer a ɛyɛ wo aduan. Organic fertilizer te sɛ compost ne manure yɛ wo.",
-        irrigation: "Ewiem bere mu, hwɛ irrigation. Drip irrigation yɛ wo nsuo.",
-        harvest: "Harvest bere yɛ adeɛ kɛseɛ. Hwɛ aduan maturity ne ewiem ansa wo harvest.",
-        storage: "Storage pa kyekye harvest loss. Ma grains ayɛ dry na fa storage container pa.",
-        subsidy: "Amanaman ntam subsidy programs wɔ akuafo ma. Hwɛ eligibility ma fertilizer subsidy, mechanization support, ne crop insurance.",
-        expert: "Mɛka wo extension officer ho ma specialized afotu. Wɔbɛsane wo wɔ saa 24 hour no mu.",
-        default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem, gua, asaase, fertilizer, irrigation, harvest, storage, subsidy, anaa expert connection."
-      },
-      'ee': {
-        crop: "Agblẽnɔnɔ ŋuɖoɖo: Agblẽnɔnɔ ƒe ɣeyiɣi nyuie nye tsidzadza ƒe ɣeyiɣi. Ɖe agbatsa le Afiɖa kple Masa me. Agbeli kple yam nɔa nyuie na Ghana ƒe yame.",
-        pest: "Agblẽnɔnɔ ƒe nudzralawo: Kwatɔ kple aphids. Zã neem ngo alo kɔ extension officer gbɔ. Kpɔ daa eye nàdze nudzrala.",
-        weather: "Yame ƒe nɔnɔme: Harmattan ƒe ɣeyiɣi no ɖe agblẽnɔnɔ ƒe dɔwɔwɔ. Ɖe tsidzadza ƒe ɣeyiɣi me eye nànyuie.",
-        market: "Asi ƒe nɔnɔme: Kpɔ asi ƒe ga home daa. Ntoses kple agbeli le asi me. Kɔ agblẽnɔlawo ƒe asi hã eye nàxɔ ga nyuie.",
-        soil: "Ghana ƒe anyigba sesa nutɔwo. Kpɔ wò anyigba vɔ̃ megbe nàɖe. Zã organic fertilizer eye nàwɔ wò anyigba.",
-        fertilizer: "Zã fertilizer si wòagblẽnɔnɔ nyuie. Organic fertilizer te sɛ compost kple manure nyuie.",
-        irrigation: "Yame ƒe ɣeyiɣi me, hã irrigation. Drip irrigation nyuie na nɔ ƒe dɔwɔwɔ.",
-        harvest: "Harvest ƒe ɣeyiɣi nye nu kɛse. Kpɔ agblẽnɔnɔ ƒe maturity kple yame megbe nàharvest.",
-        storage: "Storage nyuie ɖe harvest ƒe dzidzɔ. Ma grains ayɛ ɖe eye zã storage container nyuie.",
-        subsidy: "Dukplɔlawo ƒe subsidy programs le agblẽnɔlawo ma. Kpɔ eligibility ma fertilizer subsidy, mechanization support, kple crop insurance.",
-        expert: "Màka wò extension officer gbɔ ma specialized ɖoɖo. Wòaɖe wò nya le ɣeyiɣi 24 me.",
-        default: "Mele afi sia sɛ meakpe ɖe wò agblẽnɔnɔ ƒe nyawo ŋu. Bia agblẽnɔnɔ, nudzrala, yame, asi, anyigba, fertilizer, irrigation, harvest, storage, subsidy, alo expert connection ŋu nyawo."
-      },
-      'ga': {
-        crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Bankye ne yam nso yɛ adeɛ pa ama Ghana ewiem.",
-        pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ. Hwɛ daa na ɛkyerɛ mmoawa.",
-        weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Dua osutɔ bere mu na ɛyɛ wo.",
-        market: "Gua so: Ntoses ne bankye wɔ gua pa. Kɔ akuafo gua hɔ na wo nya bo pa.",
-        soil: "Ghana asaase sesa mpɔtam. Hwɛ wo asaase ansa wo dua. Fa organic fertilizer na ɛyɛ wo asaase.",
-        fertilizer: "Fa fertilizer a ɛyɛ wo aduan. Organic fertilizer te sɛ compost ne manure yɛ wo.",
-        irrigation: "Ewiem bere mu, hwɛ irrigation. Drip irrigation yɛ wo nsuo.",
-        harvest: "Harvest bere yɛ adeɛ kɛseɛ. Hwɛ aduan maturity ne ewiem ansa wo harvest.",
-        storage: "Storage pa kyekye harvest loss. Ma grains ayɛ dry na fa storage container pa.",
-        subsidy: "Amanaman ntam subsidy programs wɔ akuafo ma. Hwɛ eligibility ma fertilizer subsidy, mechanization support, ne crop insurance.",
-        expert: "Mɛka wo extension officer ho ma specialized afotu. Wɔbɛsane wo wɔ saa 24 hour no mu.",
-        default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem, gua, asaase, fertilizer, irrigation, harvest, storage, subsidy, anaa expert connection."
-      }
-    };
+  const generateAIResponse = async (userMessage: string): Promise<{ content: string; provider?: string; model?: string }> => {
+    try {
+      const request: LLMRequest = {
+        prompt: userMessage,
+        language: language,
+        context: `Agricultural assistant for Ghanaian farmers. Current language: ${language}. Provide helpful, practical advice.`,
+        maxTokens: 200
+      };
 
-    const langResponses = responses[language as keyof typeof responses] || responses.en;
-    
-    // Enhanced keyword matching for demo
-    const lowerMessage = userMessage.toLowerCase();
-    
-    // Weather-related queries
-    if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem') || lowerMessage.includes('yame') || lowerMessage.includes('climate')) {
-      const weatherData = await fetchWeatherData();
+      const response = await llmService.generateResponse(request);
+      
       return {
-        content: langResponses.weather,
-        type: 'weather',
-        data: weatherData
+        content: response.content,
+        provider: response.provider,
+        model: response.model
       };
-    }
-    
-    // Market-related queries
-    if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua') || lowerMessage.includes('asi') || lowerMessage.includes('cost')) {
-      const marketData = await fetchMarketData();
-      return {
-        content: langResponses.market,
-        type: 'market',
-        data: marketData
+    } catch (error) {
+      console.error('LLM service error:', error);
+      // Fallback to simple responses
+      const responses = {
+        'en': {
+          crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield.",
+          pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer.",
+          weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly.",
+          market: "Check local market prices regularly. Tomatoes and cassava have good market demand.",
+          default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, or markets in Ghana."
+        },
+        'tw': {
+          crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ.",
+          pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ.",
+          weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan.",
+          market: "Gua so: Ntoses ne bankye wɔ gua pa.",
+          default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem anaa gua ho nsɛm."
+        }
       };
+
+      const langResponses = responses[language as keyof typeof responses] || responses.en;
+      
+      // Simple keyword matching for demo
+      const lowerMessage = userMessage.toLowerCase();
+      if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan')) {
+        return { content: langResponses.crop };
+      } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa')) {
+        return { content: langResponses.pest };
+      } else if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem')) {
+        return { content: langResponses.weather };
+      } else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
+        return { content: langResponses.market };
+      }
+      
+      return { content: langResponses.default };
     }
-    
-    // Subsidy-related queries
-    if (lowerMessage.includes('subsidy') || lowerMessage.includes('government') || lowerMessage.includes('support') || lowerMessage.includes('program')) {
-      const subsidyData = await fetchSubsidyData();
-      return {
-        content: langResponses.subsidy,
-        type: 'subsidy',
-        data: subsidyData
-      };
-    }
-    
-    // Expert support queries
-    if (lowerMessage.includes('expert') || lowerMessage.includes('extension') || lowerMessage.includes('officer') || lowerMessage.includes('specialist')) {
-      setExpertMode(true);
-      return {
-        content: langResponses.expert,
-        type: 'expert-request'
-      };
-    }
-    
-    // Other agricultural queries
-    if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan') || lowerMessage.includes('aburo')) {
-      return { content: langResponses.crop };
-    } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa') || lowerMessage.includes('nudzrala')) {
-      return { content: langResponses.pest };
-    } else if (lowerMessage.includes('soil') || lowerMessage.includes('asaase') || lowerMessage.includes('anyigba')) {
-      return { content: langResponses.soil };
-    } else if (lowerMessage.includes('fertilizer') || lowerMessage.includes('manure') || lowerMessage.includes('compost')) {
-      return { content: langResponses.fertilizer };
-    } else if (lowerMessage.includes('irrigation') || lowerMessage.includes('water') || lowerMessage.includes('nsuo') || lowerMessage.includes('nɔ')) {
-      return { content: langResponses.irrigation };
-    } else if (lowerMessage.includes('harvest') || lowerMessage.includes('pick') || lowerMessage.includes('collect')) {
-      return { content: langResponses.harvest };
-    } else if (lowerMessage.includes('storage') || lowerMessage.includes('keep') || lowerMessage.includes('save')) {
-      return { content: langResponses.storage };
-    }
-    
-    return { content: langResponses.default };
   };
 
   // Simulate real-time weather data (replace with actual GMet API integration)
@@ -391,9 +323,6 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      // Simulate AI processing delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const response = await generateAIResponse(inputMessage);
       
       const botMessage: Message = {
@@ -402,8 +331,8 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
         sender: 'bot',
         timestamp: new Date(),
         language,
-        type: response.type as 'text' | 'weather' | 'market' | 'subsidy' | 'expert-request',
-        data: response.data
+        provider: response.provider,
+        model: response.model
       };
 
       setMessages(prev => [...prev, botMessage]);

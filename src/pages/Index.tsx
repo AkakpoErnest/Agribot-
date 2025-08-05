@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LanguageSelector } from "@/components/LanguageSelector";
-import { LocationSelector } from "@/components/LocationSelector";
+// import { LocationSelector } from "@/components/LocationSelector";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { WeatherWidget } from "@/components/WeatherWidget";
-import { MarketPricesWidget } from "@/components/MarketPricesWidget";
+// import { WeatherWidget } from "@/components/WeatherWidget";
+// import { MarketPricesWidget } from "@/components/MarketPricesWidget";
 import { Bot, Zap, Languages } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroImage from "@/assets/agribot-hero.jpg";
 
 const Index = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
-  const [selectedLocation, setSelectedLocation] = useState('accra');
-  const [showChat, setShowChat] = useState(false);
+  // const [selectedLocation, setSelectedLocation] = useState('accra');
+  // const [showChat, setShowChat] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-earth">
@@ -129,8 +129,8 @@ const Index = () => {
       {/* AI Features Showcase - Now comes after language selection */}
       <FeatureShowcase language={selectedLanguage} />
 
-      {/* Weather and Market Prices Widgets */}
-      <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
+      {/* Weather and Market Prices Widgets - Temporarily commented out */}
+      {/* <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -147,22 +147,12 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Location Selector */}
-          <div className="max-w-md mx-auto mb-8">
-            <LocationSelector 
-              onLocationSelect={setSelectedLocation}
-              selectedLocation={selectedLocation}
-              language={selectedLanguage}
-            />
-          </div>
-
-          {/* Widgets Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <WeatherWidget language={selectedLanguage} location={selectedLocation} />
             <MarketPricesWidget language={selectedLanguage} location={selectedLocation} />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Statistics Section */}
       <section className="py-16 bg-primary text-primary-foreground">

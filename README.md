@@ -54,6 +54,55 @@ Agribot is a cutting-edge AI-powered agricultural assistant designed specificall
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
+## LLM Integration
+
+Agribot supports multiple free LLM providers for intelligent agricultural assistance:
+
+### **🤖 Available LLM Providers:**
+
+1. **Hugging Face Inference API** (Recommended - Free)
+   - Get free API key: https://huggingface.co/settings/tokens
+   - Add to `.env`: `REACT_APP_HUGGINGFACE_API_KEY=your_key_here`
+
+2. **Ollama** (Local - Completely Free)
+   - Install: `brew install ollama`
+   - Run: `ollama run llama2:7b`
+   - No API key needed
+
+3. **Fallback System** (Built-in)
+   - Pre-programmed agricultural responses
+   - Works offline
+   - Multilingual support
+
+### **🚀 Setup Instructions:**
+
+1. **For Hugging Face (Recommended):**
+   ```bash
+   # Create .env file
+   echo "REACT_APP_HUGGINGFACE_API_KEY=your_key_here" > .env
+   ```
+
+2. **For Ollama (Local):**
+   ```bash
+   # Install Ollama
+   brew install ollama
+   
+   # Download and run model
+   ollama run llama2:7b
+   ```
+
+3. **Start the app:**
+   ```bash
+   npm run dev
+   ```
+
+### **🌾 LLM Features:**
+- **Multilingual responses** in Twi, Ewe, Ga, and English
+- **Agricultural expertise** tailored for Ghanaian farming
+- **Context-aware** responses based on user queries
+- **Fallback system** ensures responses even without internet
+- **Provider switching** automatically tries different LLMs
+
 ## Technology Stack
 
 This project is built with modern web technologies:
