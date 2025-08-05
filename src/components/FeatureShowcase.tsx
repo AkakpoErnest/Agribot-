@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from 'react-router-dom';
 import { 
   Brain, 
   Mic, 
@@ -12,7 +13,7 @@ import {
   MapPin,
   Wifi,
   MessageSquare,
-  Volume2
+  ArrowRight
 } from 'lucide-react';
 
 interface FeatureShowcaseProps {
@@ -34,22 +35,6 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
         tw: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho",
         ee: "Xɔ ŋuɖoɖo enumake tso nuku, nudzrala, kple agblẽnɔnɔ ŋu",
         ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho"
-      },
-      status: "active"
-    },
-    {
-      icon: Volume2,
-      title: {
-        en: "AI Voice Channel",
-        tw: "AI Nne Kwan",
-        ee: "AI Gbeɖoɖo Kpeɖeŋu",
-        ga: "AI Nne Kwan"
-      },
-      description: {
-        en: "Give voice commands to AI for various farming tasks",
-        tw: "Fa nne ahyɛ AI ma ayɛ kuayɛ adwuma ahoroɔ",
-        ee: "Na AI gbeɖoɖo be nàwɔ agblẽnɔnɔ dɔwɔwɔ vovovowo",
-        ga: "Fa nne ahyɛ AI ma ayɛ kuayɛ adwuma ahoroɔ"
       },
       status: "active"
     },
@@ -96,7 +81,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
       description: {
         en: "Take photos to identify plant diseases instantly",
         tw: "Gye mfoni na hu aduan yadeɛ ntɛm",
-        ee: "Ɖe foto be nàdze nuku Ƒe dɔléle enumake",
+        ee: "Ɖe foto be nàdze nuku ƒe dɔléle enumake",
         ga: "Gye mfoni na hu aduan yadeɛ ntɛm"
       },
       status: "coming-soon"
@@ -112,7 +97,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
       description: {
         en: "Get weather-based farming recommendations",
         tw: "Nya ewiem nsɛm a ɛfa kuayɛ ho",
-        ee: "Xɔ agblẽnɔnɔ ɖoɖo si ɖo yame Ƒe nɔnɔme ŋu",
+        ee: "Xɔ agblẽnɔnɔ ɖoɖo si ɖo yame ƒe nɔnɔme ŋu",
         ga: "Nya ewiem nsɛm a ɛfa kuayɛ ho"
       },
       status: "coming-soon"
@@ -128,7 +113,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
       description: {
         en: "Real-time crop prices and market trends",
         tw: "Aduan bo a ɛrekɔ so ne gua mu nsɛm",
-        ee: "Nuku ƒe ga home kple asi me nɔnɔme",
+        ee: "Nuku Ƒe ga home kple asi me nɔnɔme",
         ga: "Aduan bo a ɛrekɔ so ne gua mu nsɛm"
       },
       status: "coming-soon"
@@ -255,6 +240,19 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
             </Card>
           );
         })}
+      </div>
+
+      {/* View All Features Button */}
+      <div className="text-center mt-12">
+        <Link to="/features">
+          <Button variant="ghana" size="lg" className="gap-2">
+            {language === 'en' ? 'View All Features' :
+             language === 'tw' ? 'Hwɛ Nneɛma Nyinaa' :
+             language === 'ee' ? 'Kpɔ Nɔɔ̃wo Katã' :
+             language === 'ga' ? 'Hwɛ Nneɛma Nyinaa' : 'View All Features'}
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </Link>
       </div>
     </section>
   );

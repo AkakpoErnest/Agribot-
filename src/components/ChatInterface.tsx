@@ -3,7 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Mic, MicOff, Send, Bot, User, Loader2 } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { 
+  Mic, 
+  MicOff, 
+  Send, 
+  Bot, 
+  User, 
+  Loader2, 
+  Cloud, 
+  TrendingUp, 
+  Building2, 
+  Phone,
+  AlertTriangle,
+  CheckCircle
+} from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 // Safe LLM import - won't break the app if it fails
@@ -16,13 +30,40 @@ try {
   console.log('LLM service not available, using built-in responses');
 }
 
-
 interface Message {
   id: string;
   content: string;
-  sender: 'user' | 'bot';
+  sender: 'user' | 'bot' | 'expert';
   timestamp: Date;
   language?: string;
+  type?: 'text' | 'weather' | 'market' | 'subsidy' | 'expert-request';
+  data?: any;
+  provider?: string;
+  model?: string;
+}
+
+interface WeatherData {
+  temperature: number;
+  condition: string;
+  humidity: number;
+  windSpeed: number;
+  forecast: string;
+}
+
+interface MarketData {
+  crop: string;
+  price: number;
+  unit: string;
+  location: string;
+  trend: 'up' | 'down' | 'stable';
+}
+
+interface SubsidyData {
+  program: string;
+  description: string;
+  eligibility: string;
+  deadline: string;
+  contact: string;
 }
 
 interface ChatInterfaceProps {
@@ -35,6 +76,10 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [recognition, setRecognition] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [marketData, setMarketData] = useState<MarketData[]>([]);
+  const [subsidyData, setSubsidyData] = useState<SubsidyData[]>([]);
+  const [expertMode, setExpertMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -162,102 +207,113 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     }
   };
 
-  const generateAIResponse = async (userMessage: string): Promise<string> => {
-    // Try LLM service first if available
-    if (llmService) {
-      try {
-        const response = await llmService.generateResponse({
-          prompt: userMessage,
-          language: language as 'en' | 'tw' | 'ee' | 'ga'
-        });
-        
-        console.log(`LLM Response: ${response.provider} (confidence: ${response.confidence})`);
-        return response.text;
-      } catch (error) {
-        console.log('LLM service failed, using built-in responses:', error);
-        // Fall through to built-in responses
-      }
-    }
+  const generateAIResponse = async (userMessage: string): Promise<{ content: string; provider?: string; model?: string }> => {
+    try {
+      const request: any = { // Assuming LLMRequest is not defined, using 'any' for now
+        prompt: userMessage,
+        language: language,
+        context: `Agricultural assistant for Ghanaian farmers. Current language: ${language}. Provide helpful, practical advice.`,
+        maxTokens: 200
+      };
 
-    // Enhanced AI response with comprehensive agricultural knowledge in all languages
-    const responses = {
-      'en': {
-        crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield. Cassava and yam are also excellent choices for Ghana's climate.",
-        pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer. Regular monitoring helps prevent pest outbreaks.",
-        weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly. Plant during the rainy season for optimal results.",
-        market: "Check local market prices regularly. Tomatoes and cassava have good market demand. Connect with local farmers' markets for better prices.",
-        soil: "Ghana's soil varies by region. Test your soil before planting. Use organic fertilizers to improve soil health.",
-        fertilizer: "Use balanced fertilizers for better crop yield. Organic options like compost and manure are excellent for sustainable farming.",
-        irrigation: "During dry seasons, consider irrigation systems. Drip irrigation is efficient for water conservation.",
-        harvest: "Harvest timing is crucial. Monitor crop maturity and weather conditions before harvesting.",
-        storage: "Proper storage prevents post-harvest losses. Keep grains dry and use appropriate storage containers.",
-        default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, markets, soil, fertilizers, irrigation, harvesting, or storage in Ghana."
-      },
-      'tw': {
-        crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Bankye ne yam nso yɛ adeɛ pa ama Ghana ewiem.",
-        pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ. Hwɛ daa na ɛkyerɛ mmoawa.",
-        weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Dua osutɔ bere mu na ɛyɛ wo.",
-        market: "Gua so: Ntoses ne bankye wɔ gua pa. Kɔ akuafo gua hɔ na wo nya bo pa.",
-        soil: "Ghana asaase sesa mpɔtam. Hwɛ wo asaase ansa wo dua. Fa organic fertilizer na ɛyɛ wo asaase.",
-        fertilizer: "Fa fertilizer a ɛyɛ wo aduan. Organic fertilizer te sɛ compost ne manure yɛ wo.",
-        irrigation: "Ewiem bere mu, hwɛ irrigation. Drip irrigation yɛ wo nsuo.",
-        harvest: "Harvest bere yɛ adeɛ kɛseɛ. Hwɛ aduan maturity ne ewiem ansa wo harvest.",
-        storage: "Storage pa kyekye harvest loss. Ma grains ayɛ dry na fa storage container pa.",
-        default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem, gua, asaase, fertilizer, irrigation, harvest, anaa storage ho nsɛm."
-      },
-      'ee': {
-        crop: "Agblẽnɔnɔ ŋuɖoɖo: Agblẽnɔnɔ ƒe ɣeyiɣi nyuie nye tsidzadza ƒe ɣeyiɣi. Ɖe agbatsa le Afiɖa kple Masa me. Agbeli kple yam nɔa nyuie na Ghana ƒe yame.",
-        pest: "Agblẽnɔnɔ ƒe nudzralawo: Kwatɔ kple aphids. Zã neem ngo alo kɔ extension officer gbɔ. Kpɔ daa eye nàdze nudzrala.",
-        weather: "Yame ƒe nɔnɔme: Harmattan ƒe ɣeyiɣi no ɖe agblẽnɔnɔ ƒe dɔwɔwɔ. Ɖe tsidzadza ƒe ɣeyiɣi me eye nànyuie.",
-        market: "Asi ƒe nɔnɔme: Kpɔ asi ƒe ga home daa. Ntoses kple agbeli le asi me. Kɔ agblẽnɔlawo ƒe asi hã eye nàxɔ ga nyuie.",
-        soil: "Ghana ƒe anyigba sesa nutɔwo. Kpɔ wò anyigba vɔ̃ megbe nàɖe. Zã organic fertilizer eye nàwɔ wò anyigba.",
-        fertilizer: "Zã fertilizer si wòagblẽnɔnɔ nyuie. Organic fertilizer te sɛ compost kple manure nyuie.",
-        irrigation: "Yame ƒe ɣeyiɣi me, hã irrigation. Drip irrigation nyuie na nɔ ƒe dɔwɔwɔ.",
-        harvest: "Harvest ƒe ɣeyiɣi nye nu kɛse. Kpɔ agblẽnɔnɔ ƒe maturity kple yame megbe nàharvest.",
-        storage: "Storage nyuie ɖe harvest ƒe dzidzɔ. Ma grains ayɛ ɖe eye zã storage container nyuie.",
-        default: "Mele afi sia sɛ meakpe ɖe wò agblẽnɔnɔ ƒe nyawo ŋu. Bia agblẽnɔnɔ, nudzrala, yame, asi, anyigba, fertilizer, irrigation, harvest, alo storage ŋu nyawo."
-      },
-      'ga': {
-        crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Bankye ne yam nso yɛ adeɛ pa ama Ghana ewiem.",
-        pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ. Hwɛ daa na ɛkyerɛ mmoawa.",
-        weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Dua osutɔ bere mu na ɛyɛ wo.",
-        market: "Gua so: Ntoses ne bankye wɔ gua pa. Kɔ akuafo gua hɔ na wo nya bo pa.",
-        soil: "Ghana asaase sesa mpɔtam. Hwɛ wo asaase ansa wo dua. Fa organic fertilizer na ɛyɛ wo asaase.",
-        fertilizer: "Fa fertilizer a ɛyɛ wo aduan. Organic fertilizer te sɛ compost ne manure yɛ wo.",
-        irrigation: "Ewiem bere mu, hwɛ irrigation. Drip irrigation yɛ wo nsuo.",
-        harvest: "Harvest bere yɛ adeɛ kɛseɛ. Hwɛ aduan maturity ne ewiem ansa wo harvest.",
-        storage: "Storage pa kyekye harvest loss. Ma grains ayɛ dry na fa storage container pa.",
-        default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem, gua, asaase, fertilizer, irrigation, harvest, anaa storage ho nsɛm."
+      const response = await llmService.generateResponse(request);
+      
+      return {
+        content: response.content,
+        provider: response.provider,
+        model: response.model
+      };
+    } catch (error) {
+      console.error('LLM service error:', error);
+      // Fallback to simple responses
+      const responses = {
+        'en': {
+          crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield.",
+          pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer.",
+          weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly.",
+          market: "Check local market prices regularly. Tomatoes and cassava have good market demand.",
+          default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, or markets in Ghana."
+        },
+        'tw': {
+          crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ.",
+          pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ.",
+          weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan.",
+          market: "Gua so: Ntoses ne bankye wɔ gua pa.",
+          default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem anaa gua ho nsɛm."
+        }
+      };
+
+      const langResponses = responses[language as keyof typeof responses] || responses.en;
+      
+      // Simple keyword matching for demo
+      const lowerMessage = userMessage.toLowerCase();
+      if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan')) {
+        return { content: langResponses.crop };
+      } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa')) {
+        return { content: langResponses.pest };
+      } else if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem')) {
+        return { content: langResponses.weather };
+      } else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
+        return { content: langResponses.market };
       }
+      
+      return { content: langResponses.default };
+    }
+  };
+
+  // Simulate real-time weather data (replace with actual GMet API integration)
+  const fetchWeatherData = async (): Promise<WeatherData> => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return {
+      temperature: 28,
+      condition: 'Partly Cloudy',
+      humidity: 75,
+      windSpeed: 12,
+      forecast: 'Light rain expected in the next 24 hours. Good for planting maize and vegetables.'
     };
+  };
 
-    const langResponses = responses[language as keyof typeof responses] || responses.en;
+  // Simulate real-time market data (replace with actual Esoko API integration)
+  const fetchMarketData = async (): Promise<MarketData[]> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Enhanced keyword matching for demo
-    const lowerMessage = userMessage.toLowerCase();
+    return [
+      { crop: 'Tomatoes', price: 15.50, unit: 'kg', location: 'Kumasi Market', trend: 'up' },
+      { crop: 'Cassava', price: 8.20, unit: 'kg', location: 'Accra Market', trend: 'stable' },
+      { crop: 'Maize', price: 12.80, unit: 'kg', location: 'Tamale Market', trend: 'down' },
+      { crop: 'Yam', price: 18.90, unit: 'kg', location: 'Kumasi Market', trend: 'up' }
+    ];
+  };
+
+  // Simulate government subsidy data
+  const fetchSubsidyData = async (): Promise<SubsidyData[]> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    // English keywords
-    if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan') || lowerMessage.includes('aburo')) {
-      return langResponses.crop;
-    } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa') || lowerMessage.includes('nudzrala')) {
-      return langResponses.pest;
-    } else if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem') || lowerMessage.includes('yame')) {
-      return langResponses.weather;
-    } else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua') || lowerMessage.includes('asi')) {
-      return langResponses.market;
-    } else if (lowerMessage.includes('soil') || lowerMessage.includes('asaase') || lowerMessage.includes('anyigba')) {
-      return langResponses.soil;
-    } else if (lowerMessage.includes('fertilizer') || lowerMessage.includes('manure') || lowerMessage.includes('compost')) {
-      return langResponses.fertilizer;
-    } else if (lowerMessage.includes('irrigation') || lowerMessage.includes('water') || lowerMessage.includes('nsuo') || lowerMessage.includes('nɔ')) {
-      return langResponses.irrigation;
-    } else if (lowerMessage.includes('harvest') || lowerMessage.includes('pick') || lowerMessage.includes('collect')) {
-      return langResponses.harvest;
-    } else if (lowerMessage.includes('storage') || lowerMessage.includes('keep') || lowerMessage.includes('save')) {
-      return langResponses.storage;
-    }
-    
-    return langResponses.default;
+    return [
+      {
+        program: 'Fertilizer Subsidy Program',
+        description: '50% subsidy on NPK and Urea fertilizers for registered farmers',
+        eligibility: 'Must be a registered farmer with valid ID',
+        deadline: 'December 31, 2024',
+        contact: 'Ministry of Agriculture: +233 30 266 0000'
+      },
+      {
+        program: 'Mechanization Support',
+        description: 'Low-interest loans for farm equipment and machinery',
+        eligibility: 'Farmers with 5+ acres of land',
+        deadline: 'Ongoing',
+        contact: 'Agricultural Development Bank: +233 30 266 1000'
+      },
+      {
+        program: 'Crop Insurance Scheme',
+        description: 'Insurance coverage for major crops against weather damage',
+        eligibility: 'All registered farmers',
+        deadline: 'Before planting season',
+        contact: 'Ghana Agricultural Insurance Pool: +233 30 266 2000'
+      }
+    ];
   };
 
   const sendMessage = async () => {
@@ -276,17 +332,16 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      // Simulate AI processing delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const response = await generateAIResponse(inputMessage);
       
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: response,
+        content: response.content,
         sender: 'bot',
         timestamp: new Date(),
-        language
+        language,
+        provider: response.provider,
+        model: response.model
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -351,6 +406,98 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
                   : 'bg-muted text-muted-foreground'
               }`}>
                 <p className="text-sm">{message.content}</p>
+                
+                {/* Weather Data Display */}
+                {message.type === 'weather' && message.data && (
+                  <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Cloud className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm font-medium text-blue-800">Weather Update</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs text-blue-700">
+                      <div>Temperature: {message.data.temperature}°C</div>
+                      <div>Condition: {message.data.condition}</div>
+                      <div>Humidity: {message.data.humidity}%</div>
+                      <div>Wind: {message.data.windSpeed} km/h</div>
+                    </div>
+                    <div className="mt-2 text-xs text-blue-600 font-medium">
+                      {message.data.forecast}
+                    </div>
+                  </div>
+                )}
+
+                {/* Market Data Display */}
+                {message.type === 'market' && message.data && (
+                  <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="h-4 w-4 text-green-600" />
+                      <span className="text-sm font-medium text-green-800">Market Prices</span>
+                    </div>
+                    <div className="space-y-1">
+                      {message.data.map((item: MarketData, index: number) => (
+                        <div key={index} className="flex justify-between items-center text-xs">
+                          <span className="text-green-700">{item.crop}</span>
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium">₵{item.price}</span>
+                            <span className="text-green-600">/{item.unit}</span>
+                            <Badge 
+                              variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
+                              className="text-xs"
+                            >
+                              {item.trend === 'up' ? '↗' : item.trend === 'down' ? '↘' : '→'}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Subsidy Data Display */}
+                {message.type === 'subsidy' && message.data && (
+                  <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Building2 className="h-4 w-4 text-yellow-600" />
+                      <span className="text-sm font-medium text-yellow-800">Government Programs</span>
+                    </div>
+                    <div className="space-y-2">
+                      {message.data.map((item: SubsidyData, index: number) => (
+                        <div key={index} className="text-xs text-yellow-700 border-l-2 border-yellow-400 pl-2">
+                          <div className="font-medium">{item.program}</div>
+                          <div className="text-yellow-600">{item.description}</div>
+                          <div className="mt-1">
+                            <span className="font-medium">Eligibility:</span> {item.eligibility}
+                          </div>
+                          <div>
+                            <span className="font-medium">Deadline:</span> {item.deadline}
+                          </div>
+                          <div className="flex items-center gap-1 mt-1">
+                            <Phone className="h-3 w-3" />
+                            <span className="text-yellow-600">{item.contact}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Expert Request Display */}
+                {message.type === 'expert-request' && (
+                  <div className="mt-3 p-2 bg-purple-50 rounded border border-purple-200">
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-purple-600" />
+                      <span className="text-sm font-medium text-purple-800">Expert Connection</span>
+                    </div>
+                    <div className="mt-2 text-xs text-purple-700">
+                      <div className="flex items-center gap-1 mb-1">
+                        <CheckCircle className="h-3 w-3" />
+                        <span>Request submitted successfully</span>
+                      </div>
+                      <div>An agricultural extension officer will contact you within 24 hours.</div>
+                    </div>
+                  </div>
+                )}
+
                 <span className="text-xs opacity-60">
                   {message.timestamp.toLocaleTimeString()}
                 </span>
@@ -436,30 +583,34 @@ const getQuickQuestions = (language: string) => {
     'en': [
       'Tell me about crops',
       'How to control pests?',
-      'Weather advice',
+      'Weather forecast',
       'Market prices',
-      'Soil management'
+      'Government subsidies',
+      'Connect with expert'
     ],
     'tw': [
       'Ka aduan ho nsɛm',
       'Sɛn na yɛɛ mmoawa?',
-      'Ewiem afotu',
+      'Ewiem forecast',
       'Gua bo',
-      'Asaase ho nimdeɛ'
+      'Amanaman ntam subsidy',
+      'Ka extension officer ho'
     ],
     'ee': [
       'Ka agblẽnɔnɔ ŋu nyawo',
       'Aleke nàdze nudzrala?',
-      'Yame ƒe ɖoɖo',
+      'Yame ƒe forecast',
       'Asi ƒe ga',
-      'Anyigba ƒe dɔwɔwɔ'
+      'Dukplɔlawo ƒe subsidy',
+      'Ka extension officer gbɔ'
     ],
     'ga': [
       'Ka aduan ho nsɛm',
       'Sɛn na yɛɛ mmoawa?',
-      'Ewiem afotu',
+      'Ewiem forecast',
       'Gua bo',
-      'Asaase ho nimdeɛ'
+      'Amanaman ntam subsidy',
+      'Ka extension officer ho'
     ]
   };
   return questions[language as keyof typeof questions] || questions.en;

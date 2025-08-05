@@ -101,6 +101,7 @@ sequenceDiagram
 - 🔊 **AI Voice Channel** - Give voice commands to AI for various farming tasks
 - 🎤 **Voice Communication** - Speak in your local language and get responses
 - 🌍 **Multi-language Support** - Available in Twi, Ewe, Ga, and English
+- 💳 **Payment System** - Secure payments for agricultural services and products
 - 📱 **Modern UI/UX** - Beautiful Ghana-themed design with agricultural colors
 - 🎯 **Smart Response System** - Fallback from external LLM to built-in responses
 - 🔄 **Real-time Language Switching** - Seamless language transitions
@@ -186,6 +187,55 @@ graph TB
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
+## LLM Integration
+
+Agribot supports multiple free LLM providers for intelligent agricultural assistance:
+
+### **🤖 Available LLM Providers:**
+
+1. **Hugging Face Inference API** (Recommended - Free)
+   - Get free API key: https://huggingface.co/settings/tokens
+   - Add to `.env`: `REACT_APP_HUGGINGFACE_API_KEY=your_key_here`
+
+2. **Ollama** (Local - Completely Free)
+   - Install: `brew install ollama`
+   - Run: `ollama run llama2:7b`
+   - No API key needed
+
+3. **Fallback System** (Built-in)
+   - Pre-programmed agricultural responses
+   - Works offline
+   - Multilingual support
+
+### **🚀 Setup Instructions:**
+
+1. **For Hugging Face (Recommended):**
+   ```bash
+   # Create .env file
+   echo "REACT_APP_HUGGINGFACE_API_KEY=your_key_here" > .env
+   ```
+
+2. **For Ollama (Local):**
+   ```bash
+   # Install Ollama
+   brew install ollama
+   
+   # Download and run model
+   ollama run llama2:7b
+   ```
+
+3. **Start the app:**
+   ```bash
+   npm run dev
+   ```
+
+### **🌾 LLM Features:**
+- **Multilingual responses** in Twi, Ewe, Ga, and English
+- **Agricultural expertise** tailored for Ghanaian farming
+- **Context-aware** responses based on user queries
+- **Fallback system** ensures responses even without internet
+- **Provider switching** automatically tries different LLMs
+
 ## Technology Stack
 
 This project is built with modern web technologies:
@@ -250,6 +300,13 @@ This project is built with modern web technologies:
 - Voice recording and transcription
 - Language-specific speech recognition
 - Natural language processing for agricultural queries
+
+### 💳 Payment System
+- Secure payment processing for agricultural services
+- Multiple payment methods (mobile money, cards, bank transfers)
+- Transaction history and receipts
+- Subscription management for premium features
+- Local payment integration (Momo, Vodafone Cash, etc.)
 
 ### 📱 Responsive Design
 - Mobile-first approach

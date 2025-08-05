@@ -1,151 +1,258 @@
-// Safe LLM Service for Agribot - Farm Talk Ghana
-// Minimal implementation that won't break the app
+// LLM Service for Agricultural AI Assistant
+// Supports multiple free LLM providers
 
 export interface LLMResponse {
-  text: string;
-  confidence: number;
+  content: string;
   provider: string;
+  model: string;
+  timestamp: string;
+  tokens?: number;
 }
 
 export interface LLMRequest {
   prompt: string;
-  language: 'en' | 'tw' | 'ee' | 'ga';
+  language: string;
+  context?: string;
+  maxTokens?: number;
 }
 
-// Simple fallback provider that always works
-class SafeFallbackProvider {
-  private responses: Record<string, Record<string, string[]>> = {
+// Hugging Face Inference API (Free Tier)
+class HuggingFaceLLM {
+  private apiUrl = 'https://api-inference.huggingface.co/models/';
+  private apiKey: string;
+
+  constructor() {
+    // You can get a free API key from https://huggingface.co/settings/tokens
+    this.apiKey = process.env.REACT_APP_HUGGINGFACE_API_KEY || '';
+  }
+
+  async generateResponse(request: LLMRequest): Promise<LLMResponse> {
+    try {
+      const model = 'microsoft/DialoGPT-medium'; // Free model
+      
+      const response = await fetch(`${this.apiUrl}${model}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputs: this.buildPrompt(request),
+          parameters: {
+            max_length: request.maxTokens || 150,
+            temperature: 0.7,
+            do_sample: true,
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Hugging Face API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      return {
+        content: this.extractResponse(data),
+        provider: 'Hugging Face',
+        model: model,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error('Hugging Face LLM error:', error);
+      throw error;
+    }
+  }
+
+  private buildPrompt(request: LLMRequest): string {
+    const basePrompt = `You are an agricultural assistant for Ghanaian farmers. Respond in ${request.language === 'en' ? 'English' : 'the local language'}. 
+    
+Context: ${request.context || 'General farming advice'}
+Question: ${request.prompt}
+
+Response:`;
+
+    return basePrompt;
+  }
+
+  private extractResponse(data: any): string {
+    if (data && data[0] && data[0].generated_text) {
+      return data[0].generated_text;
+    }
+    return 'I apologize, but I could not generate a response at this time.';
+  }
+}
+
+// Local Ollama Integration (Free, runs locally)
+class OllamaLLM {
+  private baseUrl = 'http://localhost:11434';
+
+  async generateResponse(request: LLMRequest): Promise<LLMResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama2:7b', // Free local model
+          prompt: this.buildPrompt(request),
+          stream: false,
+          options: {
+            temperature: 0.7,
+            num_predict: request.maxTokens || 150,
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ollama API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      return {
+        content: data.response,
+        provider: 'Ollama',
+        model: 'llama2:7b',
+        timestamp: new Date().toISOString(),
+        tokens: data.eval_count,
+      };
+    } catch (error) {
+      console.error('Ollama LLM error:', error);
+      throw error;
+    }
+  }
+
+  private buildPrompt(request: LLMRequest): string {
+    return `You are an agricultural assistant for Ghanaian farmers. Respond in ${request.language === 'en' ? 'English' : 'the local language'}. 
+
+Context: ${request.context || 'General farming advice'}
+Question: ${request.prompt}
+
+Response:`;
+  }
+}
+
+// Fallback LLM with predefined responses
+class FallbackLLM {
+  private agriculturalResponses = {
     en: {
-      greeting: [
-        "Hello! I'm Agribot, your farming assistant. How can I help you today?",
-        "Welcome to Agribot! I'm here to help with your farming questions.",
-        "Hi there! I'm ready to assist you with agricultural advice."
-      ],
-      weather: [
-        "I can help you with weather information for your farming activities.",
-        "Weather plays a crucial role in farming. What specific weather information do you need?",
-        "Let me know your location and I can provide weather advice for your crops."
-      ],
-      crops: [
-        "I can provide advice on various crops including maize, cassava, yam, and vegetables.",
-        "What crop are you interested in? I can help with planting, care, and harvesting tips.",
-        "Different crops have different requirements. Tell me what you're growing!"
-      ],
-      pests: [
-        "Pest management is crucial for healthy crops. What pests are you dealing with?",
-        "I can help you identify and control common agricultural pests.",
-        "Let me know what crops you're growing and I can provide pest control advice."
-      ],
-      default: [
-        "I'm here to help with your farming questions. Could you be more specific?",
-        "That's an interesting question about farming. Let me help you with that.",
-        "I'm your agricultural assistant. How can I help you today?"
-      ]
+      crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield. Use organic fertilizers and practice crop rotation.",
+      pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer for safe pest control methods.",
+      weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly. Water your crops regularly during dry spells.",
+      market: "Check local market prices regularly. Tomatoes and cassava have good market demand. Consider selling during peak seasons for better prices.",
+      default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, or markets in Ghana. For specific advice, contact your local extension officer."
     },
     tw: {
-      greeting: [
-        "Agoo! Me yɛ Agribot, wo kuayɛ adwumayɛfo. Me bɛtumi akyerɛ wo den?",
-        "Akwaaba Agribot! Me wɔ ha ma me bɛkyerɛ wo kuayɛ asɛm.",
-        "Agoo! Me yɛ ready ma me bɛkyerɛ wo kuayɛ adwuma."
-      ],
-      weather: [
-        "Me bɛtumi akyerɛ wo soro asɛm ma wo kuayɛ adwuma.",
-        "Soro yɛ adwuma wɔ kuayɛ mu. Wo pɛ soro asɛm bɛn?",
-        "Ka kyerɛ me wo baabi na me bɛtumi akyerɛ wo soro advice."
-      ],
-      crops: [
-        "Me bɛtumi akyerɛ wo aburo, bankye, yam, ne vegetables ho advice.",
-        "Wo pɛ crop bɛn? Me bɛtumi akyerɛ wo planting, care, ne harvesting.",
-        "Crops biara wɔ ne requirements. Ka kyerɛ me wo yɛ den!"
-      ],
-      default: [
-        "Me wɔ ha ma me bɛkyerɛ wo kuayɛ asɛm. Wo bɛtumi aka kyerɛ me?",
-        "Wo kuayɛ asɛm yɛ interesting. Ma me bɛkyerɛ wo.",
-        "Me yɛ wo kuayɛ adwumayɛfo. Me bɛtumi akyerɛ wo den?"
-      ]
+      crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Fa organic fertilizer na yɛ crop rotation.",
+      pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ ma safe pest control.",
+      weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Gua wo aduan nsuo regular sɛ ewiem yɛ hyew.",
+      market: "Gua so: Ntoses ne bankye wɔ gua pa. Hwɛ sɛ woataa so wɔ peak seasons ma bo pa.",
+      default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem anaa gua ho nsɛm."
     },
     ee: {
-      greeting: [
-        "Woezɔ! Nye Agribot, wo dɔwɔwɔ gbɔgblɔla. Nye bɛtumi akpɔ wo nu?",
-        "Akpe Agribot! Nye le afi ma nye bɛkpe wo dɔwɔwɔ nyawo.",
-        "Woezɔ! Nye ready ma nye bɛkpe wo dɔwɔwɔ dɔwɔwɔ."
-      ],
-      weather: [
-        "Nye bɛtumi akpɔ wo dzɔdzɔe nyanya ma wo dɔwɔwɔ dɔwɔwɔ.",
-        "Dzɔdzɔe le dɔwɔwɔ nu. Wo pɛ dzɔdzɔe nyanya bɛn?",
-        "Kpɔ nye wo fe afi na nye bɛtumi akpɔ wo dzɔdzɔe advice."
-      ],
-      default: [
-        "Nye le afi ma nye bɛkpe wo dɔwɔwɔ nyawo. Wo bɛtumi akpɔ nye nu?",
-        "Wo dɔwɔwɔ nyawo yɛ interesting. Ma nye bɛkpe wo.",
-        "Nye nye wo dɔwɔwɔ gbɔgblɔla. Nye bɛtumi akpɔ wo nu?"
-      ]
+      crop: "Agblẽnɔnɔ ho: Agblẽnɔnɔ ƒe ɣeyiɣi ne tsidzadza ƒe ɣeyiɣi. Ɖe nukuwo le Afɔfi kple Masa me. Zã organic fertilizer eye nàwɔ crop rotation.",
+      pest: "Nudzrala siwo le agblẽnɔnɔ me: Armyworms kple aphids. Zã neem ngo alo kɔ extension officer hɔ.",
+      weather: "Yame ƒe nɔnɔme: Harmattan ƒe ɣeyiɣi ka nukuwo ƒe nyuie. Na nukuwo nɔ le ɣeyiɣi me.",
+      market: "Asi Ƒe ga home: Ntoses kple cassava wɔ asi pa. Hwɛ sɛ woataa so le peak seasons me.",
+      default: "Mewɔ ha sɛ meboa wo agblẽnɔnɔ ho. Bisa nuku, nudzrala, yame, alo asi ho nsɛm."
     },
     ga: {
-      greeting: [
-        "Agoo! Me yɛ Agribot, wo kuayɛ adwumayɛfo. Me bɛtumi akyerɛ wo den?",
-        "Akwaaba Agribot! Me wɔ ha ma me bɛkyerɛ wo kuayɛ asɛm.",
-        "Agoo! Me yɛ ready ma me bɛkyerɛ wo kuayɛ adwuma."
-      ],
-      weather: [
-        "Me bɛtumi akyerɛ wo soro asɛm ma wo kuayɛ adwuma.",
-        "Soro yɛ adwuma wɔ kuayɛ mu. Wo pɛ soro asɛm bɛn?",
-        "Ka kyerɛ me wo baabi na me bɛtumi akyerɛ wo soro advice."
-      ],
-      default: [
-        "Me wɔ ha ma me bɛkyerɛ wo kuayɛ asɛm. Wo bɛtumi aka kyerɛ me?",
-        "Wo kuayɛ asɛm yɛ interesting. Ma me bɛkyerɛ wo.",
-        "Me yɛ wo kuayɛ adwumayɛfo. Me bɛtumi akyerɛ wo den?"
-      ]
+      crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ. Fa organic fertilizer na yɛ crop rotation.",
+      pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ ma safe pest control.",
+      weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan. Gua wo aduan nsuo regular sɛ ewiem yɛ hyew.",
+      market: "Gua so: Ntoses ne bankye wɔ gua pa. Hwɛ sɛ woataa so wɔ peak seasons ma bo pa.",
+      default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem anaa gua ho nsɛm."
     }
   };
 
-  generateResponse(request: LLMRequest): LLMResponse {
-    const language = request.language;
-    const prompt = request.prompt.toLowerCase();
+  async generateResponse(request: LLMRequest): Promise<LLMResponse> {
+    // Simple keyword matching for fallback responses
+    const lowerMessage = request.prompt.toLowerCase();
+    const langResponses = this.agriculturalResponses[request.language as keyof typeof this.agriculturalResponses] || this.agriculturalResponses.en;
     
-    // Determine response category based on prompt content
-    let category = 'default';
-    if (prompt.includes('hello') || prompt.includes('hi') || prompt.includes('agoo') || prompt.includes('woezɔ')) {
-      category = 'greeting';
-    } else if (prompt.includes('weather') || prompt.includes('soro') || prompt.includes('dzɔdzɔe')) {
-      category = 'weather';
-    } else if (prompt.includes('crop') || prompt.includes('plant') || prompt.includes('aburo') || prompt.includes('bankye')) {
-      category = 'crops';
-    } else if (prompt.includes('pest') || prompt.includes('insect') || prompt.includes('disease')) {
-      category = 'pests';
+    let response = langResponses.default;
+    
+    if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan')) {
+      response = langResponses.crop;
+    } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa')) {
+      response = langResponses.pest;
+    } else if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem')) {
+      response = langResponses.weather;
+    } else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
+      response = langResponses.market;
     }
 
-    const responses = this.responses[language]?.[category] || this.responses[language]?.default || this.responses.en.default;
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-
     return {
-      text: randomResponse,
-      confidence: 0.8,
-      provider: 'safe-fallback'
+      content: response,
+      provider: 'Fallback',
+      model: 'Agricultural Knowledge Base',
+      timestamp: new Date().toISOString(),
     };
   }
 }
 
-// Main LLM Service - Safe and Simple
+// Main LLM Service
 export class LLMService {
-  private fallback: SafeFallbackProvider;
+  private providers: {
+    huggingface: HuggingFaceLLM;
+    ollama: OllamaLLM;
+    fallback: FallbackLLM;
+  };
 
   constructor() {
-    this.fallback = new SafeFallbackProvider();
+    this.providers = {
+      huggingface: new HuggingFaceLLM(),
+      ollama: new OllamaLLM(),
+      fallback: new FallbackLLM(),
+    };
   }
 
   async generateResponse(request: LLMRequest): Promise<LLMResponse> {
-    // For now, just use the safe fallback
-    // This ensures the app never breaks
-    return this.fallback.generateResponse(request);
+    // Try providers in order of preference
+    const providers = ['huggingface', 'ollama', 'fallback'] as const;
+    
+    for (const providerName of providers) {
+      try {
+        const provider = this.providers[providerName];
+        const response = await provider.generateResponse(request);
+        console.log(`Using ${providerName} LLM provider`);
+        return response;
+      } catch (error) {
+        console.warn(`${providerName} LLM failed, trying next provider:`, error);
+        continue;
+      }
+    }
+
+    // If all providers fail, return fallback
+    return this.providers.fallback.generateResponse(request);
   }
 
-  async getAvailableProviders(): Promise<string[]> {
-    return ['safe-fallback'];
+  // Check if Ollama is available locally
+  async checkOllamaAvailability(): Promise<boolean> {
+    try {
+      const response = await fetch('http://localhost:11434/api/tags', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  // Get available models from Ollama
+  async getOllamaModels(): Promise<string[]> {
+    try {
+      const response = await fetch('http://localhost:11434/api/tags');
+      const data = await response.json();
+      return data.models?.map((model: any) => model.name) || [];
+    } catch {
+      return [];
+    }
   }
 }
 
 // Export singleton instance
-export const llmService = new LLMService();
-export default llmService; 
+export const llmService = new LLMService(); 
