@@ -6,6 +6,7 @@ import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { TeamSection } from "@/components/TeamSection";
+import { NewsUpdates } from "@/components/NewsUpdates";
 import { Bot, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroImage from "@/assets/agribot-hero.jpg";
@@ -125,6 +126,9 @@ const Index = () => {
       {/* AI Features Showcase - Now comes after language selection */}
       <FeatureShowcase language={selectedLanguage} />
 
+      {/* News & Updates Section */}
+      <NewsUpdates language={selectedLanguage} />
+
       {/* Weather and Market Prices Widgets - Temporarily commented out */}
       {/* <section className="py-16 bg-gradient-to-b from-muted/20 to-background">
         <div className="container mx-auto px-4">
@@ -132,8 +136,8 @@ const Index = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               {selectedLanguage === 'en' ? 'Live Agricultural Data' :
                selectedLanguage === 'tw' ? 'Kuayɛ Nsɛm a Ɛrekɔ So' :
-               selectedLanguage === 'ee' ? 'Agblẽnɔnɔ Nyawo Siwo Le Dɔwɔm' :
-               selectedLanguage === 'ga' ? 'Kuayɛ Nsɛm a Ɛrekɔ So' : 'Live Agricultural Data'}
+               language === 'ee' ? 'Agblẽnɔnɔ Nyawo Siwo Le Dɔwɔm' :
+               language === 'ga' ? 'Kuayɛ Nsɛm a Ɛrekɔ So' : 'Live Agricultural Data'}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {selectedLanguage === 'en' ? 'Get real-time weather and market information for informed farming decisions' :
@@ -149,50 +153,6 @@ const Index = () => {
           </div>
         </div>
       </section> */}
-
-      {/* Statistics Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <h3 className="text-3xl font-bold mb-2">4</h3>
-              <p className="text-primary-foreground/80">
-                {selectedLanguage === 'en' ? 'Languages Supported' :
-                 selectedLanguage === 'tw' ? 'Kasa a Yɛde Di Dwuma' :
-                 selectedLanguage === 'ee' ? 'Gbe Siwo Wòzãna' :
-                 selectedLanguage === 'ga' ? 'Kasa a Yɛde Di Dwuma' : 'Languages Supported'}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold mb-2">24/7</h3>
-              <p className="text-primary-foreground/80">
-                {selectedLanguage === 'en' ? 'AI Assistant Available' :
-                 selectedLanguage === 'tw' ? 'AI Boafoɔ Wɔ Hɔ' :
-                 selectedLanguage === 'ee' ? 'AI Kpeɖeŋutɔ Li' :
-                 selectedLanguage === 'ga' ? 'AI Boafoɔ Wɔ Hɔ' : 'AI Assistant Available'}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold mb-2">∞</h3>
-              <p className="text-primary-foreground/80">
-                {selectedLanguage === 'en' ? 'Voice Messages' :
-                 selectedLanguage === 'tw' ? 'Nne Nkra' :
-                 selectedLanguage === 'ee' ? 'Gbeɖoɖo Nyawo' :
-                 selectedLanguage === 'ga' ? 'Nne Nkra' : 'Voice Messages'}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold mb-2">🇬🇭</h3>
-              <p className="text-primary-foreground/80">
-                {selectedLanguage === 'en' ? 'Made for Ghana' :
-                 selectedLanguage === 'tw' ? 'Wɔayɛ ama Ghana' :
-                 selectedLanguage === 'ee' ? 'Wowɔe na Ghana' :
-                 selectedLanguage === 'ga' ? 'Wɔayɛ ama Ghana' : 'Made for Ghana'}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Team Section */}
       <TeamSection language={selectedLanguage} />
