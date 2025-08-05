@@ -5,7 +5,8 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
-import { Bot, Zap, Languages } from 'lucide-react';
+import { TeamSection } from "@/components/TeamSection";
+import { Bot, Zap } from 'lucide-react';
 import heroImage from "@/assets/agribot-hero.jpg";
 
 const Index = () => {
@@ -64,7 +65,6 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-4">
-              <Languages className="h-8 w-8 text-primary" />
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 {selectedLanguage === 'en' ? 'Choose Your Language' :
                  selectedLanguage === 'tw' ? 'Paw Wo Kasa' :
@@ -164,6 +164,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Team Section */}
+      <TeamSection language={selectedLanguage} />
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12">
