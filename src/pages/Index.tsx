@@ -35,7 +35,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-            <img src={agribotLogo} alt="Agribot Logo" className="h-10 w-auto" />
+            <img src={agribotLogo} alt="Agribot Logo" className="h-10 w-auto bg-white/10 rounded-lg p-1" />
             <h1 className="text-xl font-bold">Agribot</h1>
           </div>
 
@@ -104,7 +104,7 @@ const Index = () => {
         <div className="relative container mx-auto px-4 py-20 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="flex justify-center mb-6">
-              <img src={agribotLogo} alt="Agribot Logo" className="h-24 w-auto drop-shadow-lg" />
+              <img src={agribotLogo} alt="Agribot Logo" className="h-24 w-auto drop-shadow-lg bg-white/20 rounded-xl p-2" />
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-primary-foreground">
               Agribot
@@ -255,7 +255,7 @@ const Index = () => {
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center mb-4">
-            <img src={agribotLogo} alt="Agribot Logo" className="h-12 w-auto" />
+            <img src={agribotLogo} alt="Agribot Logo" className="h-12 w-auto bg-white/10 rounded-lg p-1" />
           </div>
           <h3 className="text-2xl font-bold mb-4">Agribot</h3>
           <p className="text-primary-foreground/80 mb-4">

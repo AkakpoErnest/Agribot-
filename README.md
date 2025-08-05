@@ -264,18 +264,65 @@ graph TB
    cd Agribot-
    ```
 
-2. **Install dependencies**
+2. **Install frontend dependencies**
    ```bash
    npm install
    ```
 
-3. **Start the development server**
+3. **Set up the backend server**
    ```bash
+   # Navigate to backend directory
+   cd backend
+   
+   # Install backend dependencies
+   npm install
+   
+   # Start the backend server
    npm run dev
    ```
 
-4. **Open your browser**
+4. **Set up environment variables**
+   ```bash
+   # In the root directory, create .env file
+   echo "VITE_API_BASE_URL=http://localhost:3001/api" > .env
+   ```
+
+5. **Start the frontend development server**
+   ```bash
+   # In the root directory
+   npm run dev
+   ```
+
+6. **Open your browser**
    Navigate to `http://localhost:5173` to view the application
+
+### Backend Setup
+
+The application includes a complete backend API for real authentication:
+
+#### Quick Backend Start
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+#### Backend Features
+- 🔐 **JWT Authentication** - Secure token-based authentication
+- 👥 **User Management** - Register, login, profile management
+- 🛡️ **Password Hashing** - Secure password storage with bcrypt
+- ✅ **Input Validation** - Request validation with express-validator
+- 🔄 **Token Refresh** - Automatic token refresh mechanism
+
+#### API Endpoints
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/profile` - Get user profile
+- `PUT /api/auth/profile` - Update user profile
+- `POST /api/auth/refresh` - Refresh token
+- `POST /api/auth/logout` - Logout user
+
+For detailed backend documentation, see [backend/README.md](backend/README.md).
 
 ### Available Scripts
 
@@ -284,6 +331,10 @@ graph TB
 - `npm run build:dev` - Build for development
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
+
+### Backend Scripts
+- `cd backend && npm run dev` - Start backend in development mode
+- `cd backend && npm start` - Start backend in production mode
 
 ## LLM Integration
 
@@ -621,3 +672,4 @@ For support and questions:
 **Made with ❤️ for Ghana's agricultural community**
 
 *Empowering farmers through technology and local language support*
+
