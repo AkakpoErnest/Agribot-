@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from 'react-router-dom';
 import { 
   Brain, 
   Mic, 
@@ -12,8 +11,7 @@ import {
   Users,
   MapPin,
   Wifi,
-  MessageSquare,
-  ArrowRight
+  MessageSquare
 } from 'lucide-react';
 
 interface FeatureShowcaseProps {
@@ -242,18 +240,7 @@ export const FeatureShowcase = ({ language }: FeatureShowcaseProps) => {
         })}
       </div>
 
-      {/* View All Features Button */}
-      <div className="text-center mt-12">
-        <Link to="/features">
-          <Button variant="ghana" size="lg" className="gap-2">
-            {language === 'en' ? 'View All Features' :
-             language === 'tw' ? 'Hwɛ Nneɛma Nyinaa' :
-             language === 'ee' ? 'Kpɔ Nɔɔ̃wo Katã' :
-             language === 'ga' ? 'Hwɛ Nneɛma Nyinaa' : 'View All Features'}
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </Link>
-      </div>
+
     </section>
   );
 };
