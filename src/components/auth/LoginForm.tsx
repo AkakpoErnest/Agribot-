@@ -380,10 +380,10 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {isLogin ? 'Signing In...' : 'Creating Account...'}
+              {isLogin ? getText('signingIn') : getText('creatingAccount')}
             </>
           ) : (
-            isLogin ? 'Sign In' : 'Create Account'
+            isLogin ? getText('signIn') : getText('createAccount')
           )}
         </Button>
       </form>
@@ -394,18 +394,18 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
           onClick={() => setIsLogin(!isLogin)}
           className="text-sm"
         >
-          {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+          {isLogin ? getText('dontHaveAccount') : getText('haveAccount')}
         </Button>
       </div>
 
       {isLogin && (
         <div className="text-center space-y-2">
-          <p className="text-sm text-muted-foreground">Demo Accounts:</p>
+          <p className="text-sm text-muted-foreground">{getText('demoAccounts')}</p>
           <div className="space-y-1 text-xs">
             <p><strong>Farmer:</strong> farmer@agribot.com</p>
             <p><strong>Customer:</strong> customer@agribot.com</p>
             <p><strong>Expert:</strong> expert@agribot.com</p>
-            <p className="text-muted-foreground">Password: any password</p>
+            <p className="text-muted-foreground">{getText('anyPassword')}</p>
           </div>
         </div>
       )}

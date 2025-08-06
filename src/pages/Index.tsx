@@ -228,7 +228,7 @@ const Index = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Link to="/login">
+                  <Link to={`/login?lang=${selectedLanguage}`}>
                     <Button variant="harvest" size="sm">
                       {getText('signIn')}
                     </Button>

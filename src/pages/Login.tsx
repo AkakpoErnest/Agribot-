@@ -200,7 +200,7 @@ const Login = () => {
         <div className="w-full max-w-md space-y-6">
           {/* Back to Home */}
           <div className="flex items-center justify-between">
-            <Link to="/">
+            <Link to={`/?lang=${selectedLanguage}`}>
               <Button variant="ghost" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 {getText('backToHome')}
