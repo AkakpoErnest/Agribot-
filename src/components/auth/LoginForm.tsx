@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Eye, EyeOff, User, Lock, Mail, Phone, MapPin } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/types/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
@@ -26,7 +27,11 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
     location: '',
   });
 
-  const { login, register, isLoading, error, clearError } = useAuth();
+  const { login, register, isLoading, error, clearError, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Debug authentication state
+  console.log('🔍 LoginForm: Auth state:', { isAuthenticated, user, isLoading, error });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +45,9 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
           email: formData.email,
           password: formData.password,
         });
-        console.log('✅ Login successful');
+        console.log('✅ Login successful, redirecting...');
+        // Redirect to home page after successful login
+        navigate('/');
       } catch (error) {
         console.error('❌ Login error in form:', error);
       }
@@ -55,7 +62,9 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
           phone: formData.phone,
           location: formData.location,
         });
-        console.log('✅ Registration successful');
+        console.log('✅ Registration successful, redirecting...');
+        // Redirect to home page after successful registration
+        navigate('/');
       } catch (error) {
         console.error('❌ Registration error in form:', error);
       }

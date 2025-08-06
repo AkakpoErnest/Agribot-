@@ -91,12 +91,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
+    console.log('🔐 AuthContext: Login started');
     dispatch({ type: 'LOGIN_START' });
 
     try {
+      console.log('🔐 AuthContext: Calling authService.login');
       const { user } = await authService.login(credentials);
+      console.log('✅ AuthContext: Login successful, user:', user);
       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+      console.log('✅ AuthContext: State updated with user');
     } catch (error) {
+      console.error('❌ AuthContext: Login failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
       dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
       throw error;
