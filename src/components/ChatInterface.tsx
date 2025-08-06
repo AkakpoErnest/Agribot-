@@ -495,9 +495,9 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-earth border-2">
-      {/* Header */}
-      <div className="p-4 border-b border-border bg-gradient-primary rounded-t-lg">
+    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-earth border-2 overflow-hidden">
+      {/* Header - Fixed at top */}
+      <div className="p-4 border-b border-border bg-gradient-primary rounded-t-lg flex-shrink-0">
         <div className="flex items-center gap-2">
           <Bot className="h-6 w-6 text-primary-foreground" />
           <h3 className="font-semibold text-primary-foreground">
@@ -509,219 +509,221 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
         </div>
       </div>
 
-      {/* Messages */}
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex items-start gap-3 ${
-                message.sender === 'user' ? 'flex-row-reverse' : ''
-              }`}
-            >
-              <div className={`p-2 rounded-full ${
-                message.sender === 'user' 
-                  ? 'bg-secondary' 
-                  : 'bg-primary'
-              }`}>
-                {message.sender === 'user' ? (
-                  <User className="h-4 w-4 text-secondary-foreground" />
-                ) : (
-                  <Bot className="h-4 w-4 text-primary-foreground" />
-                )}
-              </div>
-              <div className={`max-w-[80%] p-3 rounded-lg ${
-                message.sender === 'user'
-                  ? 'bg-secondary text-secondary-foreground'
-                  : 'bg-muted text-muted-foreground'
-              }`}>
-                <p className="text-sm">{message.content}</p>
-                
-                {/* Weather Data Display */}
-                {message.type === 'weather' && message.data && (
-                  <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Cloud className="h-4 w-4 text-blue-600" />
-                      <span className="text-sm font-medium text-blue-800">Weather Update</span>
+      {/* Messages - Scrollable area */}
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea className="h-full p-4">
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex items-start gap-3 ${
+                  message.sender === 'user' ? 'flex-row-reverse' : ''
+                }`}
+              >
+                <div className={`p-2 rounded-full ${
+                  message.sender === 'user' 
+                    ? 'bg-secondary' 
+                    : 'bg-primary'
+                }`}>
+                  {message.sender === 'user' ? (
+                    <User className="h-4 w-4 text-secondary-foreground" />
+                  ) : (
+                    <Bot className="h-4 w-4 text-primary-foreground" />
+                  )}
+                </div>
+                <div className={`max-w-[80%] p-3 rounded-lg ${
+                  message.sender === 'user'
+                    ? 'bg-secondary text-secondary-foreground'
+                    : 'bg-muted text-muted-foreground'
+                }`}>
+                  <p className="text-sm">{message.content}</p>
+                  
+                  {/* Weather Data Display */}
+                  {message.type === 'weather' && message.data && (
+                    <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Cloud className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-800">Weather Update</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs text-blue-700">
+                        <div>Temperature: {message.data.temperature}°C</div>
+                        <div>Condition: {message.data.condition}</div>
+                        <div>Humidity: {message.data.humidity}%</div>
+                        <div>Wind: {message.data.windSpeed} km/h</div>
+                      </div>
+                      <div className="mt-2 text-xs text-blue-600 font-medium">
+                        {message.data.forecast}
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-xs text-blue-700">
-                      <div>Temperature: {message.data.temperature}°C</div>
-                      <div>Condition: {message.data.condition}</div>
-                      <div>Humidity: {message.data.humidity}%</div>
-                      <div>Wind: {message.data.windSpeed} km/h</div>
-                    </div>
-                    <div className="mt-2 text-xs text-blue-600 font-medium">
-                      {message.data.forecast}
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Market Data Display */}
-                {message.type === 'market' && message.data && (
-                  <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <TrendingUp className="h-4 w-4 text-green-600" />
-                      <span className="text-sm font-medium text-green-800">Market Prices</span>
+                  {/* Market Data Display */}
+                  {message.type === 'market' && message.data && (
+                    <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">Market Prices</span>
+                      </div>
+                      <div className="space-y-1">
+                        {message.data.map((item: MarketData, index: number) => (
+                          <div key={index} className="flex justify-between items-center text-xs">
+                            <span className="text-green-700">{item.crop}</span>
+                            <div className="flex items-center gap-1">
+                              <span className="font-medium">₵{item.price}</span>
+                              <span className="text-green-600">/{item.unit}</span>
+                              <Badge 
+                                variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
+                                className="text-xs"
+                              >
+                                {item.trend === 'up' ? '↗' : item.trend === 'down' ? '↘' : '→'}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="space-y-1">
-                      {message.data.map((item: MarketData, index: number) => (
-                        <div key={index} className="flex justify-between items-center text-xs">
-                          <span className="text-green-700">{item.crop}</span>
-                          <div className="flex items-center gap-1">
-                            <span className="font-medium">₵{item.price}</span>
-                            <span className="text-green-600">/{item.unit}</span>
-                            <Badge 
-                              variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
-                              className="text-xs"
-                            >
-                              {item.trend === 'up' ? '↗' : item.trend === 'down' ? '↘' : '→'}
-                            </Badge>
+                  )}
+
+                  {/* Subsidy Data Display */}
+                  {message.type === 'subsidy' && message.data && (
+                    <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Building2 className="h-4 w-4 text-yellow-600" />
+                        <span className="text-sm font-medium text-yellow-800">Government Programs</span>
+                      </div>
+                      <div className="space-y-2">
+                        {message.data.map((item: SubsidyData, index: number) => (
+                          <div key={index} className="text-xs text-yellow-700 border-l-2 border-yellow-400 pl-2">
+                            <div className="font-medium">{item.program}</div>
+                            <div className="text-yellow-600">{item.description}</div>
+                            <div className="mt-1">
+                              <span className="font-medium">Eligibility:</span> {item.eligibility}
+                            </div>
+                            <div>
+                              <span className="font-medium">Deadline:</span> {item.deadline}
+                            </div>
+                            <div className="flex items-center gap-1 mt-1">
+                              <Phone className="h-3 w-3" />
+                              <span className="text-yellow-600">{item.contact}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Expert Request Display */}
+                  {message.type === 'expert-request' && message.data && (
+                    <div className="mt-3 p-3 bg-purple-50 rounded border border-purple-200">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Phone className="h-4 w-4 text-purple-600" />
+                        <span className="text-sm font-medium text-purple-800">
+                          {language === 'en' ? 'Extension Officer Contact' :
+                           language === 'tw' ? 'Extension Officer Contact' :
+                           language === 'ee' ? 'Extension Officer Contact' :
+                           language === 'ga' ? 'Extension Officer Contact' : 'Extension Officer Contact'}
+                        </span>
+                      </div>
+                      <div className="space-y-2 text-xs text-purple-700">
+                        <div className="flex items-center gap-2">
+                          <User className="h-3 w-3" />
+                          <span><strong>Name:</strong> {message.data.expertName}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-3 w-3" />
+                          <span><strong>Phone:</strong> </span>
+                          <a 
+                            href={`tel:${message.data.expertPhone}`}
+                            className="text-blue-600 hover:text-blue-800 underline"
+                          >
+                            {message.data.expertPhone}
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Mail className="h-3 w-3" />
+                          <span><strong>Email:</strong> {message.data.expertEmail}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-3 w-3" />
+                          <span><strong>Response Time:</strong> {message.data.responseTime}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="h-3 w-3" />
+                          <span><strong>Request ID:</strong> {message.data.requestId}</span>
+                        </div>
+                        <div className="mt-3 p-2 bg-purple-100 rounded text-xs">
+                          <strong>
+                            {language === 'en' ? 'How to call:' :
+                             language === 'tw' ? 'Sɛn na yɛɛ call:' :
+                             language === 'ee' ? 'Ame ŋu call:' :
+                             language === 'ga' ? 'Sɛn na yɛɛ call:' : 'How to call:'}
+                          </strong>
+                          <div className="mt-1 space-y-1">
+                            {language === 'en' ? (
+                              <>
+                                <div>1. Dial the phone number above</div>
+                                <div>2. Introduce yourself as a farmer</div>
+                                <div>3. Mention your request ID</div>
+                                <div>4. Ask your agricultural question</div>
+                              </>
+                            ) : language === 'tw' ? (
+                              <>
+                                <div>1. Fa phone number a ɛwɔ soro</div>
+                                <div>2. Ka wo ho sɛ kuayɛni</div>
+                                <div>3. Ka wo request ID</div>
+                                <div>4. Bisa wo kuayɛ nsɛm</div>
+                              </>
+                            ) : language === 'ee' ? (
+                              <>
+                                <div>1. Zã phone number si le dzi ŋu</div>
+                                <div>2. Ŋlɔ wò ŋkɔ sɛ agblẽla</div>
+                                <div>3. Ŋlɔ wò request ID</div>
+                                <div>4. Bia wò agblẽnɔnɔ nya</div>
+                              </>
+                            ) : language === 'ga' ? (
+                              <>
+                                <div>1. Fa phone number a ɛwɔ soro</div>
+                                <div>2. Ka wo ho sɛ kuayɛni</div>
+                                <div>3. Ka wo request ID</div>
+                                <div>4. Bisa wo kuayɛ nsɛm</div>
+                              </>
+                            ) : (
+                              <>
+                                <div>1. Dial the phone number above</div>
+                                <div>2. Introduce yourself as a farmer</div>
+                                <div>3. Mention your request ID</div>
+                                <div>4. Ask your agricultural question</div>
+                              </>
+                            )}
                           </div>
                         </div>
-                      ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Subsidy Data Display */}
-                {message.type === 'subsidy' && message.data && (
-                  <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Building2 className="h-4 w-4 text-yellow-600" />
-                      <span className="text-sm font-medium text-yellow-800">Government Programs</span>
-                    </div>
-                    <div className="space-y-2">
-                      {message.data.map((item: SubsidyData, index: number) => (
-                        <div key={index} className="text-xs text-yellow-700 border-l-2 border-yellow-400 pl-2">
-                          <div className="font-medium">{item.program}</div>
-                          <div className="text-yellow-600">{item.description}</div>
-                          <div className="mt-1">
-                            <span className="font-medium">Eligibility:</span> {item.eligibility}
-                          </div>
-                          <div>
-                            <span className="font-medium">Deadline:</span> {item.deadline}
-                          </div>
-                          <div className="flex items-center gap-1 mt-1">
-                            <Phone className="h-3 w-3" />
-                            <span className="text-yellow-600">{item.contact}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Expert Request Display */}
-                {message.type === 'expert-request' && message.data && (
-                  <div className="mt-3 p-3 bg-purple-50 rounded border border-purple-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Phone className="h-4 w-4 text-purple-600" />
-                      <span className="text-sm font-medium text-purple-800">
-                        {language === 'en' ? 'Extension Officer Contact' :
-                         language === 'tw' ? 'Extension Officer Contact' :
-                         language === 'ee' ? 'Extension Officer Contact' :
-                         language === 'ga' ? 'Extension Officer Contact' : 'Extension Officer Contact'}
-                      </span>
-                    </div>
-                    <div className="space-y-2 text-xs text-purple-700">
-                      <div className="flex items-center gap-2">
-                        <User className="h-3 w-3" />
-                        <span><strong>Name:</strong> {message.data.expertName}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-3 w-3" />
-                        <span><strong>Phone:</strong> </span>
-                        <a 
-                          href={`tel:${message.data.expertPhone}`}
-                          className="text-blue-600 hover:text-blue-800 underline"
-                        >
-                          {message.data.expertPhone}
-                        </a>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Mail className="h-3 w-3" />
-                        <span><strong>Email:</strong> {message.data.expertEmail}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-3 w-3" />
-                        <span><strong>Response Time:</strong> {message.data.responseTime}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-3 w-3" />
-                        <span><strong>Request ID:</strong> {message.data.requestId}</span>
-                      </div>
-                      <div className="mt-3 p-2 bg-purple-100 rounded text-xs">
-                        <strong>
-                          {language === 'en' ? 'How to call:' :
-                           language === 'tw' ? 'Sɛn na yɛɛ call:' :
-                           language === 'ee' ? 'Ame ŋu call:' :
-                           language === 'ga' ? 'Sɛn na yɛɛ call:' : 'How to call:'}
-                        </strong>
-                        <div className="mt-1 space-y-1">
-                          {language === 'en' ? (
-                            <>
-                              <div>1. Dial the phone number above</div>
-                              <div>2. Introduce yourself as a farmer</div>
-                              <div>3. Mention your request ID</div>
-                              <div>4. Ask your agricultural question</div>
-                            </>
-                          ) : language === 'tw' ? (
-                            <>
-                              <div>1. Fa phone number a ɛwɔ soro</div>
-                              <div>2. Ka wo ho sɛ kuayɛni</div>
-                              <div>3. Ka wo request ID</div>
-                              <div>4. Bisa wo kuayɛ nsɛm</div>
-                            </>
-                          ) : language === 'ee' ? (
-                            <>
-                              <div>1. Zã phone number si le dzi ŋu</div>
-                              <div>2. Ŋlɔ wò ŋkɔ sɛ agblẽla</div>
-                              <div>3. Ŋlɔ wò request ID</div>
-                              <div>4. Bia wò agblẽnɔnɔ nya</div>
-                            </>
-                          ) : language === 'ga' ? (
-                            <>
-                              <div>1. Fa phone number a ɛwɔ soro</div>
-                              <div>2. Ka wo ho sɛ kuayɛni</div>
-                              <div>3. Ka wo request ID</div>
-                              <div>4. Bisa wo kuayɛ nsɛm</div>
-                            </>
-                          ) : (
-                            <>
-                              <div>1. Dial the phone number above</div>
-                              <div>2. Introduce yourself as a farmer</div>
-                              <div>3. Mention your request ID</div>
-                              <div>4. Ask your agricultural question</div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <span className="text-xs opacity-60">
-                  {message.timestamp.toLocaleTimeString()}
-                </span>
+                  <span className="text-xs opacity-60">
+                    {message.timestamp.toLocaleTimeString()}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-full bg-primary">
-                <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
+            ))}
+            {isLoading && (
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-primary">
+                  <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
+                </div>
+                <div className="bg-muted p-3 rounded-lg">
+                  <p className="text-sm text-muted-foreground">Thinking...</p>
+                </div>
               </div>
-              <div className="bg-muted p-3 rounded-lg">
-                <p className="text-sm text-muted-foreground">Thinking...</p>
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-      </ScrollArea>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
+      </div>
 
-      {/* Input */}
-      <div className="p-4 border-t border-border">
+      {/* Input - Fixed at bottom */}
+      <div className="p-4 border-t border-border bg-background flex-shrink-0">
         <div className="flex gap-2">
           <Button
             variant={isRecording ? "destructive" : "outline"}
