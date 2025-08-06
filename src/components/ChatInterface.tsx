@@ -1,33 +1,39 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Mic, 
   MicOff, 
   Send, 
   Bot, 
   User, 
-  Loader2, 
-  Cloud, 
-  TrendingUp, 
-  Building2, 
-  Phone,
-  AlertTriangle,
-  CheckCircle,
+  MessageSquare, 
+  Phone, 
   Mail,
-  Clock
+  Clock,
+  Cloud,
+  TrendingUp,
+  Building2,
+  CheckCircle,
+  Loader2
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 // Safe LLM import - won't break the app if it fails
-let llmService: any = null;
+let llmService: unknown = null;
 try {
-  const llmModule = require("@/services/llm");
-  llmService = llmModule.llmService;
-  console.log('LLM service loaded successfully');
+  // Dynamic import to avoid build issues
+  import("@/services/llm").then((module) => {
+    llmService = module.llmService;
+    console.log('LLM service loaded successfully');
+  }).catch(() => {
+    console.log('LLM service not available, using built-in responses');
+  });
 } catch (error) {
   console.log('LLM service not available, using built-in responses');
 }
@@ -39,7 +45,7 @@ interface Message {
   timestamp: Date;
   language?: string;
   type?: 'text' | 'weather' | 'market' | 'subsidy' | 'expert-request';
-  data?: any;
+  data?: WeatherData | MarketData[] | SubsidyData[] | Record<string, unknown>;
   provider?: string;
   model?: string;
 }
@@ -77,7 +83,7 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [recognition, setRecognition] = useState<any>(null);
+  const [recognition, setRecognition] = useState<unknown>(null);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [marketData, setMarketData] = useState<MarketData[]>([]);
   const [subsidyData, setSubsidyData] = useState<SubsidyData[]>([]);
@@ -87,23 +93,21 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
 
   // Initialize speech recognition
   useEffect(() => {
-    // @ts-ignore - Browser speech recognition API
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      // @ts-ignore
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       const recognitionInstance = new SpeechRecognition();
       
       recognitionInstance.continuous = false;
       recognitionInstance.interimResults = false;
       recognitionInstance.lang = getLanguageCode(language);
       
-      recognitionInstance.onresult = (event) => {
+      recognitionInstance.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInputMessage(transcript);
         setIsRecording(false);
       };
       
-      recognitionInstance.onerror = (event) => {
+      recognitionInstance.onerror = (event: any) => {
         console.error('Speech recognition error:', event.error);
         setIsRecording(false);
         toast({
@@ -175,7 +179,8 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
 
     // Update speech recognition language
     if (recognition) {
-      recognition.lang = getLanguageCode(language);
+      // @ts-expect-error - SpeechRecognition is not typed
+      (recognition as SpeechRecognition).lang = getLanguageCode(language);
     }
   }, [language, recognition]);
 
@@ -200,67 +205,57 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     }
 
     if (isRecording) {
-      recognition.stop();
+      // @ts-expect-error - SpeechRecognition is not typed
+      (recognition as SpeechRecognition).stop();
       setIsRecording(false);
     } else {
-      recognition.lang = getLanguageCode(language);
-      recognition.start();
+      // @ts-expect-error - SpeechRecognition is not typed
+      (recognition as SpeechRecognition).lang = getLanguageCode(language);
+      // @ts-expect-error - SpeechRecognition is not typed
+      (recognition as SpeechRecognition).start();
       setIsRecording(true);
     }
   };
 
+  // Generate AI response
   const generateAIResponse = async (userMessage: string): Promise<{ content: string; provider?: string; model?: string }> => {
     try {
-      const request: any = { // Assuming LLMRequest is not defined, using 'any' for now
-        prompt: userMessage,
-        language: language,
-        context: `Agricultural assistant for Ghanaian farmers. Current language: ${language}. Provide helpful, practical advice.`,
-        maxTokens: 200
-      };
-
-      const response = await llmService.generateResponse(request);
-      
-      return {
-        content: response.content,
-        provider: response.provider,
-        model: response.model
-      };
-    } catch (error) {
-      console.error('LLM service error:', error);
-      // Fallback to simple responses
-      const responses = {
-        'en': {
-          crop: "For crop cultivation in Ghana, consider the rainy season timing. Plant maize between April-June for best yield.",
-          pest: "Common pests in Ghana include armyworms and aphids. Use neem oil or consult your local extension officer.",
-          weather: "Monitor weather patterns closely. The harmattan season affects crop growth significantly.",
-          market: "Check local market prices regularly. Tomatoes and cassava have good market demand.",
-          default: "I'm here to help with your farming questions. Ask me about crops, pests, weather, or markets in Ghana."
-        },
-        'tw': {
-          crop: "Kuayɛ ho nimdeɛ: Kuayɛ bere pa ne osutɔ bere. Aburow dua wɔ Kwapem kɔsi Kuotɔ.",
-          pest: "Mmoawa a ɛhaw aduan: Kwatɔ ne aphids. Fa neem ngo anaa kɔ extension officer hɔ.",
-          weather: "Ewiem tebea: Harmattan mmerɛ no ka aduan nyin kwan.",
-          market: "Gua so: Ntoses ne bankye wɔ gua pa.",
-          default: "Mewɔ ha sɛ meboa wo kuayɛ nsɛm ho. Bisa me aduan, mmoawa, ewiem anaa gua ho nsɛm."
-        }
-      };
-
-      const langResponses = responses[language as keyof typeof responses] || responses.en;
-      
-      // Simple keyword matching for demo
-      const lowerMessage = userMessage.toLowerCase();
-      if (lowerMessage.includes('crop') || lowerMessage.includes('plant') || lowerMessage.includes('aduan')) {
-        return { content: langResponses.crop };
-      } else if (lowerMessage.includes('pest') || lowerMessage.includes('insect') || lowerMessage.includes('mmoawa')) {
-        return { content: langResponses.pest };
-      } else if (lowerMessage.includes('weather') || lowerMessage.includes('rain') || lowerMessage.includes('ewiem')) {
-        return { content: langResponses.weather };
-      } else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
-        return { content: langResponses.market };
+      // Try external LLM service first
+      if (llmService && typeof llmService === 'object' && 'generateResponse' in llmService) {
+        const response = await (llmService as any).generateResponse(userMessage, language);
+        return {
+          content: response.content,
+          provider: response.provider,
+          model: response.model
+        };
       }
-      
-      return { content: langResponses.default };
+    } catch (error) {
+      console.log('External LLM failed, using built-in responses');
     }
+
+    // Fallback to built-in responses
+    const lowerMessage = userMessage.toLowerCase();
+    
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('greetings')) {
+      return { content: getGreeting() };
+    }
+    
+    if (lowerMessage.includes('weather') || lowerMessage.includes('ewiem') || lowerMessage.includes('yame')) {
+      return { content: 'I can help you with weather information. Please ask about current weather or forecasts.' };
+    }
+    
+    if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
+      return { content: 'I can provide market prices for various crops. What specific crop are you interested in?' };
+    }
+    
+    if (lowerMessage.includes('subsidy') || lowerMessage.includes('government') || lowerMessage.includes('amanaman')) {
+      return { content: 'I can help you with government agricultural programs and subsidies. What would you like to know?' };
+    }
+    
+    // Default response
+    return { 
+      content: 'I\'m here to help with your agricultural questions. You can ask about crops, weather, market prices, or government programs.' 
+    };
   };
 
   // Simulate real-time weather data (replace with actual GMet API integration)
@@ -539,45 +534,33 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
                   <p className="text-sm">{message.content}</p>
                   
                   {/* Weather Data Display */}
-                  {message.type === 'weather' && message.data && (
-                    <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Cloud className="h-4 w-4 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-800">Weather Update</span>
+                  {message.type === 'weather' && message.data && 'temperature' in message.data && (
+                    <div className="mt-2 p-3 bg-blue-50 rounded-lg">
+                      <div className="flex items-center gap-2 text-blue-700">
+                        <Cloud className="h-4 w-4" />
+                        <span className="font-medium">Weather Data</span>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-xs text-blue-700">
-                        <div>Temperature: {message.data.temperature}°C</div>
-                        <div>Condition: {message.data.condition}</div>
-                        <div>Humidity: {message.data.humidity}%</div>
-                        <div>Wind: {message.data.windSpeed} km/h</div>
-                      </div>
-                      <div className="mt-2 text-xs text-blue-600 font-medium">
-                        {message.data.forecast}
+                      <div className="mt-1 text-sm text-blue-600">
+                        Temperature: {(message.data as WeatherData).temperature}°C<br />
+                        Condition: {(message.data as WeatherData).condition}<br />
+                        Humidity: {(message.data as WeatherData).humidity}%<br />
+                        Wind: {(message.data as WeatherData).windSpeed} km/h<br />
+                        Forecast: {(message.data as WeatherData).forecast}
                       </div>
                     </div>
                   )}
 
                   {/* Market Data Display */}
-                  {message.type === 'market' && message.data && (
-                    <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
-                      <div className="flex items-center gap-2 mb-2">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
-                        <span className="text-sm font-medium text-green-800">Market Prices</span>
+                  {message.type === 'market' && message.data && Array.isArray(message.data) && (
+                    <div className="mt-2 p-3 bg-green-50 rounded-lg">
+                      <div className="flex items-center gap-2 text-green-700">
+                        <TrendingUp className="h-4 w-4" />
+                        <span className="font-medium">Market Prices</span>
                       </div>
-                      <div className="space-y-1">
-                        {message.data.map((item: MarketData, index: number) => (
-                          <div key={index} className="flex justify-between items-center text-xs">
-                            <span className="text-green-700">{item.crop}</span>
-                            <div className="flex items-center gap-1">
-                              <span className="font-medium">₵{item.price}</span>
-                              <span className="text-green-600">/{item.unit}</span>
-                              <Badge 
-                                variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
-                                className="text-xs"
-                              >
-                                {item.trend === 'up' ? '↗' : item.trend === 'down' ? '↘' : '→'}
-                              </Badge>
-                            </div>
+                      <div className="mt-1 text-sm text-green-600">
+                        {(message.data as MarketData[]).map((item, index) => (
+                          <div key={index}>
+                            {item.crop}: {item.price} GHS/{item.unit} ({item.location})
                           </div>
                         ))}
                       </div>
@@ -585,27 +568,18 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
                   )}
 
                   {/* Subsidy Data Display */}
-                  {message.type === 'subsidy' && message.data && (
-                    <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Building2 className="h-4 w-4 text-yellow-600" />
-                        <span className="text-sm font-medium text-yellow-800">Government Programs</span>
+                  {message.type === 'subsidy' && message.data && Array.isArray(message.data) && (
+                    <div className="mt-2 p-3 bg-purple-50 rounded-lg">
+                      <div className="flex items-center gap-2 text-purple-700">
+                        <Building2 className="h-4 w-4" />
+                        <span className="font-medium">Government Programs</span>
                       </div>
-                      <div className="space-y-2">
-                        {message.data.map((item: SubsidyData, index: number) => (
-                          <div key={index} className="text-xs text-yellow-700 border-l-2 border-yellow-400 pl-2">
-                            <div className="font-medium">{item.program}</div>
-                            <div className="text-yellow-600">{item.description}</div>
-                            <div className="mt-1">
-                              <span className="font-medium">Eligibility:</span> {item.eligibility}
-                            </div>
-                            <div>
-                              <span className="font-medium">Deadline:</span> {item.deadline}
-                            </div>
-                            <div className="flex items-center gap-1 mt-1">
-                              <Phone className="h-3 w-3" />
-                              <span className="text-yellow-600">{item.contact}</span>
-                            </div>
+                      <div className="mt-1 text-sm text-purple-600">
+                        {(message.data as SubsidyData[]).map((item, index) => (
+                          <div key={index} className="mb-2">
+                            <strong>{item.program}</strong><br />
+                            {item.description}<br />
+                            Contact: {item.contact}
                           </div>
                         ))}
                       </div>
@@ -614,89 +588,16 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
 
                   {/* Expert Request Display */}
                   {message.type === 'expert-request' && message.data && (
-                    <div className="mt-3 p-3 bg-purple-50 rounded border border-purple-200">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Phone className="h-4 w-4 text-purple-600" />
-                        <span className="text-sm font-medium text-purple-800">
-                          {language === 'en' ? 'Extension Officer Contact' :
-                           language === 'tw' ? 'Extension Officer Contact' :
-                           language === 'ee' ? 'Extension Officer Contact' :
-                           language === 'ga' ? 'Extension Officer Contact' : 'Extension Officer Contact'}
-                        </span>
+                    <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+                      <div className="flex items-center gap-2 text-orange-700">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="font-medium">Expert Connection</span>
                       </div>
-                      <div className="space-y-2 text-xs text-purple-700">
-                        <div className="flex items-center gap-2">
-                          <User className="h-3 w-3" />
-                          <span><strong>Name:</strong> {message.data.expertName}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-3 w-3" />
-                          <span><strong>Phone:</strong> </span>
-                          <a 
-                            href={`tel:${message.data.expertPhone}`}
-                            className="text-blue-600 hover:text-blue-800 underline"
-                          >
-                            {message.data.expertPhone}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-3 w-3" />
-                          <span><strong>Email:</strong> {message.data.expertEmail}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-3 w-3" />
-                          <span><strong>Response Time:</strong> {message.data.responseTime}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3" />
-                          <span><strong>Request ID:</strong> {message.data.requestId}</span>
-                        </div>
-                        <div className="mt-3 p-2 bg-purple-100 rounded text-xs">
-                          <strong>
-                            {language === 'en' ? 'How to call:' :
-                             language === 'tw' ? 'Sɛn na yɛɛ call:' :
-                             language === 'ee' ? 'Ame ŋu call:' :
-                             language === 'ga' ? 'Sɛn na yɛɛ call:' : 'How to call:'}
-                          </strong>
-                          <div className="mt-1 space-y-1">
-                            {language === 'en' ? (
-                              <>
-                                <div>1. Dial the phone number above</div>
-                                <div>2. Introduce yourself as a farmer</div>
-                                <div>3. Mention your request ID</div>
-                                <div>4. Ask your agricultural question</div>
-                              </>
-                            ) : language === 'tw' ? (
-                              <>
-                                <div>1. Fa phone number a ɛwɔ soro</div>
-                                <div>2. Ka wo ho sɛ kuayɛni</div>
-                                <div>3. Ka wo request ID</div>
-                                <div>4. Bisa wo kuayɛ nsɛm</div>
-                              </>
-                            ) : language === 'ee' ? (
-                              <>
-                                <div>1. Zã phone number si le dzi ŋu</div>
-                                <div>2. Ŋlɔ wò ŋkɔ sɛ agblẽla</div>
-                                <div>3. Ŋlɔ wò request ID</div>
-                                <div>4. Bia wò agblẽnɔnɔ nya</div>
-                              </>
-                            ) : language === 'ga' ? (
-                              <>
-                                <div>1. Fa phone number a ɛwɔ soro</div>
-                                <div>2. Ka wo ho sɛ kuayɛni</div>
-                                <div>3. Ka wo request ID</div>
-                                <div>4. Bisa wo kuayɛ nsɛm</div>
-                              </>
-                            ) : (
-                              <>
-                                <div>1. Dial the phone number above</div>
-                                <div>2. Introduce yourself as a farmer</div>
-                                <div>3. Mention your request ID</div>
-                                <div>4. Ask your agricultural question</div>
-                              </>
-                            )}
-                          </div>
-                        </div>
+                      <div className="mt-1 text-sm text-orange-600">
+                        Expert: {String((message.data as Record<string, unknown>).expertName)}<br />
+                        Phone: {String((message.data as Record<string, unknown>).expertPhone)}<br />
+                        Email: {String((message.data as Record<string, unknown>).expertEmail)}<br />
+                        Response Time: {String((message.data as Record<string, unknown>).responseTime)}
                       </div>
                     </div>
                   )}

@@ -10,6 +10,51 @@ const AUTH_ENDPOINTS = {
   logout: '/auth/logout',
 };
 
+// Demo user data
+const DEMO_USERS: Record<string, User> = {
+  'farmer@agribot.com': {
+    id: '1',
+    name: 'Demo Farmer',
+    email: 'farmer@agribot.com',
+    role: 'farmer',
+    phone: '+233 20 123 4567',
+    location: 'Kumasi, Ashanti Region',
+    avatar: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  'customer@agribot.com': {
+    id: '2',
+    name: 'Demo Customer',
+    email: 'customer@agribot.com',
+    role: 'customer',
+    phone: '+233 24 987 6543',
+    location: 'Accra, Greater Accra Region',
+    avatar: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  'expert@agribot.com': {
+    id: '3',
+    name: 'Demo Expert',
+    email: 'expert@agribot.com',
+    role: 'expert',
+    phone: '+233 26 555 1234',
+    location: 'Ho, Volta Region',
+    avatar: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+};
+
+// Demo authentication function
+const authenticateDemoUser = (email: string, password: string): User | null => {
+  if (password === 'demo123' && DEMO_USERS[email]) {
+    return DEMO_USERS[email];
+  }
+  return null;
+};
+
 // Token management
 const getAuthToken = (): string | null => {
   return localStorage.getItem('agribot_token');
@@ -21,6 +66,11 @@ const setAuthToken = (token: string): void => {
 
 const removeAuthToken = (): void => {
   localStorage.removeItem('agribot_token');
+};
+
+// Generate demo token
+const generateDemoToken = (user: User): string => {
+  return `demo_token_${user.id}_${Date.now()}`;
 };
 
 // API request helper
@@ -60,6 +110,15 @@ export const authService = {
   // Login user
   async login(credentials: LoginCredentials): Promise<{ user: User; token: string }> {
     try {
+      // Check for demo users first
+      const demoUser = authenticateDemoUser(credentials.email, credentials.password);
+      if (demoUser) {
+        const token = generateDemoToken(demoUser);
+        setAuthToken(token);
+        return { user: demoUser, token };
+      }
+
+      // If not a demo user, try API call (for future backend integration)
       const response = await apiRequest(AUTH_ENDPOINTS.login, {
         method: 'POST',
         body: JSON.stringify(credentials),
@@ -71,22 +130,30 @@ export const authService = {
       return { user, token };
     } catch (error) {
       console.error('Login failed:', error);
-      throw new Error(error instanceof Error ? error.message : 'Login failed');
+      throw new Error(error instanceof Error ? error.message : 'Invalid email or password');
     }
   },
 
   // Register new user
   async register(data: RegisterData): Promise<{ user: User; token: string }> {
     try {
-      const response = await apiRequest(AUTH_ENDPOINTS.register, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-      
-      const { user, token } = response;
+      // For demo purposes, create a new demo user
+      const newUser: User = {
+        id: Date.now().toString(),
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        phone: data.phone || '',
+        location: data.location || '',
+        avatar: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const token = generateDemoToken(newUser);
       setAuthToken(token);
       
-      return { user, token };
+      return { user: newUser, token };
     } catch (error) {
       console.error('Registration failed:', error);
       throw new Error(error instanceof Error ? error.message : 'Registration failed');
@@ -96,6 +163,22 @@ export const authService = {
   // Get current user profile
   async getProfile(): Promise<User> {
     try {
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error('No authentication token');
+      }
+
+      // For demo tokens, extract user info
+      if (token.startsWith('demo_token_')) {
+        const userId = token.split('_')[2];
+        // Find user by ID in demo users
+        const user = Object.values(DEMO_USERS).find(u => u.id === userId);
+        if (user) {
+          return user;
+        }
+      }
+
+      // Try API call for real tokens
       const response = await apiRequest(AUTH_ENDPOINTS.profile);
       return response.user;
     } catch (error) {
@@ -107,6 +190,24 @@ export const authService = {
   // Update user profile
   async updateProfile(data: Partial<User>): Promise<User> {
     try {
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error('No authentication token');
+      }
+
+      // For demo tokens, update local user data
+      if (token.startsWith('demo_token_')) {
+        const userId = token.split('_')[2];
+        const user = Object.values(DEMO_USERS).find(u => u.id === userId);
+        if (user) {
+          const updatedUser = { ...user, ...data, updatedAt: new Date().toISOString() };
+          // Update the demo user data
+          DEMO_USERS[user.email] = updatedUser;
+          return updatedUser;
+        }
+      }
+
+      // Try API call for real tokens
       const response = await apiRequest(AUTH_ENDPOINTS.profile, {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -121,14 +222,31 @@ export const authService = {
   // Refresh authentication token
   async refreshToken(): Promise<{ token: string }> {
     try {
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error('No authentication token');
+      }
+
+      // For demo tokens, generate a new one
+      if (token.startsWith('demo_token_')) {
+        const userId = token.split('_')[2];
+        const user = Object.values(DEMO_USERS).find(u => u.id === userId);
+        if (user) {
+          const newToken = generateDemoToken(user);
+          setAuthToken(newToken);
+          return { token: newToken };
+        }
+      }
+
+      // Try API call for real tokens
       const response = await apiRequest(AUTH_ENDPOINTS.refresh, {
         method: 'POST',
       });
       
-      const { token } = response;
-      setAuthToken(token);
+      const { token: newToken } = response;
+      setAuthToken(newToken);
       
-      return { token };
+      return { token: newToken };
     } catch (error) {
       console.error('Token refresh failed:', error);
       removeAuthToken();
@@ -139,9 +257,13 @@ export const authService = {
   // Logout user
   async logout(): Promise<void> {
     try {
-      await apiRequest(AUTH_ENDPOINTS.logout, {
-        method: 'POST',
-      });
+      const token = getAuthToken();
+      if (token && !token.startsWith('demo_token_')) {
+        // Only call API for real tokens
+        await apiRequest(AUTH_ENDPOINTS.logout, {
+          method: 'POST',
+        });
+      }
     } catch (error) {
       console.error('Logout API call failed:', error);
     } finally {
