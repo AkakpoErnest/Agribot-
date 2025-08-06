@@ -1,15 +1,21 @@
 import { LoginForm } from "@/components/auth/LoginForm";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Bot, Globe, Mic, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import agribotLogo from "/agribot-logo.png";
 
 const Login = () => {
+  const [searchParams] = useSearchParams();
+  const selectedLanguage = searchParams.get('lang') || 'en';
   return (
     <div className="min-h-screen bg-gradient-earth flex">
       {/* Left Side - Features */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-primary p-8 text-primary-foreground">
         <div className="max-w-md mx-auto space-y-8">
           <div className="space-y-4">
+            <div className="flex justify-center mb-4">
+              <img src={agribotLogo} alt="Agribot Logo" className="h-16 w-auto bg-white/10 rounded-lg p-2" />
+            </div>
             <h1 className="text-4xl font-bold">Welcome to Agribot</h1>
             <p className="text-lg text-primary-foreground/90">
               Your AI-powered agricultural assistant for Ghana
@@ -91,7 +97,7 @@ const Login = () => {
           </div>
 
           {/* Login Form */}
-          <LoginForm onSwitchToRegister={() => {}} />
+          <LoginForm onSwitchToRegister={() => {}} language={selectedLanguage} />
 
           {/* Footer */}
           <div className="text-center space-y-4">

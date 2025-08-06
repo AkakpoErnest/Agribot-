@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,9 @@ import {
   Building2, 
   Phone,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Mail,
+  Clock
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -297,23 +299,57 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
         description: '50% subsidy on NPK and Urea fertilizers for registered farmers',
         eligibility: 'Must be a registered farmer with valid ID',
         deadline: 'December 31, 2024',
-        contact: 'Ministry of Agriculture: +233 30 266 0000'
+        contact: 'Ministry of Food and Agriculture: 0302-665-000'
       },
       {
-        program: 'Mechanization Support',
-        description: 'Low-interest loans for farm equipment and machinery',
-        eligibility: 'Farmers with 5+ acres of land',
+        program: 'Planting for Food and Jobs',
+        description: 'Free seeds and technical support for maize, rice, and vegetable farmers',
+        eligibility: 'Smallholder farmers with less than 5 acres',
         deadline: 'Ongoing',
-        contact: 'Agricultural Development Bank: +233 30 266 1000'
-      },
-      {
-        program: 'Crop Insurance Scheme',
-        description: 'Insurance coverage for major crops against weather damage',
-        eligibility: 'All registered farmers',
-        deadline: 'Before planting season',
-        contact: 'Ghana Agricultural Insurance Pool: +233 30 266 2000'
+        contact: 'MoFA Extension Services: 0302-665-001'
       }
     ];
+  };
+
+  // Helper function to generate weather response
+  const getWeatherResponse = (language: string, weatherData: WeatherData): string => {
+    const responses = {
+      'en': `🌤️ Current Weather: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Wind: ${weatherData.windSpeed} km/h\n🌱 Farming Advice: ${weatherData.forecast}`,
+      'tw': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`,
+      'ee': `🌤️ Yame ƒe nɔnɔme: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Nɔ ƒe nɔnɔme: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Agblẽnɔnɔ ɖoɖo: ${weatherData.forecast}`,
+      'ga': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`
+    };
+    return responses[language as keyof typeof responses] || responses.en;
+  };
+
+  // Helper function to generate market response
+  const getMarketResponse = (language: string, marketData: MarketData[]): string => {
+    const marketList = marketData.map(item => 
+      `${item.crop}: ${item.price} GHS/${item.unit} (${item.location}) ${item.trend === 'up' ? '📈' : item.trend === 'down' ? '📉' : '➡️'}`
+    ).join('\n');
+    
+    const responses = {
+      'en': `📊 Current Market Prices:\n${marketList}\n\n💡 Tip: Prices are updated daily. Check local markets for the most current rates.`,
+      'tw': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`,
+      'ee': `📊 Asi ƒe ga home:\n${marketList}\n\n💡 ɖoɖo: Ga sesa daa. Kɔ wò nutɔwo ƒe asi hã eye nàxɔ ga nyuie.`,
+      'ga': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`
+    };
+    return responses[language as keyof typeof responses] || responses.en;
+  };
+
+  // Helper function to generate subsidy response
+  const getSubsidyResponse = (language: string, subsidyData: SubsidyData[]): string => {
+    const subsidyList = subsidyData.map(item => 
+      `🏛️ ${item.program}\n📝 ${item.description}\n✅ Eligibility: ${item.eligibility}\n⏰ Deadline: ${item.deadline}\n📞 Contact: ${item.contact}`
+    ).join('\n\n');
+    
+    const responses = {
+      'en': `🏛️ Government Agricultural Programs:\n\n${subsidyList}\n\n💡 Apply early as programs have limited slots.`,
+      'tw': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`,
+      'ee': `🏛️ Dukplɔlawo ƒe agblẽnɔnɔ programwo:\n\n${subsidyList}\n\n💡 Sɔ wò application enumake efisɛ programwo le slot kakra.`,
+      'ga': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`
+    };
+    return responses[language as keyof typeof responses] || responses.en;
   };
 
   const sendMessage = async () => {
@@ -332,19 +368,103 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      const response = await generateAIResponse(inputMessage);
-      
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: response.content,
-        sender: 'bot',
-        timestamp: new Date(),
-        language,
-        provider: response.provider,
-        model: response.model
-      };
+      // Check if this is an expert connection request
+      const lowerMessage = inputMessage.toLowerCase();
+      const isExpertRequest = lowerMessage.includes('expert') || 
+                             lowerMessage.includes('extension') || 
+                             lowerMessage.includes('officer') ||
+                             lowerMessage.includes('connect') ||
+                             lowerMessage.includes('ka extension officer ho') ||
+                             lowerMessage.includes('ka extension officer gbɔ');
 
-      setMessages(prev => [...prev, botMessage]);
+      if (isExpertRequest) {
+        // Handle expert connection request
+        const expertMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: getExpertConnectionMessage(),
+          sender: 'bot',
+          timestamp: new Date(),
+          language,
+          type: 'expert-request',
+          data: {
+            expertName: 'Kwame Asante',
+            expertPhone: '+233 24 123 4567',
+            expertEmail: 'kwame.asante@agric.gov.gh',
+            responseTime: '24 hours',
+            requestId: `EXP-${Date.now()}`
+          }
+        };
+
+        setMessages(prev => [...prev, expertMessage]);
+      }
+      // Check for weather-related queries
+      else if (lowerMessage.includes('weather') || lowerMessage.includes('ewiem') || lowerMessage.includes('yame') || lowerMessage.includes('forecast')) {
+        const weatherData = await fetchWeatherData();
+        const weatherResponse = getWeatherResponse(language, weatherData);
+        
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: weatherResponse,
+          sender: 'bot',
+          timestamp: new Date(),
+          language,
+          type: 'weather',
+          data: weatherData
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
+      // Check for market-related queries
+      else if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua') || lowerMessage.includes('asi')) {
+        const marketData = await fetchMarketData();
+        const marketResponse = getMarketResponse(language, marketData);
+        
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: marketResponse,
+          sender: 'bot',
+          timestamp: new Date(),
+          language,
+          type: 'market',
+          data: marketData
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
+      // Check for subsidy-related queries
+      else if (lowerMessage.includes('subsidy') || lowerMessage.includes('government') || lowerMessage.includes('amanaman')) {
+        const subsidyData = await fetchSubsidyData();
+        const subsidyResponse = getSubsidyResponse(language, subsidyData);
+        
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: subsidyResponse,
+          sender: 'bot',
+          timestamp: new Date(),
+          language,
+          type: 'subsidy',
+          data: subsidyData
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
+      // Default AI response for other queries
+      else {
+        // Handle regular AI response
+        const response = await generateAIResponse(inputMessage);
+        
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: response.content,
+          sender: 'bot',
+          timestamp: new Date(),
+          language,
+          provider: response.provider,
+          model: response.model
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
     } catch (error) {
       console.error('Error generating response:', error);
       toast({
@@ -362,6 +482,16 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const getExpertConnectionMessage = () => {
+    const messages = {
+      'en': 'I\'ve connected you with an agricultural extension officer. Here are the contact details:',
+      'tw': 'Meka wo extension officer ho. Hena contact details:',
+      'ee': 'Meka wò extension officer gbɔ. Ame contact details:',
+      'ga': 'Meka wo extension officer ho. Hena contact details:'
+    };
+    return messages[language as keyof typeof messages] || messages.en;
   };
 
   return (
@@ -482,18 +612,90 @@ export const ChatInterface = ({ language }: ChatInterfaceProps) => {
                 )}
 
                 {/* Expert Request Display */}
-                {message.type === 'expert-request' && (
-                  <div className="mt-3 p-2 bg-purple-50 rounded border border-purple-200">
-                    <div className="flex items-center gap-2">
+                {message.type === 'expert-request' && message.data && (
+                  <div className="mt-3 p-3 bg-purple-50 rounded border border-purple-200">
+                    <div className="flex items-center gap-2 mb-3">
                       <Phone className="h-4 w-4 text-purple-600" />
-                      <span className="text-sm font-medium text-purple-800">Expert Connection</span>
+                      <span className="text-sm font-medium text-purple-800">
+                        {language === 'en' ? 'Extension Officer Contact' :
+                         language === 'tw' ? 'Extension Officer Contact' :
+                         language === 'ee' ? 'Extension Officer Contact' :
+                         language === 'ga' ? 'Extension Officer Contact' : 'Extension Officer Contact'}
+                      </span>
                     </div>
-                    <div className="mt-2 text-xs text-purple-700">
-                      <div className="flex items-center gap-1 mb-1">
-                        <CheckCircle className="h-3 w-3" />
-                        <span>Request submitted successfully</span>
+                    <div className="space-y-2 text-xs text-purple-700">
+                      <div className="flex items-center gap-2">
+                        <User className="h-3 w-3" />
+                        <span><strong>Name:</strong> {message.data.expertName}</span>
                       </div>
-                      <div>An agricultural extension officer will contact you within 24 hours.</div>
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-3 w-3" />
+                        <span><strong>Phone:</strong> </span>
+                        <a 
+                          href={`tel:${message.data.expertPhone}`}
+                          className="text-blue-600 hover:text-blue-800 underline"
+                        >
+                          {message.data.expertPhone}
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-3 w-3" />
+                        <span><strong>Email:</strong> {message.data.expertEmail}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-3 w-3" />
+                        <span><strong>Response Time:</strong> {message.data.responseTime}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-3 w-3" />
+                        <span><strong>Request ID:</strong> {message.data.requestId}</span>
+                      </div>
+                      <div className="mt-3 p-2 bg-purple-100 rounded text-xs">
+                        <strong>
+                          {language === 'en' ? 'How to call:' :
+                           language === 'tw' ? 'Sɛn na yɛɛ call:' :
+                           language === 'ee' ? 'Ame ŋu call:' :
+                           language === 'ga' ? 'Sɛn na yɛɛ call:' : 'How to call:'}
+                        </strong>
+                        <div className="mt-1 space-y-1">
+                          {language === 'en' ? (
+                            <>
+                              <div>1. Dial the phone number above</div>
+                              <div>2. Introduce yourself as a farmer</div>
+                              <div>3. Mention your request ID</div>
+                              <div>4. Ask your agricultural question</div>
+                            </>
+                          ) : language === 'tw' ? (
+                            <>
+                              <div>1. Fa phone number a ɛwɔ soro</div>
+                              <div>2. Ka wo ho sɛ kuayɛni</div>
+                              <div>3. Ka wo request ID</div>
+                              <div>4. Bisa wo kuayɛ nsɛm</div>
+                            </>
+                          ) : language === 'ee' ? (
+                            <>
+                              <div>1. Zã phone number si le dzi ŋu</div>
+                              <div>2. Ŋlɔ wò ŋkɔ sɛ agblẽla</div>
+                              <div>3. Ŋlɔ wò request ID</div>
+                              <div>4. Bia wò agblẽnɔnɔ nya</div>
+                            </>
+                          ) : language === 'ga' ? (
+                            <>
+                              <div>1. Fa phone number a ɛwɔ soro</div>
+                              <div>2. Ka wo ho sɛ kuayɛni</div>
+                              <div>3. Ka wo request ID</div>
+                              <div>4. Bisa wo kuayɛ nsɛm</div>
+                            </>
+                          ) : (
+                            <>
+                              <div>1. Dial the phone number above</div>
+                              <div>2. Introduce yourself as a farmer</div>
+                              <div>3. Mention your request ID</div>
+                              <div>4. Ask your agricultural question</div>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

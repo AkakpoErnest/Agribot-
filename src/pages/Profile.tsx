@@ -2,6 +2,7 @@ import { UserProfile } from "@/components/auth/UserProfile";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import agribotLogo from "/agribot-logo.png";
 
 const Profile = () => {
   return (
@@ -16,7 +17,10 @@ const Profile = () => {
                 Back to Home
               </Button>
             </Link>
-            <h1 className="text-xl font-semibold">My Profile</h1>
+            <div className="flex items-center gap-3">
+              <img src={agribotLogo} alt="Agribot Logo" className="h-8 w-auto bg-white/10 rounded-lg p-1" />
+              <h1 className="text-xl font-semibold">My Profile</h1>
+            </div>
             <div className="w-20"></div> {/* Spacer for centering */}
           </div>
         </div>

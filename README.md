@@ -673,3 +673,4 @@ For support and questions:
 
 *Empowering farmers through technology and local language support*
 
+
