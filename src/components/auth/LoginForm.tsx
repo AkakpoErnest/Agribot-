@@ -182,7 +182,7 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
         ee: 'Signing In...',
         ga: 'Signing In...'
       },
-      createAccount: {
+      createAccountButton: {
         en: 'Create Account',
         tw: 'Yɛ Account',
         ee: 'Wɔ Account',
@@ -383,7 +383,7 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
               {isLogin ? getText('signingIn') : getText('creatingAccount')}
             </>
           ) : (
-            isLogin ? getText('signIn') : getText('createAccount')
+            isLogin ? getText('signIn') : getText('createAccountButton')
           )}
         </Button>
       </form>
@@ -401,11 +401,49 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
       {isLogin && (
         <div className="text-center space-y-2">
           <p className="text-sm text-muted-foreground">{getText('demoAccounts')}</p>
-          <div className="space-y-1 text-xs">
-            <p><strong>Farmer:</strong> farmer@agribot.com</p>
-            <p><strong>Customer:</strong> customer@agribot.com</p>
-            <p><strong>Expert:</strong> expert@agribot.com</p>
-            <p className="text-muted-foreground">{getText('anyPassword')}</p>
+          <div className="space-y-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFormData(prev => ({
+                  ...prev,
+                  email: 'farmer@agribot.com',
+                  password: 'demo123'
+                }));
+              }}
+              className="w-full text-xs"
+            >
+              🌾 Farmer: farmer@agribot.com / demo123
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFormData(prev => ({
+                  ...prev,
+                  email: 'customer@agribot.com',
+                  password: 'demo123'
+                }));
+              }}
+              className="w-full text-xs"
+            >
+              🛒 Customer: customer@agribot.com / demo123
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setFormData(prev => ({
+                  ...prev,
+                  email: 'expert@agribot.com',
+                  password: 'demo123'
+                }));
+              }}
+              className="w-full text-xs"
+            >
+              👨‍🌾 Expert: expert@agribot.com / demo123
+            </Button>
           </div>
         </div>
       )}
