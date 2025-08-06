@@ -19,9 +19,9 @@ const DEMO_USERS: Record<string, User> = {
     role: 'farmer',
     phone: '+233 20 123 4567',
     location: 'Kumasi, Ashanti Region',
-    avatar: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    avatar: undefined,
+    createdAt: new Date(),
+    lastLogin: new Date(),
   },
   'customer@agribot.com': {
     id: '2',
@@ -30,9 +30,9 @@ const DEMO_USERS: Record<string, User> = {
     role: 'customer',
     phone: '+233 24 987 6543',
     location: 'Accra, Greater Accra Region',
-    avatar: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    avatar: undefined,
+    createdAt: new Date(),
+    lastLogin: new Date(),
   },
   'expert@agribot.com': {
     id: '3',
@@ -41,9 +41,9 @@ const DEMO_USERS: Record<string, User> = {
     role: 'expert',
     phone: '+233 26 555 1234',
     location: 'Ho, Volta Region',
-    avatar: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    avatar: undefined,
+    createdAt: new Date(),
+    lastLogin: new Date(),
   },
 };
 
@@ -145,9 +145,9 @@ export const authService = {
         role: data.role,
         phone: data.phone || '',
         location: data.location || '',
-        avatar: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        avatar: undefined,
+        createdAt: new Date(),
+        lastLogin: new Date(),
       };
 
       const token = generateDemoToken(newUser);
@@ -200,7 +200,7 @@ export const authService = {
         const userId = token.split('_')[2];
         const user = Object.values(DEMO_USERS).find(u => u.id === userId);
         if (user) {
-          const updatedUser = { ...user, ...data, updatedAt: new Date().toISOString() };
+          const updatedUser = { ...user, ...data, lastLogin: new Date() };
           // Update the demo user data
           DEMO_USERS[user.email] = updatedUser;
           return updatedUser;
