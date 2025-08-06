@@ -49,9 +49,14 @@ const DEMO_USERS: Record<string, User> = {
 
 // Demo authentication function
 const authenticateDemoUser = (email: string, password: string): User | null => {
+  console.log('🔍 Checking demo user:', email, 'Password match:', password === 'demo123');
+  console.log('📋 Available demo users:', Object.keys(DEMO_USERS));
+  
   if (password === 'demo123' && DEMO_USERS[email]) {
+    console.log('✅ Demo user authenticated:', email);
     return DEMO_USERS[email];
   }
+  console.log('❌ Demo user not found or invalid password');
   return null;
 };
 
@@ -109,15 +114,20 @@ const apiRequest = async (
 export const authService = {
   // Login user
   async login(credentials: LoginCredentials): Promise<{ user: User; token: string }> {
+    console.log('🔐 Login attempt:', credentials.email);
     try {
       // Check for demo users first
       const demoUser = authenticateDemoUser(credentials.email, credentials.password);
+      console.log('🔍 Demo user check result:', demoUser ? 'Found' : 'Not found');
+      
       if (demoUser) {
         const token = generateDemoToken(demoUser);
         setAuthToken(token);
+        console.log('✅ Demo login successful:', demoUser.name);
         return { user: demoUser, token };
       }
 
+      console.log('❌ Demo login failed, trying API...');
       // If not a demo user, try API call (for future backend integration)
       const response = await apiRequest(AUTH_ENDPOINTS.login, {
         method: 'POST',
@@ -129,7 +139,7 @@ export const authService = {
       
       return { user, token };
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('❌ Login failed:', error);
       throw new Error(error instanceof Error ? error.message : 'Invalid email or password');
     }
   },

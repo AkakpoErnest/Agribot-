@@ -30,22 +30,35 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🚀 Form submitted:', { isLogin, formData });
     clearError?.();
 
     if (isLogin) {
-      await login({
-        email: formData.email,
-        password: formData.password,
-      });
+      console.log('🔐 Attempting login with:', { email: formData.email, password: formData.password });
+      try {
+        await login({
+          email: formData.email,
+          password: formData.password,
+        });
+        console.log('✅ Login successful');
+      } catch (error) {
+        console.error('❌ Login error in form:', error);
+      }
     } else {
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-        phone: formData.phone,
-        location: formData.location,
-      });
+      console.log('📝 Attempting registration with:', formData);
+      try {
+        await register({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          phone: formData.phone,
+          location: formData.location,
+        });
+        console.log('✅ Registration successful');
+      } catch (error) {
+        console.error('❌ Registration error in form:', error);
+      }
     }
   };
 
