@@ -428,11 +428,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
               variant="outline"
               size="sm"
               onClick={() => {
+                console.log('🌾 Farmer demo button clicked');
                 setFormData(prev => ({
                   ...prev,
                   email: 'farmer@agribot.com',
                   password: 'demo123'
                 }));
+                console.log('✅ Farmer demo data set');
               }}
               className="w-full text-xs"
             >
@@ -442,11 +444,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
               variant="outline"
               size="sm"
               onClick={() => {
+                console.log('🛒 Customer demo button clicked');
                 setFormData(prev => ({
                   ...prev,
                   email: 'customer@agribot.com',
                   password: 'demo123'
                 }));
+                console.log('✅ Customer demo data set');
               }}
               className="w-full text-xs"
             >
@@ -456,11 +460,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
               variant="outline"
               size="sm"
               onClick={() => {
+                console.log('👨‍🌾 Expert demo button clicked');
                 setFormData(prev => ({
                   ...prev,
                   email: 'expert@agribot.com',
                   password: 'demo123'
                 }));
+                console.log('✅ Expert demo data set');
               }}
               className="w-full text-xs"
             >
