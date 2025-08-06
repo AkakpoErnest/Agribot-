@@ -245,13 +245,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
         {!isLogin && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">{getText('fullName')}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter your full name"
+                  placeholder={getText('enterFullName')}
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   className="pl-10"
@@ -261,13 +261,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="role">I am a...</Label>
+              <Label htmlFor="role">{getText('iAmA')}</Label>
               <Select
                 value={formData.role}
                 onValueChange={(value: UserRole) => handleInputChange('role', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select your role" />
+                  <SelectValue placeholder={getText('selectRole')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="farmer">
