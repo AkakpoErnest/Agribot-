@@ -296,13 +296,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">{getText('phoneNumber')}</Label>
               <div className="relative">
                 <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="+233 XX XXX XXXX"
+                  placeholder={getText('enterPhone')}
                   value={formData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   className="pl-10"
@@ -311,13 +311,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location">{getText('location')}</Label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="location"
                   type="text"
-                  placeholder="City, Region"
+                  placeholder={getText('enterLocation')}
                   value={formData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
                   className="pl-10"
@@ -328,13 +328,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">{getText('emailAddress')}</Label>
           <div className="relative">
             <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder={getText('enterEmail')}
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className="pl-10"
@@ -344,13 +344,13 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{getText('password')}</Label>
           <div className="relative">
             <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your password"
+              placeholder={getText('enterPassword')}
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               className="pl-10 pr-10"
