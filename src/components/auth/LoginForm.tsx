@@ -7,15 +7,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Eye, EyeOff, User, Lock, Mail, Phone, MapPin } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { UserRole } from '@/types/auth';
 import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
-  language?: string;
 }
 
-export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProps) => {
+export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,6 +28,7 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
   });
 
   const { login, register, isLoading, error, clearError, isAuthenticated, user } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   // Debug authentication state
@@ -93,157 +94,48 @@ export const LoginForm = ({ onSwitchToRegister, language = 'en' }: LoginFormProp
     return icons[role];
   };
 
-  // Multilingual text content
+  // Use the translation function from language context
   const getText = (key: string) => {
-    const texts = {
-      welcomeBack: {
-        en: 'Welcome Back',
-        tw: 'Akwaaba Bio',
-        ee: 'Woezɔ Bio',
-        ga: 'Akwaaba Bio'
-      },
-      joinAgribot: {
-        en: 'Join Agribot',
-        tw: 'Ka Agribot Ho',
-        ee: 'Ka Agribot Gbɔ',
-        ga: 'Ka Agribot Ho'
-      },
-      signInToAccount: {
-        en: 'Sign in to your account',
-        tw: 'Sign in wo account mu',
-        ee: 'Sign in wò account me',
-        ga: 'Sign in wo account mu'
-      },
-      createAccount: {
-        en: 'Create your account',
-        tw: 'Yɛ wo account',
-        ee: 'Wɔ wò account',
-        ga: 'Yɛ wo account'
-      },
-      fullName: {
-        en: 'Full Name',
-        tw: 'Din Nyinaa',
-        ee: 'Ŋkɔ Katã',
-        ga: 'Din Nyinaa'
-      },
-      enterFullName: {
-        en: 'Enter your full name',
-        tw: 'Kyerɛw wo din nyinaa',
-        ee: 'Ŋlɔ wò ŋkɔ katã',
-        ga: 'Ŋmɛ wo din nyinaa'
-      },
-      iAmA: {
-        en: 'I am a...',
-        tw: 'Meyɛ...',
-        ee: 'Nye...',
-        ga: 'Miyɛ...'
-      },
-      selectRole: {
-        en: 'Select your role',
-        tw: 'Paw wo role',
-        ee: 'Tia wò role',
-        ga: 'Paw wo role'
-      },
-      phoneNumber: {
-        en: 'Phone Number',
-        tw: 'Phone Number',
-        ee: 'Phone Number',
-        ga: 'Phone Number'
-      },
-      enterPhone: {
-        en: '+233 XX XXX XXXX',
-        tw: '+233 XX XXX XXXX',
-        ee: '+233 XX XXX XXXX',
-        ga: '+233 XX XXX XXXX'
-      },
-      location: {
-        en: 'Location',
-        tw: 'Mmeae',
-        ee: 'Teƒe',
-        ga: 'Mmeae'
-      },
-      enterLocation: {
-        en: 'City, Region',
-        tw: 'Kurow, Mpɔtam',
-        ee: 'Kuƒo, Nutɔ',
-        ga: 'Kurow, Mpɔtam'
-      },
-      emailAddress: {
-        en: 'Email Address',
-        tw: 'Email Address',
-        ee: 'Email Address',
-        ga: 'Email Address'
-      },
-      enterEmail: {
-        en: 'Enter your email',
-        tw: 'Kyerɛw wo email',
-        ee: 'Ŋlɔ wò email',
-        ga: 'Ŋmɛ wo email'
-      },
-      password: {
-        en: 'Password',
-        tw: 'Password',
-        ee: 'Password',
-        ga: 'Password'
-      },
-      enterPassword: {
-        en: 'Enter your password',
-        tw: 'Kyerɛw wo password',
-        ee: 'Ŋlɔ wò password',
-        ga: 'Ŋmɛ wo password'
-      },
-      signIn: {
-        en: 'Sign In',
-        tw: 'Sign In',
-        ee: 'Sign In',
-        ga: 'Sign In'
-      },
-      signingIn: {
-        en: 'Signing In...',
-        tw: 'Signing In...',
-        ee: 'Signing In...',
-        ga: 'Signing In...'
-      },
-      createAccountButton: {
-        en: 'Create Account',
-        tw: 'Yɛ Account',
-        ee: 'Wɔ Account',
-        ga: 'Yɛ Account'
-      },
-      creatingAccount: {
-        en: 'Creating Account...',
-        tw: 'Yɛ Account...',
-        ee: 'Wɔ Account...',
-        ga: 'Yɛ Account...'
-      },
-      dontHaveAccount: {
-        en: "Don't have an account? Sign up",
-        tw: 'Wo nni account? Sign up',
-        ee: 'Wò mele account? Sign up',
-        ga: 'Wo nni account? Sign up'
-      },
-      haveAccount: {
-        en: 'Already have an account? Sign in',
-        tw: 'Wo wɔ account? Sign in',
-        ee: 'Wò le account? Sign in',
-        ga: 'Wo wɔ account? Sign in'
-      },
-      demoAccounts: {
-        en: 'Demo Accounts:',
-        tw: 'Demo Account:',
-        ee: 'Demo Account:',
-        ga: 'Demo Account:'
-      },
-      anyPassword: {
-        en: 'Password: any password',
-        tw: 'Password: password biara',
-        ee: 'Password: password bubu',
-        ga: 'Password: password biara'
-      }
+    // Map old keys to new translation keys
+    const keyMap: Record<string, string> = {
+      welcomeBack: 'auth.signin',
+      joinAgribot: 'auth.signup',
+      signInToAccount: 'auth.signInToAccount',
+      createAccount: 'auth.createAccount',
+      fullName: 'auth.fullName',
+      enterFullName: 'auth.fullName',
+      iAmA: 'auth.role',
+      selectRole: 'auth.role',
+      phoneNumber: 'auth.phone',
+      enterPhone: 'auth.phone',
+      location: 'auth.location',
+      enterLocation: 'auth.location',
+      emailAddress: 'auth.email',
+      enterEmail: 'auth.email',
+      password: 'auth.password',
+      enterPassword: 'auth.password',
+      confirmPassword: 'auth.confirmPassword',
+      enterConfirmPassword: 'auth.confirmPassword',
+      forgotPassword: 'auth.forgotPassword',
+      signIn: 'auth.signin',
+      signUp: 'auth.signup',
+      noAccount: 'auth.noAccount',
+      haveAccount: 'auth.haveAccount',
+      switchToSignUp: 'auth.signup',
+      switchToSignIn: 'auth.signin',
+      passwordRequirements: 'validation.passwordLength',
+      passwordMismatch: 'validation.passwordMatch',
+      passwordHint: 'auth.password',
+      signingIn: 'auth.signin',
+      createAccountButton: 'auth.signup',
+      creatingAccount: 'auth.signup',
+      dontHaveAccount: 'auth.noAccount',
+      demoAccounts: 'common.loading',
+      anyPassword: 'auth.password'
     };
     
-    const textGroup = texts[key as keyof typeof texts];
-    return textGroup?.[language as keyof typeof textGroup] || textGroup?.en || key;
+    const translationKey = keyMap[key] || key;
+    return t(translationKey);
   };
 
   return (

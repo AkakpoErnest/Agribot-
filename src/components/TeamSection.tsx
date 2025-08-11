@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Github, Linkedin, Mail, Code, Palette, GraduationCap, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -36,10 +37,12 @@ interface TeamMember {
 }
 
 interface TeamSectionProps {
-  language: string;
+  language?: string;
 }
 
-export const TeamSection = ({ language }: TeamSectionProps) => {
+export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
+  const { language: contextLanguage } = useLanguage();
+  const language = propLanguage || contextLanguage;
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 

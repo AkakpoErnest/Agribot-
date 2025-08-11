@@ -74,11 +74,15 @@ interface SubsidyData {
   contact: string;
 }
 
+import { useLanguage } from '@/contexts/LanguageContext';
+
 interface ChatInterfaceProps {
-  language: string;
+  language?: string;
 }
 
-export const ChatInterface = ({ language }: ChatInterfaceProps) => {
+export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) => {
+  const { language: contextLanguage } = useLanguage();
+  const language = propLanguage || contextLanguage;
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);

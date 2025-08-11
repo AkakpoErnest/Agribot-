@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LanguageSelector } from "@/components/LanguageSelector";
@@ -9,6 +8,7 @@ import { TeamSection } from "@/components/TeamSection";
 import { Bot, Zap, Languages, User, LogOut, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -16,8 +16,8 @@ import heroImage from "@/assets/agribot-hero.jpg";
 import agribotLogo from "/agribot-logo.png";
 
 const Index = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useLanguage();
 
   const getRoleInfo = (role: string) => {
     const roleInfo = {
@@ -166,7 +166,7 @@ const Index = () => {
     };
     
     const textGroup = texts[key as keyof typeof texts];
-    let text = textGroup?.[selectedLanguage as keyof typeof textGroup] || textGroup?.en || key;
+    let text = textGroup?.en || key;
     
     // Replace placeholders
     if (key === 'welcomeBack' && user?.name) {
@@ -228,7 +228,7 @@ const Index = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Link to={`/login?lang=${selectedLanguage}`}>
+                  <Link to="/login">
                     <Button variant="harvest" size="sm">
                       {getText('signIn')}
                     </Button>
@@ -304,10 +304,7 @@ const Index = () => {
 
           {/* Language Selector */}
           <div className="max-w-2xl mx-auto mb-8">
-            <LanguageSelector 
-              onLanguageSelect={setSelectedLanguage}
-              selectedLanguage={selectedLanguage}
-            />
+                        <LanguageSelector />
           </div>
         </div>
       </section>
@@ -329,7 +326,7 @@ const Index = () => {
 
           {/* Chat Interface */}
           <div className="max-w-4xl mx-auto">
-            <ChatInterface language={selectedLanguage} />
+            <ChatInterface />
           </div>
         </div>
       </section>
@@ -349,12 +346,12 @@ const Index = () => {
             </p>
           </div>
 
-          <FeatureShowcase language={selectedLanguage} />
+          <FeatureShowcase />
         </div>
       </section>
 
       {/* Team Section */}
-      <TeamSection language={selectedLanguage} />
+              <TeamSection />
 
       {/* Statistics Section */}
       <section className="py-16 bg-primary text-primary-foreground">
