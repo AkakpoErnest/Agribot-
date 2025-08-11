@@ -65,22 +65,23 @@ const initialState: AuthState = {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Check authentication status on app start
+  // Check authentication status on app start and listen to auth state changes
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         dispatch({ type: 'SET_LOADING', payload: true });
         
-        // Check if we have a token
-        if (authService.isAuthenticated()) {
-          // Try to get user profile
-          const user = await authService.getProfile();
-          dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+        // Check if user is authenticated with Supabase
+        const isAuth = await authService.isAuthenticated();
+        if (isAuth) {
+          // Try to get current user
+          const user = await authService.getCurrentUser();
+          if (user) {
+            dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+          }
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        // If token is invalid, clear it
-        localStorage.removeItem('agribot_token');
         dispatch({ type: 'LOGOUT' });
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });
@@ -88,6 +89,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     checkAuthStatus();
+
+    // Listen to Supabase auth state changes
+    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event, session?.user?.email);
+      
+      if (event === 'SIGNED_IN' && session?.user) {
+        const user = await authService.getCurrentUser();
+        if (user) {
+          dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+        }
+      } else if (event === 'SIGNED_OUT') {
+        dispatch({ type: 'LOGOUT' });
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
@@ -95,11 +112,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dispatch({ type: 'LOGIN_START' });
 
     try {
-      console.log('🔐 AuthContext: Calling authService.login');
-      const { user } = await authService.login(credentials);
-      console.log('✅ AuthContext: Login successful, user:', user);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: user });
-      console.log('✅ AuthContext: State updated with user');
+      console.log('🔐 AuthContext: Calling authService.signIn');
+      const { user, error } = await authService.signIn(credentials);
+      
+      if (error) {
+        console.error('❌ AuthContext: Login failed:', error);
+        dispatch({ type: 'LOGIN_FAILURE', payload: error });
+        return;
+      }
+      
+      if (user) {
+        console.log('✅ AuthContext: Login successful, user:', user);
+        dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+        console.log('✅ AuthContext: State updated with user');
+      } else {
+        dispatch({ type: 'LOGIN_FAILURE', payload: 'Login failed' });
+      }
     } catch (error) {
       console.error('❌ AuthContext: Login failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
@@ -112,8 +140,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dispatch({ type: 'LOGIN_START' });
 
     try {
-      const { user } = await authService.register(data);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+      const { user, error } = await authService.signUp(data);
+      
+      if (error) {
+        dispatch({ type: 'LOGIN_FAILURE', payload: error });
+        return;
+      }
+      
+      if (user) {
+        dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+      } else {
+        dispatch({ type: 'LOGIN_FAILURE', payload: 'Registration failed' });
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Registration failed';
       dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
@@ -123,7 +161,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async (): Promise<void> => {
     try {
-      await authService.logout();
+      const { error } = await authService.signOut();
+      if (error) {
+        console.error('Logout error:', error);
+      }
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
@@ -133,8 +174,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateProfile = async (data: Partial<User>): Promise<void> => {
     try {
-      const updatedUser = await authService.updateProfile(data);
-      dispatch({ type: 'UPDATE_PROFILE', payload: updatedUser });
+      const { user, error } = await authService.updateProfile(data);
+      
+      if (error) {
+        const errorMessage = error;
+        dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
+        return;
+      }
+      
+      if (user) {
+        dispatch({ type: 'UPDATE_PROFILE', payload: user });
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Profile update failed';
       dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
