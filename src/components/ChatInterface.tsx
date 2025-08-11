@@ -23,6 +23,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { geminiService } from '@/services/gemini';
 
 // Safe LLM import - won't break the app if it fails
 let llmService: unknown = null;
@@ -221,24 +222,24 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
     }
   };
 
-  // Generate AI response
+  // Generate AI response using Gemini
   const generateAIResponse = async (userMessage: string): Promise<{ content: string; provider?: string; model?: string }> => {
     try {
-      // Try external LLM service first
-      if (llmService && typeof llmService === 'object' && 'generateResponse' in llmService) {
-        const response = await (llmService as any).generateResponse(userMessage, language);
-        return {
-          content: response.content,
-          provider: response.provider,
-          model: response.model
-        };
-      }
+      console.log('🤖 Attempting Gemini AI call...');
+      // Use Gemini AI service
+      const aiResponse = await geminiService.chat(userMessage, language);
+      console.log('✅ Gemini AI response:', aiResponse);
+      
+      return {
+        content: aiResponse.text,
+        provider: 'Google Gemini',
+        model: aiResponse.model
+      };
     } catch (error) {
-      console.log('External LLM failed, using built-in responses');
-    }
-
-    // Fallback to built-in responses
-    const lowerMessage = userMessage.toLowerCase();
+      console.error('❌ Gemini AI failed:', error);
+      
+      // Fallback to built-in responses if AI fails
+      const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('greetings')) {
       return { content: getGreeting() };
