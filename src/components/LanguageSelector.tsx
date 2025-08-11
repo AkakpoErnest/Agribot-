@@ -26,7 +26,7 @@ export const LanguageSelector = () => {
             onClick={() => setLanguage(lang.code as any)}
           >
             <span className="text-2xl">{lang.flag}</span>
-            <span className="font-medium">{t(`language.${lang.code}`)}</span>
+            <span className="font-medium">{lang.name}</span>
           </Button>
         ))}
       </div>
