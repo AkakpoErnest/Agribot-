@@ -725,3 +725,5 @@ const getQuickQuestions = (language: string) => {
   };
   return questions[language as keyof typeof questions] || questions.en;
 };
+
+};
