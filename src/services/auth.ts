@@ -325,30 +325,192 @@ export const firebaseAuth = {
   },
 };
 
-// Alternative: Supabase Authentication
+// Supabase Authentication
+import { supabase } from '@/lib/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+
 export const supabaseAuth = {
-  // Initialize Supabase (you'll need to add Supabase SDK)
+  // Initialize Supabase
   async initialize() {
-    // Supabase initialization code would go here
-    // This is a placeholder for Supabase integration
+    // Set up auth state listener
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Supabase auth state changed:', event, session?.user?.email);
+    });
   },
 
   // Login with email/password
-  async loginWithEmail(credentials: LoginCredentials) {
-    // Supabase email/password authentication
-    // This is a placeholder for Supabase integration
+  async loginWithEmail(credentials: LoginCredentials): Promise<{ user: User; token: string }> {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      });
+
+      if (error) throw error;
+
+      if (!data.user) {
+        throw new Error('No user data returned');
+      }
+
+      // Convert Supabase user to our User type
+      const user: User = {
+        id: data.user.id,
+        name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
+        email: data.user.email!,
+        role: data.user.user_metadata?.role || 'farmer',
+        phone: data.user.phone || '',
+        location: data.user.user_metadata?.location || '',
+        avatar: data.user.user_metadata?.avatar_url,
+        createdAt: new Date(data.user.created_at),
+        lastLogin: new Date(),
+      };
+
+      return { user, token: data.session.access_token };
+    } catch (error) {
+      console.error('Supabase login failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Login failed');
+    }
   },
 
   // Register with email/password
-  async registerWithEmail(data: RegisterData) {
-    // Supabase email/password registration
-    // This is a placeholder for Supabase integration
+  async registerWithEmail(data: RegisterData): Promise<{ user: User; token: string }> {
+    try {
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            full_name: data.name,
+            role: data.role,
+            phone: data.phone,
+            location: data.location,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      if (!authData.user) {
+        throw new Error('No user data returned');
+      }
+
+      // Convert Supabase user to our User type
+      const user: User = {
+        id: authData.user.id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        phone: data.phone || '',
+        location: data.location || '',
+        avatar: undefined,
+        createdAt: new Date(authData.user.created_at),
+        lastLogin: new Date(),
+      };
+
+      return { user, token: authData.session?.access_token || '' };
+    } catch (error) {
+      console.error('Supabase registration failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Registration failed');
+    }
   },
 
   // Login with OAuth (Google, GitHub, etc.)
   async loginWithOAuth(provider: 'google' | 'github' | 'facebook') {
-    // Supabase OAuth authentication
-    // This is a placeholder for Supabase integration
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Supabase OAuth login failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'OAuth login failed');
+    }
+  },
+
+  // Get current user
+  async getCurrentUser(): Promise<User | null> {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      if (error) throw error;
+      if (!user) return null;
+
+      return {
+        id: user.id,
+        name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+        email: user.email!,
+        role: user.user_metadata?.role || 'farmer',
+        phone: user.phone || '',
+        location: user.user_metadata?.location || '',
+        avatar: user.user_metadata?.avatar_url,
+        createdAt: new Date(user.created_at),
+        lastLogin: new Date(),
+      };
+    } catch (error) {
+      console.error('Get current user failed:', error);
+      return null;
+    }
+  },
+
+  // Logout
+  async logout(): Promise<void> {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Supabase logout failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Logout failed');
+    }
+  },
+
+  // Reset password
+  async resetPassword(email: string): Promise<void> {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Password reset failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Password reset failed');
+    }
+  },
+
+  // Update user profile
+  async updateProfile(updates: Partial<User>): Promise<User> {
+    try {
+      const { data: { user }, error } = await supabase.auth.updateUser({
+        data: {
+          full_name: updates.name,
+          role: updates.role,
+          phone: updates.phone,
+          location: updates.location,
+        },
+      });
+
+      if (error) throw error;
+      if (!user) throw new Error('No user data returned');
+
+      return {
+        id: user.id,
+        name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+        email: user.email!,
+        role: user.user_metadata?.role || 'farmer',
+        phone: user.phone || '',
+        location: user.user_metadata?.location || '',
+        avatar: user.user_metadata?.avatar_url,
+        createdAt: new Date(user.created_at),
+        lastLogin: new Date(),
+      };
+    } catch (error) {
+      console.error('Update profile failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Update profile failed');
+    }
   },
 };
 
