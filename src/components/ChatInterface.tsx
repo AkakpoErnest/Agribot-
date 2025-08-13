@@ -23,20 +23,30 @@ import {
   Loader2
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { geminiService } from '@/services/gemini';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-// Safe LLM import - won't break the app if it fails
-let llmService: unknown = null;
-try {
-  // Dynamic import to avoid build issues
-  import("@/services/llm").then((module) => {
-    llmService = module.llmService;
-    console.log('LLM service loaded successfully');
-  }).catch(() => {
-    console.log('LLM service not available, using built-in responses');
-  });
-} catch (error) {
-  console.log('LLM service not available, using built-in responses');
+// Speech Recognition types
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string;
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResult;
+  length: number;
+}
+
+interface SpeechRecognitionResult {
+  [index: number]: SpeechRecognitionAlternative;
+  length: number;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
 }
 
 interface Message {
@@ -75,8 +85,6 @@ interface SubsidyData {
   contact: string;
 }
 
-import { useLanguage } from '@/contexts/LanguageContext';
-
 interface ChatInterfaceProps {
   language?: string;
 }
@@ -106,13 +114,13 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       recognitionInstance.interimResults = false;
       recognitionInstance.lang = getLanguageCode(language);
       
-      recognitionInstance.onresult = (event: any) => {
+      recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         setInputMessage(transcript);
         setIsRecording(false);
       };
       
-      recognitionInstance.onerror = (event: any) => {
+      recognitionInstance.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error:', event.error);
         setIsRecording(false);
         toast({
@@ -130,10 +138,21 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
     }
   }, [language, toast]);
 
-  // Scroll to bottom when new message is added
+  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Add welcome message
+  useEffect(() => {
+    const welcomeMessage = getWelcomeMessage(language);
+    setMessages([{
+      id: '1',
+      content: welcomeMessage,
+      sender: 'bot',
+      timestamp: new Date()
+    }]);
+  }, [language]);
 
   const getLanguageCode = (lang: string) => {
     const codes = {
@@ -145,127 +164,56 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
     return codes[lang as keyof typeof codes] || 'en-US';
   };
 
-  const getGreeting = () => {
-    const greetings = {
-      'en': 'Hello! I\'m your agricultural assistant. How can I help you today?',
-      'tw': 'Akwaaba! Meyɛ wo kuayɛ boafoɔ. Ɛdeɛn na metumi aboa wo nnɛ?',
-      'ee': 'Woezɔ! Menye wò agblẽnutɔ kpeɖeŋutɔ. Aleke mate ŋu akpe ɖe ŋuwò egbe?',
-      'ga': 'Akwaaba! Miyɛ wo kuayɛ boafoɔ. Ke naa mate ŋu aboa wo onnɛ?',
-    };
-    return greetings[language as keyof typeof greetings] || greetings.en;
-  };
-
-  // Update greeting when language changes
-  useEffect(() => {
-    const newGreeting: Message = {
-      id: Date.now().toString(),
-      content: getGreeting(),
-      sender: 'bot',
-      timestamp: new Date(),
-      language
-    };
-    
-    // Add language change notification
-    const languageNotification: Message = {
-      id: (Date.now() + 1).toString(),
-      content: getLanguageChangeMessage(),
-      sender: 'bot',
-      timestamp: new Date(),
-      language
-    };
-    
-    // Replace the first message (greeting) with new language greeting and add notification
-    setMessages(prev => {
-      if (prev.length > 0 && prev[0].sender === 'bot') {
-        return [newGreeting, languageNotification, ...prev.slice(1)];
-      }
-      return [newGreeting, languageNotification];
-    });
-
-    // Update speech recognition language
-    if (recognition) {
-      // @ts-expect-error - SpeechRecognition is not typed
-      (recognition as SpeechRecognition).lang = getLanguageCode(language);
-    }
-  }, [language, recognition]);
-
-  const getLanguageChangeMessage = () => {
+  const getWelcomeMessage = (lang: string) => {
     const messages = {
-      'en': 'Language changed to English. I can now assist you in English!',
-      'tw': 'Yɛɛ wo kasa ayɛ Twi. Metumi aboa wo wɔ Twi kasa mu!',
-      'ee': 'Wò gbe sesa ɖe Ewe. Mate ŋu akpe ɖe ŋuwò le Ewe gbe me!',
-      'ga': 'Yɛɛ wo kasa ayɛ Ga. Metumi aboa wo wɔ Ga kasa mu!',
+      'en': 'Hello! I\'m Agribot, your agricultural assistant. How can I help you today?',
+      'tw': 'Akwaba! Me yɛ Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?',
+      'ee': 'Ndi! Nye Agribot, wo agblẽnɔnɔ boafo. Aleke nàdze nàdze wo?',
+      'ga': 'Akwaba! Nye Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?'
     };
-    return messages[language as keyof typeof messages] || messages.en;
+    return messages[lang as keyof typeof messages] || messages.en;
   };
 
-  const toggleRecording = () => {
-    if (!recognition) {
-      toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in this browser.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (isRecording) {
-      // @ts-expect-error - SpeechRecognition is not typed
-      (recognition as SpeechRecognition).stop();
-      setIsRecording(false);
-    } else {
-      // @ts-expect-error - SpeechRecognition is not typed
-      (recognition as SpeechRecognition).lang = getLanguageCode(language);
-      // @ts-expect-error - SpeechRecognition is not typed
-      (recognition as SpeechRecognition).start();
-      setIsRecording(true);
-    }
-  };
-
-  // Generate AI response using Gemini
-  const generateAIResponse = async (userMessage: string): Promise<{ content: string; provider?: string; model?: string }> => {
-    try {
-      console.log('🤖 Attempting Gemini AI call...');
-      // Use Gemini AI service
-      const aiResponse = await geminiService.chat(userMessage, language);
-      console.log('✅ Gemini AI response:', aiResponse);
-      
-      return {
-        content: aiResponse.text,
-        provider: 'Google Gemini',
-        model: aiResponse.model
-      };
-    } catch (error) {
-      console.error('❌ Gemini AI failed:', error);
-      
-      // Fallback to built-in responses if AI fails
-      const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('greetings')) {
-      return { content: getGreeting() };
-    }
-    
-    if (lowerMessage.includes('weather') || lowerMessage.includes('ewiem') || lowerMessage.includes('yame')) {
-      return { content: 'I can help you with weather information. Please ask about current weather or forecasts.' };
-    }
-    
-    if (lowerMessage.includes('market') || lowerMessage.includes('price') || lowerMessage.includes('gua')) {
-      return { content: 'I can provide market prices for various crops. What specific crop are you interested in?' };
-    }
-    
-    if (lowerMessage.includes('subsidy') || lowerMessage.includes('government') || lowerMessage.includes('amanaman')) {
-      return { content: 'I can help you with government agricultural programs and subsidies. What would you like to know?' };
-    }
-    
-    // Default response
-    return { 
-      content: 'I\'m here to help with your agricultural questions. You can ask about crops, weather, market prices, or government programs.' 
+  const getQuickQuestions = (language: string) => {
+    const questions = {
+      'en': [
+        'Tell me about crops',
+        'How to control pests?',
+        'Weather forecast',
+        'Market prices',
+        'Government subsidies',
+        'Connect with expert'
+      ],
+      'tw': [
+        'Ka aduan ho nsɛm',
+        'Sɛn na yɛɛ mmoawa?',
+        'Ewiem forecast',
+        'Gua bo',
+        'Amanaman ntam subsidy',
+        'Ka extension officer ho'
+      ],
+      'ee': [
+        'Ka agblẽnɔnɔ ŋu nyawo',
+        'Aleke nàdze nudzrala?',
+        'Yame ƒe forecast',
+        'Asi ƒe ga',
+        'Dukplɔlawo ƒe subsidy',
+        'Ka extension officer gbɔ'
+      ],
+      'ga': [
+        'Ka aduan ho nsɛm',
+        'Sɛn na yɛɛ mmoawa?',
+        'Ewiem forecast',
+        'Gua bo',
+        'Amanaman ntam subsidy',
+        'Ka extension officer ho'
+      ]
     };
+    return questions[language as keyof typeof questions] || questions.en;
   };
 
-  // Simulate real-time weather data (replace with actual GMet API integration)
+  // Simulate real-time weather data
   const fetchWeatherData = async (): Promise<WeatherData> => {
-    // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
     return {
@@ -277,7 +225,7 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
     };
   };
 
-  // Simulate real-time market data (replace with actual Esoko API integration)
+  // Simulate real-time market data
   const fetchMarketData = async (): Promise<MarketData[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     
@@ -350,6 +298,16 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'ga': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`
     };
     return responses[language as keyof typeof responses] || responses.en;
+  };
+
+  const getExpertConnectionMessage = () => {
+    const messages = {
+      'en': 'I\'ve connected you with an agricultural extension officer. Here are the contact details:',
+      'tw': 'Meka wo extension officer ho. Hena contact details:',
+      'ee': 'Meka wò extension officer gbɔ. Ame contact details:',
+      'ga': 'Meka wo extension officer ho. Hena contact details:'
+    };
+    return messages[language as keyof typeof messages] || messages.en;
   };
 
   const sendMessage = async () => {
@@ -448,19 +406,53 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
 
         setMessages(prev => [...prev, botMessage]);
       }
-      // Default AI response for other queries
+      // Default response for other queries
       else {
-        // Handle regular AI response
-        const response = await generateAIResponse(inputMessage);
+        const responses = {
+          'en': [
+            'I can help you with farming advice, crop management, and agricultural best practices.',
+            'For pest control, consider using integrated pest management techniques.',
+            'Weather conditions are important for crop planning. Check local forecasts regularly.',
+            'Market prices vary by season and location. I recommend checking local markets.',
+            'Government subsidies are available for various agricultural programs.',
+            'I can connect you with agricultural extension officers in your area.'
+          ],
+          'tw': [
+            'Me tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
+            'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
+            'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
+            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
+            'Amanaman ntam subsidies wɔ ma various agricultural programs.',
+            'Me tumi connect wo ne agricultural extension officers wo wo area.'
+          ],
+          'ee': [
+            'Nye tumi bo wo agblẽnɔnɔ advice, aduan management, ne agricultural best practices.',
+            'Aleke nàdze nudzrala, hwɛ integrated pest management techniques.',
+            'Yame ƒe conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
+            'Asi ƒe ga yɛ different by season ne location. Nye recommend wo hwɛ local markets.',
+            'Dukplɔlawo ƒe subsidies wɔ ma various agricultural programs.',
+            'Nye tumi connect wo ne agricultural extension officers wo wo area.'
+          ],
+          'ga': [
+            'Nye tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
+            'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
+            'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
+            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
+            'Amanaman ntam subsidies wɔ ma various agricultural programs.',
+            'Me tumi connect wo ne agricultural extension officers wo wo area.'
+          ]
+        };
+        
+        const langResponses = responses[language as keyof typeof responses] || responses.en;
+        const randomIndex = Math.floor(Math.random() * langResponses.length);
+        const response = langResponses[randomIndex];
         
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: response.content,
+          content: response,
           sender: 'bot',
           timestamp: new Date(),
-          language,
-          provider: response.provider,
-          model: response.model
+          language
         };
 
         setMessages(prev => [...prev, botMessage]);
@@ -469,7 +461,7 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       console.error('Error generating response:', error);
       toast({
         title: "Error",
-        description: "Failed to get AI response. Please try again.",
+        description: "Failed to get response. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -484,246 +476,254 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
     }
   };
 
-  const getExpertConnectionMessage = () => {
-    const messages = {
-      'en': 'I\'ve connected you with an agricultural extension officer. Here are the contact details:',
-      'tw': 'Meka wo extension officer ho. Hena contact details:',
-      'ee': 'Meka wò extension officer gbɔ. Ame contact details:',
-      'ga': 'Meka wo extension officer ho. Hena contact details:'
-    };
-    return messages[language as keyof typeof messages] || messages.en;
+  const handleQuickQuestion = (question: string) => {
+    setInputMessage(question);
+  };
+
+  const toggleRecording = () => {
+    if (!recognition) {
+      toast({
+        title: "Not Supported",
+        description: "Speech recognition is not supported in this browser.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isRecording) {
+      (recognition as { stop: () => void }).stop();
+      setIsRecording(false);
+    } else {
+      (recognition as { start: () => void; lang: string }).lang = getLanguageCode(language);
+      (recognition as { start: () => void }).start();
+      setIsRecording(true);
+    }
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-earth border-2 overflow-hidden">
-      {/* Header - Fixed at top */}
-      <div className="p-4 border-b border-border bg-gradient-primary rounded-t-lg flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <Bot className="h-6 w-6 text-primary-foreground" />
-          <h3 className="font-semibold text-primary-foreground">
-            {language === 'en' ? 'Agricultural Assistant' :
-             language === 'tw' ? 'Kuayɛ Boafoɔ' :
-             language === 'ee' ? 'Agblẽnutɔ Kpeɖeŋutɔ' :
-             language === 'ga' ? 'Kuayɛ Boafoɔ' : 'Agricultural Assistant'}
-          </h3>
-        </div>
-      </div>
-
-      {/* Messages - Scrollable area */}
-      <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full p-4">
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex items-start gap-3 ${
-                  message.sender === 'user' ? 'flex-row-reverse' : ''
-                }`}
-              >
-                <div className={`p-2 rounded-full ${
-                  message.sender === 'user' 
-                    ? 'bg-secondary' 
-                    : 'bg-primary'
-                }`}>
-                  {message.sender === 'user' ? (
-                    <User className="h-4 w-4 text-secondary-foreground" />
-                  ) : (
-                    <Bot className="h-4 w-4 text-primary-foreground" />
-                  )}
-                </div>
-                <div className={`max-w-[80%] p-3 rounded-lg ${
-                  message.sender === 'user'
-                    ? 'bg-secondary text-secondary-foreground'
-                    : 'bg-muted text-muted-foreground'
-                }`}>
-                  <p className="text-sm">{message.content}</p>
-                  
-                  {/* Weather Data Display */}
-                  {message.type === 'weather' && message.data && 'temperature' in message.data && (
-                    <div className="mt-2 p-3 bg-blue-50 rounded-lg">
-                      <div className="flex items-center gap-2 text-blue-700">
-                        <Cloud className="h-4 w-4" />
-                        <span className="font-medium">Weather Data</span>
-                      </div>
-                      <div className="mt-1 text-sm text-blue-600">
-                        Temperature: {(message.data as WeatherData).temperature}°C<br />
-                        Condition: {(message.data as WeatherData).condition}<br />
-                        Humidity: {(message.data as WeatherData).humidity}%<br />
-                        Wind: {(message.data as WeatherData).windSpeed} km/h<br />
-                        Forecast: {(message.data as WeatherData).forecast}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Market Data Display */}
-                  {message.type === 'market' && message.data && Array.isArray(message.data) && (
-                    <div className="mt-2 p-3 bg-green-50 rounded-lg">
-                      <div className="flex items-center gap-2 text-green-700">
-                        <TrendingUp className="h-4 w-4" />
-                        <span className="font-medium">Market Prices</span>
-                      </div>
-                      <div className="mt-1 text-sm text-green-600">
-                        {(message.data as MarketData[]).map((item, index) => (
-                          <div key={index}>
-                            {item.crop}: {item.price} GHS/{item.unit} ({item.location})
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Subsidy Data Display */}
-                  {message.type === 'subsidy' && message.data && Array.isArray(message.data) && (
-                    <div className="mt-2 p-3 bg-purple-50 rounded-lg">
-                      <div className="flex items-center gap-2 text-purple-700">
-                        <Building2 className="h-4 w-4" />
-                        <span className="font-medium">Government Programs</span>
-                      </div>
-                      <div className="mt-1 text-sm text-purple-600">
-                        {(message.data as SubsidyData[]).map((item, index) => (
-                          <div key={index} className="mb-2">
-                            <strong>{item.program}</strong><br />
-                            {item.description}<br />
-                            Contact: {item.contact}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Expert Request Display */}
-                  {message.type === 'expert-request' && message.data && (
-                    <div className="mt-2 p-3 bg-orange-50 rounded-lg">
-                      <div className="flex items-center gap-2 text-orange-700">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="font-medium">Expert Connection</span>
-                      </div>
-                      <div className="mt-1 text-sm text-orange-600">
-                        Expert: {String((message.data as Record<string, unknown>).expertName)}<br />
-                        Phone: {String((message.data as Record<string, unknown>).expertPhone)}<br />
-                        Email: {String((message.data as Record<string, unknown>).expertEmail)}<br />
-                        Response Time: {String((message.data as Record<string, unknown>).responseTime)}
-                      </div>
-                    </div>
-                  )}
-
-                  <span className="text-xs opacity-60">
-                    {message.timestamp.toLocaleTimeString()}
-                  </span>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-full bg-primary">
-                  <Loader2 className="h-4 w-4 text-primary-foreground animate-spin" />
-                </div>
-                <div className="bg-muted p-3 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Thinking...</p>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+    <div className="w-full max-w-4xl mx-auto">
+      <Card className="shadow-lg">
+        <CardContent className="p-6">
+          {/* Chat Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src="/agribot-logo.png" alt="Agribot" />
+              <AvatarFallback className="bg-green-100 text-green-800">
+                <Bot className="h-5 w-5" />
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {language === 'en' ? 'Chat with Agribot' : 
+                 language === 'tw' ? 'Ka Agribot ho kasa' :
+                 language === 'ee' ? 'Ka Agribot gbɔ kpɔ' :
+                 'Ka Agribot ho kasa'}
+              </h3>
+              <p className="text-sm text-gray-600">
+                {language === 'en' ? 'Your AI agricultural assistant' :
+                 language === 'tw' ? 'Wo AI kuwadwuma boafo' :
+                 language === 'ee' ? 'Wo AI agblẽnɔnɔ boafo' :
+                 'Wo AI kuwadwuma boafo'}
+              </p>
+            </div>
           </div>
-        </ScrollArea>
-      </div>
 
-      {/* Input - Fixed at bottom */}
-      <div className="p-4 border-t border-border bg-background flex-shrink-0">
-        <div className="flex gap-2">
-          <Button
-            variant={isRecording ? "destructive" : "outline"}
-            size="sm"
-            onClick={toggleRecording}
-            className="shrink-0"
-          >
-            {isRecording ? (
-              <MicOff className="h-4 w-4" />
-            ) : (
-              <Mic className="h-4 w-4" />
-            )}
-          </Button>
-          <Input
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={
-              language === 'en' ? 'Type your message or use voice...' :
-              language === 'tw' ? 'Kyerɛw wo nkra anaa fa nne...' :
-              language === 'ee' ? 'Ŋlɔ wò nya alo zã gbe...' :
-              language === 'ga' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' : 'Type your message...'
-            }
-            disabled={isLoading}
-            className="flex-1"
-          />
-          <Button
-            onClick={sendMessage}
-            disabled={!inputMessage.trim() || isLoading}
-            size="sm"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        {/* Quick Response Buttons */}
-        <div className="mt-3 flex flex-wrap gap-2">
-          {getQuickQuestions(language).map((question, index) => (
+          {/* Messages */}
+          <ScrollArea className="h-96 mb-4">
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 ${
+                    message.sender === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+                >
+                  {message.sender === 'bot' && (
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src="/agribot-logo.png" alt="Agribot" />
+                      <AvatarFallback className="bg-green-100 text-green-800">
+                        <Bot className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div
+                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      message.sender === 'user'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-100 text-gray-900'
+                    }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                    
+                    {/* Weather Data Display */}
+                    {message.type === 'weather' && message.data && 'temperature' in message.data && (
+                      <div className="mt-2 p-3 bg-blue-50 rounded-lg">
+                        <div className="flex items-center gap-2 text-blue-700">
+                          <Cloud className="h-4 w-4" />
+                          <span className="font-medium">Weather Data</span>
+                        </div>
+                        <div className="mt-1 text-sm text-blue-600">
+                          Temperature: {(message.data as WeatherData).temperature}°C<br />
+                          Condition: {(message.data as WeatherData).condition}<br />
+                          Humidity: {(message.data as WeatherData).humidity}%<br />
+                          Wind: {(message.data as WeatherData).windSpeed} km/h<br />
+                          Forecast: {(message.data as WeatherData).forecast}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Market Data Display */}
+                    {message.type === 'market' && message.data && Array.isArray(message.data) && (
+                      <div className="mt-2 p-3 bg-green-50 rounded-lg">
+                        <div className="flex items-center gap-2 text-green-700">
+                          <TrendingUp className="h-4 w-4" />
+                          <span className="font-medium">Market Prices</span>
+                        </div>
+                        <div className="mt-1 text-sm text-green-600">
+                          {(message.data as MarketData[]).map((item, index) => (
+                            <div key={index}>
+                              {item.crop}: {item.price} GHS/{item.unit} ({item.location})
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Subsidy Data Display */}
+                    {message.type === 'subsidy' && message.data && Array.isArray(message.data) && (
+                      <div className="mt-2 p-3 bg-purple-50 rounded-lg">
+                        <div className="flex items-center gap-2 text-purple-700">
+                          <Building2 className="h-4 w-4" />
+                          <span className="font-medium">Government Programs</span>
+                        </div>
+                        <div className="mt-1 text-sm text-purple-600">
+                          {(message.data as SubsidyData[]).map((item, index) => (
+                            <div key={index} className="mb-2">
+                              <strong>{item.program}</strong><br />
+                              {item.description}<br />
+                              Contact: {item.contact}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expert Request Display */}
+                    {message.type === 'expert-request' && message.data && (
+                      <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+                        <div className="flex items-center gap-2 text-orange-700">
+                          <CheckCircle className="h-4 w-4" />
+                          <span className="font-medium">Expert Connection</span>
+                        </div>
+                        <div className="mt-1 text-sm text-orange-600">
+                          Expert: {String((message.data as Record<string, unknown>).expertName)}<br />
+                          Phone: {String((message.data as Record<string, unknown>).expertPhone)}<br />
+                          Email: {String((message.data as Record<string, unknown>).expertEmail)}<br />
+                          Response Time: {String((message.data as Record<string, unknown>).responseTime)}
+                        </div>
+                      </div>
+                    )}
+
+                    <p className="text-xs opacity-70 mt-1">
+                      {message.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+                  {message.sender === 'user' && (
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-blue-100 text-blue-800">
+                        <User className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex gap-3 justify-start">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/agribot-logo.png" alt="Agribot" />
+                    <AvatarFallback className="bg-green-100 text-green-800">
+                      <Bot className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="bg-gray-100 text-gray-900 px-4 py-2 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span className="text-sm">
+                        {language === 'en' ? 'Thinking...' :
+                         language === 'tw' ? 'Yɛ adwene...' :
+                         language === 'ee' ? 'Yɛ adwene...' :
+                         'Yɛ adwene...'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
+
+          <Separator className="my-4" />
+
+          {/* Input Area */}
+          <div className="flex gap-2">
             <Button
-              key={index}
-              variant="outline"
+              variant={isRecording ? "destructive" : "outline"}
               size="sm"
-              onClick={() => {
-                setInputMessage(question);
-                setTimeout(() => sendMessage(), 100);
-              }}
-              disabled={isLoading}
-              className="text-xs"
+              onClick={toggleRecording}
+              className="shrink-0"
             >
-              {question}
+              {isRecording ? (
+                <MicOff className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
             </Button>
-          ))}
-        </div>
-      </div>
-    </Card>
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={
+                language === 'en' ? 'Type your message or use voice...' :
+                language === 'tw' ? 'Kyerɛw wo nkra anaa fa nne...' :
+                language === 'ee' ? 'Ŋlɔ wò nya alo zã gbe...' :
+                language === 'ga' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' : 'Type your message...'
+              }
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button
+              onClick={sendMessage}
+              disabled={!inputMessage.trim() || isLoading}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Quick Questions - Positioned below input for easy access */}
+          <div className="mt-3">
+            <p className="text-sm text-gray-600 mb-2">
+              {language === 'en' ? 'Quick questions:' :
+               language === 'tw' ? 'Quick questions:' :
+               language === 'ee' ? 'Quick questions:' :
+               'Quick questions:'}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {getQuickQuestions(language).map((question, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleQuickQuestion(question)}
+                  className="text-xs hover:bg-green-50 hover:border-green-300"
+                >
+                  {question}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
-};
-
-const getQuickQuestions = (language: string) => {
-  const questions = {
-    'en': [
-      'Tell me about crops',
-      'How to control pests?',
-      'Weather forecast',
-      'Market prices',
-      'Government subsidies',
-      'Connect with expert'
-    ],
-    'tw': [
-      'Ka aduan ho nsɛm',
-      'Sɛn na yɛɛ mmoawa?',
-      'Ewiem forecast',
-      'Gua bo',
-      'Amanaman ntam subsidy',
-      'Ka extension officer ho'
-    ],
-    'ee': [
-      'Ka agblẽnɔnɔ ŋu nyawo',
-      'Aleke nàdze nudzrala?',
-      'Yame ƒe forecast',
-      'Asi ƒe ga',
-      'Dukplɔlawo ƒe subsidy',
-      'Ka extension officer gbɔ'
-    ],
-    'ga': [
-      'Ka aduan ho nsɛm',
-      'Sɛn na yɛɛ mmoawa?',
-      'Ewiem forecast',
-      'Gua bo',
-      'Amanaman ntam subsidy',
-      'Ka extension officer ho'
-    ]
-  };
-  return questions[language as keyof typeof questions] || questions.en;
-};
-
 };

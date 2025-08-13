@@ -155,6 +155,13 @@ export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
         </Alert>
       )}
 
+      {/* Demo Mode Indicator */}
+      <Alert className="bg-blue-50 border-blue-200 text-blue-800">
+        <AlertDescription>
+          🧪 <strong>Demo Mode Active</strong> - Use any demo account below to test the app instantly!
+        </AlertDescription>
+      </Alert>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {!isLogin && (
           <>
