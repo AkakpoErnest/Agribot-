@@ -136,11 +136,11 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
     : newsItems.filter(item => item.category === selectedCategory);
 
   const categories = [
-    { key: 'all', label: language === 'en' ? 'All' : language === 'tw' ? 'Nyinaa' : language === 'ee' ? 'Nyinaa' : language === 'ga' ? 'Nyinaa' : 'All' },
-    { key: 'news', label: language === 'en' ? 'News' : language === 'tw' ? 'Nsɛm' : language === 'ee' ? 'Nyawo' : language === 'ga' ? 'Nsɛm' : 'News' },
-    { key: 'weather', label: language === 'en' ? 'Weather' : language === 'tw' ? 'Ewiem' : language === 'ee' ? 'Yame' : language === 'ga' ? 'Ewiem' : 'Weather' },
-    { key: 'market', label: language === 'en' ? 'Market' : language === 'tw' ? 'Gua' : language === 'ee' ? 'Asi' : language === 'ga' ? 'Gua' : 'Market' },
-    { key: 'alert', label: language === 'en' ? 'Alerts' : language === 'tw' ? 'Alert' : language === 'ee' ? 'Alert' : language === 'ga' ? 'Alert' : 'Alerts' }
+    { key: 'all', label: language === 'en' ? 'All' : language === 'tw' ? 'Nyinaa' : language === 'ee' ? 'Nyinaa' : language === 'ga' ? 'Nyinaa' : language === 'fa' ? 'Nyinaa' : language === 'fr' ? 'Tout' : 'All' },
+    { key: 'news', label: language === 'en' ? 'News' : language === 'tw' ? 'Nsɛm' : language === 'ee' ? 'Nyawo' : language === 'ga' ? 'Nsɛm' : language === 'fa' ? 'Nsɛm' : language === 'fr' ? 'Actualités' : 'News' },
+    { key: 'weather', label: language === 'en' ? 'Weather' : language === 'tw' ? 'Ewiem' : language === 'ee' ? 'Yame' : language === 'ga' ? 'Ewiem' : language === 'fa' ? 'Ewiem' : language === 'fr' ? 'Météo' : 'Weather' },
+    { key: 'market', label: language === 'en' ? 'Market' : language === 'tw' ? 'Gua' : language === 'ee' ? 'Asi' : language === 'ga' ? 'Gua' : language === 'fa' ? 'Gua' : language === 'fr' ? 'Marché' : 'Market' },
+    { key: 'alert', label: language === 'en' ? 'Alerts' : language === 'tw' ? 'Alert' : language === 'ee' ? 'Alert' : language === 'ga' ? 'Alert' : language === 'fa' ? 'Alert' : language === 'fr' ? 'Alertes' : 'Alerts' }
   ];
 
   return (
@@ -151,13 +151,17 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
             {language === 'en' ? 'News & Updates' :
              language === 'tw' ? 'Nsɛm ne Nsɛm Foforɔ' :
              language === 'ee' ? 'Nyawo kple Nyawo Yeye' :
-             language === 'ga' ? 'Nsɛm ne Nsɛm Foforɔ' : 'News & Updates'}
+             language === 'ga' ? 'Nsɛm ne Nsɛm Foforɔ' :
+             language === 'fa' ? 'Nsɛm ne Nsɛm Foforɔ' :
+             language === 'fr' ? 'Actualités et Mises à jour' : 'News & Updates'}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {language === 'en' ? 'Stay informed with the latest agricultural news, weather alerts, and market updates' :
              language === 'tw' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
              language === 'ee' ? 'Kpɔ nyawo yeye le agblẽnɔnɔ, yame, kple asi ŋu' :
-             language === 'ga' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' : 'Stay informed with latest updates'}
+             language === 'ga' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
+             language === 'fa' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
+             language === 'fr' ? 'Restez informé des dernières actualités agricoles, alertes météo et mises à jour du marché' : 'Stay informed with latest updates'}
           </p>
         </div>
 
@@ -211,7 +215,9 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
                   {language === 'en' ? 'Read More' :
                    language === 'tw' ? 'Kenkan Bio' :
                    language === 'ee' ? 'Xlẽe Bio' :
-                   language === 'ga' ? 'Kenkan Bio' : 'Read More'}
+                   language === 'ga' ? 'Kenkan Bio' :
+                   language === 'fa' ? 'Kenkan Bio' :
+                   language === 'fr' ? 'Lire Plus' : 'Read More'}
                 </Button>
               </div>
             </Card>
@@ -225,7 +231,9 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
             {language === 'en' ? 'View All News' :
              language === 'tw' ? 'Hwɛ Nsɛm Nyinaa' :
              language === 'ee' ? 'Kpɔ Nyawo Nyinaa' :
-             language === 'ga' ? 'Hwɛ Nsɛm Nyinaa' : 'View All News'}
+             language === 'ga' ? 'Hwɛ Nsɛm Nyinaa' :
+             language === 'fa' ? 'Hwɛ Nsɛm Nyinaa' :
+             language === 'fr' ? 'Voir Toutes les Actualités' : 'View All News'}
           </Button>
         </div>
       </div>

@@ -41,13 +41,17 @@ export const LocationSelector = ({ onLocationSelect, selectedLocation, language 
           {language === 'en' ? 'Select Location' :
            language === 'tw' ? 'Paw Beaeɛ' :
            language === 'ee' ? 'Tia Nɔƒe' :
-           language === 'ga' ? 'Paw Beaeɛ' : 'Select Location'}
+           language === 'ga' ? 'Paw Beaeɛ' :
+           language === 'fa' ? 'Paw Beaeɛ' :
+           language === 'fr' ? 'Sélectionner l\'Emplacement' : 'Select Location'}
         </h3>
         <Badge variant="outline" className="text-xs">
           {language === 'en' ? 'For accurate data' :
            language === 'tw' ? 'Ma nsɛm pa' :
            language === 'ee' ? 'Na nyawo pa' :
-           language === 'ga' ? 'Ma nsɛm pa' : 'For accurate data'}
+           language === 'ga' ? 'Ma nsɛm pa' :
+           language === 'fa' ? 'Ma nsɛm pa' :
+           language === 'fr' ? 'Pour des données précises' : 'For accurate data'}
         </Badge>
       </div>
 
@@ -92,7 +96,9 @@ export const LocationSelector = ({ onLocationSelect, selectedLocation, language 
         {language === 'en' ? 'Weather and market data will be updated for your selected location' :
          language === 'tw' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
          language === 'ee' ? 'Yame kple asi nyawo aɖe sesa na wò nɔƒe si wo tia' :
-         language === 'ga' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' : 'Weather and market data will be updated for your selected location'}
+         language === 'ga' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
+         language === 'fa' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
+         language === 'fr' ? 'Les données météo et du marché seront mises à jour pour votre emplacement sélectionné' : 'Weather and market data will be updated for your selected location'}
       </p>
     </Card>
   );

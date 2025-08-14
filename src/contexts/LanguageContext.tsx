@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Language = 'en' | 'tw' | 'ee' | 'ga';
+export type Language = 'en' | 'tw' | 'ee' | 'ga' | 'fa' | 'fr';
 
 export interface LanguageContextType {
   language: Language;
@@ -90,6 +90,8 @@ const translations = {
     'language.twi': 'Twi',
     'language.ewe': 'Ewe',
     'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'French',
 
     // Profile
     'profile.title': 'User Profile',
@@ -219,6 +221,8 @@ const translations = {
     'language.twi': 'Twi',
     'language.ewe': 'Ewe',
     'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'French',
 
     // Profile
     'profile.title': 'Wo Ho Nsɛm',
@@ -348,6 +352,8 @@ const translations = {
     'language.twi': 'Twi',
     'language.ewe': 'Ewe',
     'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'French',
 
     // Profile
     'profile.title': 'Wò Nyawo',
@@ -477,6 +483,8 @@ const translations = {
     'language.twi': 'Twi',
     'language.ewe': 'Ewe',
     'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'French',
 
     // Profile
     'profile.title': 'Wò Nyawo',
@@ -527,6 +535,268 @@ const translations = {
     'footer.copyright': '© 2024 Farm Talk Ghana. Mía rights nyinaa.',
     'footer.developed': 'Yɛɛ wɔ Level 400 Students, Ho Technical University',
   },
+
+  fa: {
+    // Navigation
+    'nav.home': 'Fie',
+    'nav.features': 'Nneɛma',
+    'nav.login': 'Bra Mu',
+    'nav.signup': 'Fie Kyerɛw',
+    'nav.profile': 'Wo Ho Nsɛm',
+    'nav.logout': 'Pue',
+
+    // Authentication
+    'auth.signin': 'Bra Mu',
+    'auth.signup': 'Fie Kyerɛw',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.confirmPassword': 'San Password No',
+    'auth.fullName': 'Wo Din Nyinaa',
+    'auth.phone': 'Wo Phone Number',
+    'auth.location': 'Bea',
+    'auth.role': 'Wo Role',
+    'auth.role.farmer': 'Kuayefo',
+    'auth.role.expert': 'Nimdefo',
+    'auth.role.customer': 'Tɔnfo',
+    'auth.submit': 'Fa',
+    'auth.cancel': 'Gyae',
+    'auth.forgotPassword': 'Wo Wɔ Password?',
+    'auth.resetPassword': 'San Password No',
+    'auth.noAccount': 'Wo Nni Account?',
+    'auth.haveAccount': 'Wo Wɔ Account?',
+    'auth.createAccount': 'Yɛ Account',
+    'auth.signInToAccount': 'Bra wo account mu',
+
+    // Form validation
+    'validation.required': 'Yɛ wo sɛ wo de biribi fa',
+    'validation.email': 'Fa email a ɛyɛ yie',
+    'validation.passwordLength': 'Password nso yɛ mma 6',
+    'validation.passwordMatch': 'Password no nso yɛ yie',
+    'validation.phone': 'Fa phone number a ɛyɛ yie',
+
+    // Common
+    'common.loading': 'Reyɛ...',
+    'common.error': 'Nsɛm',
+    'common.success': 'Yɛɛ yie',
+    'common.welcome': 'Akwaaba',
+    'common.hello': 'Hɛlo',
+    'common.yes': 'Aane',
+    'common.no': 'Daabi',
+    'common.save': 'Fa',
+    'common.edit': 'Sesa',
+    'common.delete': 'Sɛɛ',
+    'common.close': 'To',
+    'common.back': 'San',
+    'common.next': 'Akyiri',
+    'common.previous': 'Akan',
+
+    // Home page
+    'home.hero.title': 'Ghana Kuayɛ AI Boa',
+    'home.hero.subtitle': 'Yɛ Kuayɛ Nsɛm Wɔ Ghana Mu Wɔ Kasa Nyinaa Mu',
+    'home.hero.description': 'Fa kuayɛ nimdeɛ, weather nsɛm, market bo, ne nneɛma foforɔ wɔ wo kasa mu',
+    'home.hero.getStarted': 'Fie Yɛ',
+    'home.hero.learnMore': 'Fa Nimdeɛ',
+
+    // Features
+    'features.title': 'Nneɛma',
+    'features.chat.title': 'AI Chat Boa',
+    'features.chat.description': 'Fa kuayɛ nimdeɛ wɔ wo kasa mu',
+    'features.weather.title': 'Weather Nsɛm',
+    'features.weather.description': 'Weather nsɛm wɔ wo bea mu',
+    'features.market.title': 'Market Bo',
+    'features.market.description': 'Fa crop bo a ɛwɔ sɛ',
+    'features.subsidies.title': 'Kuayɛ Boa',
+    'features.subsidies.description': 'Nsɛm wɔ government boa a ɛwɔ',
+
+    // Language selector
+    'language.title': 'Paw Wo Kasa',
+    'language.english': 'English',
+    'language.twi': 'Twi',
+    'language.ewe': 'Ewe',
+    'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'French',
+
+    // Profile
+    'profile.title': 'Wo Ho Nsɛm',
+    'profile.edit': 'Sesa Wo Ho Nsɛm',
+    'profile.personalInfo': 'Wo Ho Nsɛm',
+    'profile.accountInfo': 'Account Nsɛm',
+    'profile.updateSuccess': 'Wo ho nsɛm yɛɛ yie',
+    'profile.updateError': 'Wo ho nsɛm nso yɛɛ yie',
+
+    // Chat
+    'chat.title': 'AI Chat Boa',
+    'chat.placeholder': 'Bisa me biribi wɔ kuayɛ ho...',
+    'chat.send': 'Fa',
+    'chat.clear': 'Sɛɛ Chat',
+    'chat.loading': 'AI reyɛ adwene...',
+
+    // Weather
+    'weather.title': 'Weather Nsɛm',
+    'weather.current': 'Weather a ɛwɔ sɛ',
+    'weather.forecast': 'Weather a ɛbɛba',
+    'weather.temperature': 'Temperatur',
+    'weather.humidity': 'Humidity',
+    'weather.description': 'Nkyerɛ',
+
+    // Market
+    'market.title': 'Market Bo',
+    'market.crop': 'Crop',
+    'market.price': 'Bo',
+    'market.location': 'Bea',
+    'market.lastUpdated': 'Sɛɛɛ',
+
+    // Subsidies
+    'subsidies.title': 'Kuayɛ Boa',
+    'subsidies.available': 'Program a ɛwɔ',
+    'subsidies.amount': 'Bo',
+    'subsidies.deadline': 'Application Deadline',
+    'subsidies.eligibility': 'Eligibility Criteria',
+
+    // Team
+    'team.title': 'Yɛn Team',
+    'team.description': 'Fa developers a ɛyɛɛ Farm Talk Ghana',
+    'team.carlos.title': 'Carlos',
+    'team.carlos.role': 'Full Stack Developer',
+    'team.sefa.title': 'Sefakor',
+    'team.sefa.role': 'Frontend Developer',
+
+    // Footer
+    'footer.copyright': '© 2024 Farm Talk Ghana. Yɛn rights nyinaa.',
+    'footer.developed': 'Yɛɛɛ wɔ Level 400 Students, Ho Technical University',
+  },
+
+  fr: {
+    // Navigation
+    'nav.home': 'Accueil',
+    'nav.features': 'Fonctionnalités',
+    'nav.login': 'Connexion',
+    'nav.signup': 'Inscription',
+    'nav.profile': 'Profil',
+    'nav.logout': 'Déconnexion',
+
+    // Authentication
+    'auth.signin': 'Se Connecter',
+    'auth.signup': 'S\'inscrire',
+    'auth.email': 'Email',
+    'auth.password': 'Mot de passe',
+    'auth.confirmPassword': 'Confirmer le mot de passe',
+    'auth.fullName': 'Nom complet',
+    'auth.phone': 'Numéro de téléphone',
+    'auth.location': 'Localisation',
+    'auth.role': 'Rôle',
+    'auth.role.farmer': 'Agriculteur',
+    'auth.role.expert': 'Expert',
+    'auth.role.customer': 'Client',
+    'auth.submit': 'Soumettre',
+    'auth.cancel': 'Annuler',
+    'auth.forgotPassword': 'Mot de passe oublié?',
+    'auth.resetPassword': 'Réinitialiser le mot de passe',
+    'auth.noAccount': 'Vous n\'avez pas de compte?',
+    'auth.haveAccount': 'Vous avez déjà un compte?',
+    'auth.createAccount': 'Créer un compte',
+    'auth.signInToAccount': 'Connectez-vous à votre compte',
+
+    // Form validation
+    'validation.required': 'Ce champ est requis',
+    'validation.email': 'Veuillez entrer un email valide',
+    'validation.passwordLength': 'Le mot de passe doit contenir au moins 6 caractères',
+    'validation.passwordMatch': 'Les mots de passe ne correspondent pas',
+    'validation.phone': 'Veuillez entrer un numéro de téléphone valide',
+
+    // Common
+    'common.loading': 'Chargement...',
+    'common.error': 'Erreur',
+    'common.success': 'Succès',
+    'common.welcome': 'Bienvenue',
+    'common.hello': 'Bonjour',
+    'common.yes': 'Oui',
+    'common.no': 'Non',
+    'common.save': 'Sauvegarder',
+    'common.edit': 'Modifier',
+    'common.delete': 'Supprimer',
+    'common.close': 'Fermer',
+    'common.back': 'Retour',
+    'common.next': 'Suivant',
+    'common.previous': 'Précédent',
+
+    // Home page
+    'home.hero.title': 'Assistant IA Agricole pour le Ghana',
+    'home.hero.subtitle': 'Bridging Communication in Ghana\'s Agriculture through multilingual AI assistance',
+    'home.hero.description': 'Obtenez des conseils d\'experts en agriculture, des mises à jour météo, des prix du marché et plus dans votre langue préférée',
+    'home.hero.getStarted': 'Commencer',
+    'home.hero.learnMore': 'En savoir plus',
+
+    // Features
+    'features.title': 'Fonctionnalités',
+    'features.chat.title': 'Assistant IA Chat',
+    'features.chat.description': 'Obtenez des conseils agricoles instantanés dans votre langue',
+    'features.weather.title': 'Mises à jour météo',
+    'features.weather.description': 'Informations météorologiques en temps réel pour votre localisation',
+    'features.market.title': 'Prix du marché',
+    'features.market.description': 'Restez informé des prix actuels des cultures',
+    'features.subsidies.title': 'Subventions agricoles',
+    'features.subsidies.description': 'Informations sur le soutien gouvernemental disponible',
+
+    // Language selector
+    'language.title': 'Choisissez Votre Langue',
+    'language.english': 'Anglais',
+    'language.twi': 'Twi',
+    'language.ewe': 'Ewe',
+    'language.ga': 'Ga',
+    'language.fante': 'Fante',
+    'language.french': 'Français',
+
+    // Profile
+    'profile.title': 'Profil utilisateur',
+    'profile.edit': 'Modifier le profil',
+    'profile.personalInfo': 'Informations personnelles',
+    'profile.accountInfo': 'Informations du compte',
+    'profile.updateSuccess': 'Profil mis à jour avec succès',
+    'profile.updateError': 'Échec de la mise à jour du profil',
+
+    // Chat
+    'chat.title': 'Assistant IA Chat',
+    'chat.placeholder': 'Demandez-moi n\'importe quoi sur l\'agriculture...',
+    'chat.send': 'Envoyer',
+    'chat.clear': 'Effacer le chat',
+    'chat.loading': 'L\'IA réfléchit...',
+
+    // Weather
+    'weather.title': 'Informations météorologiques',
+    'weather.current': 'Météo actuelle',
+    'weather.forecast': 'Prévisions',
+    'weather.temperature': 'Température',
+    'weather.humidity': 'Humidité',
+    'weather.description': 'Description',
+
+    // Market
+    'market.title': 'Prix du marché',
+    'market.crop': 'Culture',
+    'market.price': 'Prix',
+    'market.location': 'Localisation',
+    'market.lastUpdated': 'Dernière mise à jour',
+
+    // Subsidies
+    'subsidies.title': 'Subventions agricoles',
+    'subsidies.available': 'Programmes disponibles',
+    'subsidies.amount': 'Montant',
+    'subsidies.deadline': 'Date limite de candidature',
+    'subsidies.eligibility': 'Critères d\'éligibilité',
+
+    // Team
+    'team.title': 'Notre équipe',
+    'team.description': 'Rencontrez les développeurs derrière Farm Talk Ghana',
+    'team.carlos.title': 'Carlos',
+    'team.carlos.role': 'Développeur Full Stack',
+    'team.sefa.title': 'Sefakor',
+    'team.sefa.role': 'Développeur Frontend',
+
+    // Footer
+    'footer.copyright': '© 2024 Farm Talk Ghana. Tous droits réservés.',
+    'footer.developed': 'Développé par les étudiants de niveau 400, Ho Technical University',
+  },
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -535,7 +805,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('farm-talk-language') as Language;
-    if (savedLanguage && ['en', 'tw', 'ee', 'ga'].includes(savedLanguage)) {
+    if (savedLanguage && ['en', 'tw', 'ee', 'ga', 'fa', 'fr'].includes(savedLanguage)) {
       setLanguage(savedLanguage);
     }
   }, []);

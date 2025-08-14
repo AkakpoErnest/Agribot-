@@ -64,6 +64,40 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePattern> = {
     ],
     confidence: 0.8
   },
+  fa: {
+    words: [
+      'me', 'wo', 'yɛ', 'ne', 'wɔ', 'ɛyɛ', 'ɛno', 'ɛne', 'ɛwɔ', 'ma', 'ka', 'da',
+      'kɔ', 'ba', 'firi', 'kwan', 'yie', 'pa', 'nye', 'ɛ', 'no', 'yi', 'bi', 'kakra',
+      'kɛse', 'ketewa', 'pɛ', 'pɛɛ', 'pɛɛɛ', 'yɛɛ', 'yɛɛɛ', 'ɛɛ', 'ɛɛɛ', 'woo', 'woo',
+      'ɛɛɛ', 'ɛɛɛɛ', 'ɛɛɛɛɛ', 'ɛɛɛɛɛɛ', 'ɛɛɛɛɛɛɛ', 'ɛɛɛɛɛɛɛɛ', 'ɛɛɛɛɛɛɛɛɛ'
+    ],
+    phrases: [
+      'ɛyɛ yie', 'ɛyɛ pa', 'ɛyɛ nyɛ', 'ɛyɛ kakra', 'ɛyɛ kɛse', 'ɛyɛ ketewa',
+      'me pɛ', 'wo pɛ', 'yɛ pɛ', 'ɛ pɛ', 'no pɛ', 'yi pɛ', 'bi pɛ', 'kakra pɛ',
+      'me kɔ', 'wo kɔ', 'yɛ kɔ', 'ɛ kɔ', 'no kɔ', 'yi kɔ', 'bi kɔ', 'kakra kɔ',
+      'me ba', 'wo ba', 'yɛ ba', 'ɛ ba', 'no ba', 'yi ba', 'bi ba', 'kakra ba'
+    ],
+    grammar: [
+      'me + verb', 'wo + verb', 'yɛ + verb', 'ɛ + verb', 'no + verb',
+      'verb + me', 'verb + wo', 'verb + yɛ', 'verb + ɛ', 'verb + no'
+    ],
+    confidence: 0.85
+  },
+  fr: {
+    words: [
+      'le', 'la', 'les', 'un', 'une', 'des', 'et', 'ou', 'mais', 'dans', 'sur', 'à',
+      'est', 'sont', 'était', 'étaient', 'être', 'été', 'étant', 'avoir', 'a', 'avait',
+      'faire', 'fait', 'faisait', 'vouloir', 'voulait', 'pouvoir', 'pouvait', 'devoir', 'devait'
+    ],
+    phrases: [
+      'comment allez-vous', 'qu\'est-ce que c\'est', 'où êtes-vous', 'quand voulez-vous', 'pourquoi avez-vous',
+      'pouvez-vous aider', 'merci', 'vous êtes bienvenu', 'excusez-moi', 'je suis désolé'
+    ],
+    grammar: [
+      'sujet + verbe', 'verbe + objet', 'adjectif + nom', 'adverbe + verbe'
+    ],
+    confidence: 0.9
+  },
   en: {
     words: [
       'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
@@ -181,6 +215,8 @@ export class LanguageDetector {
       tw: { name: 'Twi', nativeName: 'Twi', region: 'Ashanti, Central Ghana' },
       ee: { name: 'Ewe', nativeName: 'Eʋegbe', region: 'Volta Region, Ghana' },
       ga: { name: 'Ga', nativeName: 'Ga', region: 'Greater Accra Region, Ghana' },
+      fa: { name: 'Fante', nativeName: 'Fante', region: 'Central Region, Ghana' },
+      fr: { name: 'French', nativeName: 'Français', region: 'International, West Africa' },
       en: { name: 'English', nativeName: 'English', region: 'Ghana (Official)' }
     };
     

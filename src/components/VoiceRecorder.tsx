@@ -169,7 +169,9 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
           {language === 'en' ? 'Voice Message' : 
            language === 'tw' ? 'Wo nne nkra' :
            language === 'ee' ? 'Wò nya' :
-           language === 'ga' ? 'Wo nyɛ' : 'Voice Message'}
+           language === 'ga' ? 'Wo nyɛ' :
+           language === 'fa' ? 'Wo nne nkra' :
+           language === 'fr' ? 'Message Vocal' : 'Voice Message'}
         </h3>
         
         <div className="flex flex-col items-center gap-4">
@@ -194,11 +196,15 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
               ? (language === 'en' ? 'Listening... Tap to stop' :
                  language === 'tw' ? 'Tie... Tow na egyae' :
                  language === 'ee' ? 'Dzidzi... Tɔ be nàtso' :
-                 language === 'ga' ? 'Tie... Tɔ nà bɔ' : 'Listening... Tap to stop')
+                 language === 'ga' ? 'Tie... Tɔ nà bɔ' :
+                 language === 'fa' ? 'Tie... Tow na egyae' :
+                 language === 'fr' ? 'Écoute... Appuyez pour arrêter' : 'Listening... Tap to stop')
               : (language === 'en' ? 'Tap to start voice recognition' :
                  language === 'tw' ? 'Tow na fi ase tie wo nne' :
                  language === 'ee' ? 'Tɔ nàdze gɔmedzedze' :
-                 language === 'ga' ? 'Tɔ nà bɔ gɔme' : 'Tap to start voice recognition')
+                 language === 'ga' ? 'Tɔ nà bɔ gɔme' :
+                 language === 'fa' ? 'Tow na fi ase tie wo nne' :
+                 language === 'fr' ? 'Appuyez pour démarrer la reconnaissance vocale' : 'Tap to start voice recognition')
             }
           </p>
           
@@ -238,7 +244,9 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
                 {language === 'en' ? 'Send Message' :
                  language === 'tw' ? 'Soma nkra' :
                  language === 'ee' ? 'Dɔ nya' :
-                 language === 'ga' ? 'Soma' : 'Send Message'}
+                 language === 'ga' ? 'Soma' :
+                 language === 'fa' ? 'Soma nkra' :
+                 language === 'fr' ? 'Envoyer le Message' : 'Send Message'}
               </Button>
             </div>
           )}

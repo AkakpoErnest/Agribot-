@@ -7,6 +7,8 @@ const languages = [
   { code: 'tw', name: 'Twi', flag: '🇬🇭' },
   { code: 'ee', name: 'Ewe', flag: '🇬🇭' },
   { code: 'ga', name: 'Ga', flag: '🇬🇭' },
+  { code: 'fa', name: 'Fante', flag: '🇬🇭' },
+  { code: 'fr', name: 'French', flag: '🇫🇷' },
 ];
 
 export const LanguageSelector = () => {
@@ -17,7 +19,7 @@ export const LanguageSelector = () => {
       <h3 className="text-lg font-semibold mb-4 text-foreground">
         {t('language.title')}
       </h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {languages.map((lang) => (
           <Button
             key={lang.code}

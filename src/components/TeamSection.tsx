@@ -12,6 +12,8 @@ interface TeamMember {
     tw: string;
     ee: string;
     ga: string;
+    fa: string;
+    fr: string;
   };
   description: string;
   descriptionLocalized: {
@@ -19,6 +21,8 @@ interface TeamMember {
     tw: string;
     ee: string;
     ga: string;
+    fa: string;
+    fr: string;
   };
   education: string;
   educationLocalized: {
@@ -26,6 +30,8 @@ interface TeamMember {
     tw: string;
     ee: string;
     ga: string;
+    fa: string;
+    fr: string;
   };
   image: string;
   skills: string[];
@@ -60,21 +66,27 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
         en: "Lead Developer & AI Engineer",
         tw: "Lead Developer & AI Engineer",
         ee: "Lead Developer & AI Engineer",
-        ga: "Lead Developer & AI Engineer"
+        ga: "Lead Developer & AI Engineer",
+        fa: "Lead Developer & AI Engineer",
+        fr: "Développeur Principal & Ingénieur IA"
       },
       description: "Full-stack developer specializing in AI integration and agricultural technology solutions. Passionate about creating accessible technology for farmers.",
       descriptionLocalized: {
         en: "Full-stack developer specializing in AI integration and agricultural technology solutions. Passionate about creating accessible technology for farmers.",
         tw: "Full-stack developer a ɔyɛ AI integration ne kuayɛ mfidie nsɛm. Ɔpɛ sɛ ɔyɛ mfidie a ɛyɛ wo akuafo ma.",
         ee: "Full-stack developer si ɖe AI integration kple agblẽnɔnɔ mɔnuwo ŋu. Ƒe dɔwɔwɔ nye nu siwo wɔa dɔ agblẽnɔlawo ma.",
-        ga: "Full-stack developer a ɔyɛ AI integration ne kuayɛ mfidie nsɛm. Ɔpɛ sɛ ɔyɛ mfidie a ɛyɛ wo akuafo ma."
+        ga: "Full-stack developer a ɔyɛ AI integration ne kuayɛ mfidie nsɛm. Ɔpɛ sɛ ɔyɛ mfidie a ɛyɛ wo akuafo ma.",
+        fa: "Full-stack developer a ɔyɛ AI integration ne kuayɛ mfidie nsɛm. Ɔpɛ sɛ ɔyɛ mfidie a ɛyɛ wo akuafo ma.",
+        fr: "Développeur full-stack spécialisé dans l'intégration IA et les solutions technologiques agricoles. Passionné par la création de technologies accessibles pour les agriculteurs."
       },
       education: "Level 400 Student at Ho Technical University",
       educationLocalized: {
         en: "Level 400 Student at Ho Technical University",
         tw: "Level 400 Student wɔ Ho Technical University",
         ee: "Level 400 Student le Ho Technical University",
-        ga: "Level 400 Student wɔ Ho Technical University"
+        ga: "Level 400 Student wɔ Ho Technical University",
+        fa: "Level 400 Student wɔ Ho Technical University",
+        fr: "Étudiant de niveau 400 à l'Université Technologique de Ho"
       },
       image: "/team/sefa.jpg",
       skills: ["React", "TypeScript", "AI/ML", "Node.js", "Python"],
@@ -91,21 +103,27 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
         en: "UI/UX Designer & Frontend Developer",
         tw: "UI/UX Designer & Frontend Developer",
         ee: "UI/UX Designer & Frontend Developer",
-        ga: "UI/UX Designer & Frontend Developer"
+        ga: "UI/UX Designer & Frontend Developer",
+        fa: "UI/UX Designer & Frontend Developer",
+        fr: "Designer UI/UX & Développeur Frontend"
       },
       description: "Creative designer focused on user experience and accessibility. Designs intuitive interfaces that bridge technology and traditional farming practices.",
       descriptionLocalized: {
         en: "Creative designer focused on user experience and accessibility. Designs intuitive interfaces that bridge technology and traditional farming practices.",
         tw: "Creative designer a ɔhwɛ user experience ne accessibility so. Ɔyɛ interface a ɛyɛ wo ma ɛka mfidie ne kuayɛ akwan ho.",
         ee: "Creative designer si ɖe user experience kple accessibility ŋu. Ƒe dɔwɔwɔ nye interface siwo wɔa dɔ mɔnu kple agblẽnɔnɔ ŋu.",
-        ga: "Creative designer a ɔhwɛ user experience ne accessibility so. Ɔyɛ interface a ɛyɛ wo ma ɛka mfidie ne kuayɛ akwan ho."
+        ga: "Creative designer a ɔhwɛ user experience ne accessibility so. Ɔyɛ interface a ɛyɛ wo ma ɛka mfidie ne kuayɛ akwan ho.",
+        fa: "Creative designer a ɔhwɛ user experience ne accessibility so. Ɔyɛ interface a ɛyɛ wo ma ɛka mfidie ne kuayɛ akwan ho.",
+        fr: "Designer créatif axé sur l'expérience utilisateur et l'accessibilité. Conçoit des interfaces intuitives qui relient la technologie et les pratiques agricoles traditionnelles."
       },
       education: "Level 400 Student at Ho Technical University",
       educationLocalized: {
         en: "Level 400 Student at Ho Technical University",
         tw: "Level 400 Student wɔ Ho Technical University",
         ee: "Level 400 Student le Ho Technical University",
-        ga: "Level 400 Student wɔ Ho Technical University"
+        ga: "Level 400 Student wɔ Ho Technical University",
+        fa: "Level 400 Student wɔ Ho Technical University",
+        fr: "Étudiant de niveau 400 à l'Université Technologique de Ho"
       },
       image: "/team/carlos.jpg",
       skills: ["UI/UX Design", "React", "Tailwind CSS", "Figma", "Accessibility"],
@@ -117,7 +135,7 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
     }
   ];
 
-  const getLocalizedText = (texts: { en: string; tw: string; ee: string; ga: string }) => {
+  const getLocalizedText = (texts: { en: string; tw: string; ee: string; ga: string; fa: string; fr: string }) => {
     return texts[language as keyof typeof texts] || texts.en;
   };
 
@@ -129,13 +147,17 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
             {language === 'en' ? 'Meet Our Team' :
              language === 'tw' ? 'Hwɛ Yɛn Fekuo' :
              language === 'ee' ? 'Kpɔ Míawo ƒe Hame' :
-             language === 'ga' ? 'Hwɛ Yɛn Fekuo' : 'Meet Our Team'}
+             language === 'ga' ? 'Hwɛ Yɛn Fekuo' :
+             language === 'fa' ? 'Hwɛ Yɛn Fekuo' :
+             language === 'fr' ? 'Rencontrez Notre Équipe' : 'Meet Our Team'}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {language === 'en' ? 'The passionate developers and designers behind Agribot' :
              language === 'tw' ? 'Developer ne designer a ɛyɛ Agribot no' :
              language === 'ee' ? 'Developer kple designer siwo wɔa dɔ Agribot ŋu' :
-             language === 'ga' ? 'Developer ne designer a ɛyɛ Agribot no' : 'The passionate developers and designers behind Agribot'}
+             language === 'ga' ? 'Developer ne designer a ɛyɛ Agribot no' :
+             language === 'fa' ? 'Developer ne designer a ɛyɛ Agribot no' :
+             language === 'fr' ? 'Les développeurs et designers passionnés derrière Agribot' : 'The passionate developers and designers behind Agribot'}
           </p>
         </div>
 
@@ -260,13 +282,17 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
                 {language === 'en' ? 'Our Mission' :
                  language === 'tw' ? 'Yɛn Adwuma' :
                  language === 'ee' ? 'Míawo ƒe Dɔwɔwɔ' :
-                 language === 'ga' ? 'Yɛn Adwuma' : 'Our Mission'}
+                 language === 'ga' ? 'Yɛn Adwuma' :
+                 language === 'fa' ? 'Yɛn Adwuma' :
+                 language === 'fr' ? 'Notre Mission' : 'Our Mission'}
               </h3>
               <p className="text-primary-foreground/90 leading-relaxed">
                 {language === 'en' ? 'As Level 400 students at Ho Technical University, we are passionate about leveraging technology to solve real-world agricultural challenges in Ghana. Our mission is to bridge the communication gap between farmers, extension officers, and customers through innovative multilingual solutions.' :
                  language === 'tw' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
                  language === 'ee' ? 'Esi míawo nye Level 400 students le Ho Technical University, míawo lɔ̃ nu siwo wɔa dɔ mɔnu ma míawoa ɖe agblẽnɔnɔ ƒe dɔwɔwɔ le Ghana. Míawo ƒe dɔwɔwɔ nye nu siwo wɔa dɔ agblẽnɔlawo, extension officers, kple asiwo ƒe dɔwɔwɔ ŋu.' :
-                 language === 'ga' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' : 'Our mission statement'}
+                 language === 'ga' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
+                 language === 'fa' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
+                 language === 'fr' ? 'Comme étudiants de niveau 400 à l\'Université Technologique de Ho, nous sommes passionnés par l\'exploitation de la technologie pour résoudre les défis agricoles réels au Ghana. Notre mission est de combler la lacune de communication entre les agriculteurs, les agents d\'extension et les clients grâce à des solutions multilingues innovantes.' : 'Our mission statement'}
               </p>
             </div>
           </Card>
