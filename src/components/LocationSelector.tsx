@@ -42,16 +42,16 @@ export const LocationSelector = ({ onLocationSelect, selectedLocation, language 
            language === 'tw' ? 'Paw Beaeɛ' :
            language === 'ee' ? 'Tia Nɔƒe' :
            language === 'ga' ? 'Paw Beaeɛ' :
-           language === 'fa' ? 'Paw Beaeɛ' :
-           language === 'fr' ? 'Sélectionner l\'Emplacement' : 'Select Location'}
+           language === 'da' ? 'Paw Beaeɛ' :
+           language === 'fa' ? 'Paw Beaeɛ' : 'Select Location'}
         </h3>
         <Badge variant="outline" className="text-xs">
           {language === 'en' ? 'For accurate data' :
            language === 'tw' ? 'Ma nsɛm pa' :
            language === 'ee' ? 'Na nyawo pa' :
            language === 'ga' ? 'Ma nsɛm pa' :
-           language === 'fa' ? 'Ma nsɛm pa' :
-           language === 'fr' ? 'Pour des données précises' : 'For accurate data'}
+           language === 'da' ? 'Ma nsɛm pa' :
+           language === 'fa' ? 'Ma nsɛm pa' : 'For accurate data'}
         </Badge>
       </div>
 
@@ -65,41 +65,36 @@ export const LocationSelector = ({ onLocationSelect, selectedLocation, language 
             <MapPin className="h-4 w-4" />
             <div className="text-left">
               <div className="font-medium">{getSelectedLocationName()}</div>
-              <div className="text-xs text-muted-foreground">{getSelectedLocationRegion()}</div>
+              <div className="text-sm text-muted-foreground">{getSelectedLocationRegion()}</div>
             </div>
           </div>
           <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </Button>
 
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
             {locations.map((location) => (
-              <button
+              <Button
                 key={location.code}
-                className={`w-full p-3 text-left hover:bg-muted transition-colors ${
-                  selectedLocation === location.code ? 'bg-muted' : ''
-                }`}
+                variant="ghost"
+                className="w-full justify-start rounded-none border-b last:border-b-0"
                 onClick={() => {
                   onLocationSelect(location.code);
                   setIsOpen(false);
                 }}
               >
-                <div className="font-medium">{location.name}</div>
-                <div className="text-xs text-muted-foreground">{location.region}</div>
-              </button>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  <div className="text-left">
+                    <div className="font-medium">{location.name}</div>
+                    <div className="text-sm text-muted-foreground">{location.region}</div>
+                  </div>
+                </div>
+              </Button>
             ))}
           </div>
         )}
       </div>
-
-      <p className="text-xs text-muted-foreground mt-3">
-        {language === 'en' ? 'Weather and market data will be updated for your selected location' :
-         language === 'tw' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
-         language === 'ee' ? 'Yame kple asi nyawo aɖe sesa na wò nɔƒe si wo tia' :
-         language === 'ga' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
-         language === 'fa' ? 'Ewiem ne gua nsɛm bɛsesa ama wo beaeɛ a woapaw' :
-         language === 'fr' ? 'Les données météo et du marché seront mises à jour pour votre emplacement sélectionné' : 'Weather and market data will be updated for your selected location'}
-      </p>
     </Card>
   );
 }; 

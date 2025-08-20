@@ -160,6 +160,8 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'tw': 'ak-GH', // Twi fallback to English
       'ee': 'ee-GH', // Ewe fallback to English  
       'ga': 'ga-GH', // Ga fallback to English
+      'da': 'da-GH', // Dagbani fallback to English
+      'fa': 'en-GH', // Fante fallback to English
     };
     return codes[lang as keyof typeof codes] || 'en-US';
   };
@@ -169,7 +171,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'en': 'Hello! I\'m Agribot, your agricultural assistant. How can I help you today?',
       'tw': 'Akwaba! Me yɛ Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?',
       'ee': 'Ndi! Nye Agribot, wo agblẽnɔnɔ boafo. Aleke nàdze nàdze wo?',
-      'ga': 'Akwaba! Nye Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?'
+      'ga': 'Akwaba! Nye Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?',
+      'da': 'Akwaba! Nye Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?',
+      'fa': 'Akwaba! Me yɛ Agribot, wo kuwadwuma boafo. Sɛn na me tumi bo wo?'
     };
     return messages[lang as keyof typeof messages] || messages.en;
   };
@@ -200,14 +204,30 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
         'Dukplɔlawo ƒe subsidy',
         'Ka extension officer gbɔ'
       ],
-      'ga': [
-        'Ka aduan ho nsɛm',
-        'Sɛn na yɛɛ mmoawa?',
-        'Ewiem forecast',
-        'Gua bo',
-        'Amanaman ntam subsidy',
-        'Ka extension officer ho'
-      ]
+              'ga': [
+          'Ka aduan ho nsɛm',
+          'Sɛn na yɛɛ mmoawa?',
+          'Ewiem forecast',
+          'Gua bo',
+          'Amanaman ntam subsidy',
+          'Ka extension officer ho'
+        ],
+        'da': [
+          'Ka aduan ho nsɛm',
+          'Sɛn na yɛɛ mmoawa?',
+          'Ewiem forecast',
+          'Gua bo',
+          'Amanaman ntam subsidy',
+          'Ka extension officer ho'
+        ],
+        'fa': [
+          'Ka aduan ho nsɛm',
+          'Sɛn na yɛɛ mmoawa?',
+          'Ewiem forecast',
+          'Gua bo',
+          'Amanaman ntam subsidy',
+          'Ka extension officer ho'
+        ]
     };
     return questions[language as keyof typeof questions] || questions.en;
   };
@@ -265,7 +285,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'en': `🌤️ Current Weather: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Wind: ${weatherData.windSpeed} km/h\n🌱 Farming Advice: ${weatherData.forecast}`,
       'tw': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`,
       'ee': `🌤️ Yame ƒe nɔnɔme: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Nɔ ƒe nɔnɔme: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Agblẽnɔnɔ ɖoɖo: ${weatherData.forecast}`,
-      'ga': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`
+      'ga': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`,
+      'da': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`,
+      'fa': `🌤️ Ewiem tebea: ${weatherData.condition}, ${weatherData.temperature}°C\n💧 Humidity: ${weatherData.humidity}%\n💨 Mframa: ${weatherData.windSpeed} km/h\n🌱 Kuayɛ afotu: ${weatherData.forecast}`
     };
     return responses[language as keyof typeof responses] || responses.en;
   };
@@ -280,7 +302,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'en': `📊 Current Market Prices:\n${marketList}\n\n💡 Tip: Prices are updated daily. Check local markets for the most current rates.`,
       'tw': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`,
       'ee': `📊 Asi ƒe ga home:\n${marketList}\n\n💡 ɖoɖo: Ga sesa daa. Kɔ wò nutɔwo ƒe asi hã eye nàxɔ ga nyuie.`,
-      'ga': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`
+      'ga': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`,
+      'da': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`,
+      'fa': `📊 Gua bo a ɛrekɔ so:\n${marketList}\n\n💡 Afotu: Bo sesa daa. Kɔ wo amantɔ gua hɔ na wo nya bo pa.`
     };
     return responses[language as keyof typeof responses] || responses.en;
   };
@@ -295,7 +319,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
       'en': `🏛️ Government Agricultural Programs:\n\n${subsidyList}\n\n💡 Apply early as programs have limited slots.`,
       'tw': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`,
       'ee': `🏛️ Dukplɔlawo ƒe agblẽnɔnɔ programwo:\n\n${subsidyList}\n\n💡 Sɔ wò application enumake efisɛ programwo le slot kakra.`,
-      'ga': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`
+      'ga': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`,
+      'da': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`,
+      'fa': `🏛️ Amanaman ntam kuayɛ program:\n\n${subsidyList}\n\n💡 Sɔ wo application ntɛm efisɛ program wɔ slot kakra.`
     };
     return responses[language as keyof typeof responses] || responses.en;
   };
@@ -421,7 +447,7 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
             'Me tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
             'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
             'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
-            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
+            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local forecasts daa.',
             'Amanaman ntam subsidies wɔ ma various agricultural programs.',
             'Me tumi connect wo ne agricultural extension officers wo wo area.'
           ],
@@ -435,6 +461,22 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
           ],
           'ga': [
             'Nye tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
+            'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
+            'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
+            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
+            'Amanaman ntam subsidies wɔ ma various agricultural programs.',
+            'Me tumi connect wo ne agricultural extension officers wo wo area.'
+          ],
+          'da': [
+            'Nye tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
+            'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
+            'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
+            'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
+            'Amanaman ntam subsidies wɔ ma various agricultural programs.',
+            'Me tumi connect wo ne agricultural extension officers wo wo area.'
+          ],
+          'fa': [
+            'Me tumi bo wo kuwadwuma advice, aduan management, ne agricultural best practices.',
             'Sɛn na yɛɛ mmoawa, hwɛ integrated pest management techniques.',
             'Ewiem conditions yɛ important ma aduan planning. Hwɛ local forecasts daa.',
             'Gua bo yɛ different by season ne location. Me recommend wo hwɛ local markets.',
@@ -517,13 +559,17 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                 {language === 'en' ? 'Chat with Agribot' : 
                  language === 'tw' ? 'Ka Agribot ho kasa' :
                  language === 'ee' ? 'Ka Agribot gbɔ kpɔ' :
-                 'Ka Agribot ho kasa'}
+                 language === 'ga' ? 'Ka Agribot ho kasa' :
+                 language === 'da' ? 'Ka Agribot ho kasa' :
+                 language === 'fa' ? 'Ka Agribot ho kasa' : 'Ka Agribot ho kasa'}
               </h3>
               <p className="text-sm text-gray-600">
                 {language === 'en' ? 'Your AI agricultural assistant' :
                  language === 'tw' ? 'Wo AI kuwadwuma boafo' :
                  language === 'ee' ? 'Wo AI agblẽnɔnɔ boafo' :
-                 'Wo AI kuwadwuma boafo'}
+                 language === 'ga' ? 'Wo AI kuwadwuma boafo' :
+                 language === 'da' ? 'Wo AI kuwadwuma boafo' :
+                 language === 'fa' ? 'Wo AI kuwadwuma boafo' : 'Wo AI kuwadwuma boafo'}
               </p>
             </div>
           </div>
@@ -560,14 +606,46 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                       <div className="mt-2 p-3 bg-blue-50 rounded-lg">
                         <div className="flex items-center gap-2 text-blue-700">
                           <Cloud className="h-4 w-4" />
-                          <span className="font-medium">Weather Data</span>
+                          <span className="font-medium">
+                            {language === 'en' ? 'Weather Data' :
+                             language === 'tw' ? 'Ewiem Nsɛm' :
+                             language === 'ee' ? 'Yame Nyawo' :
+                             language === 'ga' ? 'Ewiem Nsɛm' :
+                             language === 'da' ? 'Ewiem Nsɛm' :
+                             language === 'fa' ? 'Ewiem Nsɛm' : 'Weather Data'}
+                          </span>
                         </div>
                         <div className="mt-1 text-sm text-blue-600">
-                          Temperature: {(message.data as WeatherData).temperature}°C<br />
-                          Condition: {(message.data as WeatherData).condition}<br />
-                          Humidity: {(message.data as WeatherData).humidity}%<br />
-                          Wind: {(message.data as WeatherData).windSpeed} km/h<br />
-                          Forecast: {(message.data as WeatherData).forecast}
+                          {language === 'en' ? 'Temperature' : 
+                           language === 'tw' ? 'Ewiem Hyew' :
+                           language === 'ee' ? 'Yame Dzo' :
+                           language === 'ga' ? 'Ewiem Hyew' :
+                           language === 'da' ? 'Ewiem Hyew' :
+                           language === 'fa' ? 'Ewiem Hyew' : 'Temperature'}: {(message.data as WeatherData).temperature}°C<br />
+                          {language === 'en' ? 'Condition' : 
+                           language === 'tw' ? 'Ewiem Teɛ' :
+                           language === 'ee' ? 'Yame Te' :
+                           language === 'ga' ? 'Ewiem Teɛ' :
+                           language === 'da' ? 'Ewiem Teɛ' :
+                           language === 'fa' ? 'Ewiem Teɛ' : 'Condition'}: {(message.data as WeatherData).condition}<br />
+                          {language === 'en' ? 'Humidity' : 
+                           language === 'tw' ? 'Nsuo' :
+                           language === 'ee' ? 'Nɔ' :
+                           language === 'ga' ? 'Nsuo' :
+                           language === 'da' ? 'Nsuo' :
+                           language === 'fa' ? 'Nsuo' : 'Humidity'}: {(message.data as WeatherData).humidity}%<br />
+                          {language === 'en' ? 'Wind' : 
+                           language === 'tw' ? 'Mframa' :
+                           language === 'ee' ? 'Mframa' :
+                           language === 'ga' ? 'Mframa' :
+                           language === 'da' ? 'Mframa' :
+                           language === 'fa' ? 'Mframa' : 'Wind'}: {(message.data as WeatherData).windSpeed} km/h<br />
+                          {language === 'en' ? 'Forecast' : 
+                           language === 'tw' ? 'Ewiem Kyerɛ' :
+                           language === 'ee' ? 'Yame Kpɔ' :
+                           language === 'ga' ? 'Ewiem Kyerɛ' :
+                           language === 'da' ? 'Ewiem Kyerɛ' :
+                           language === 'fa' ? 'Ewiem Kyerɛ' : 'Forecast'}: {(message.data as WeatherData).forecast}
                         </div>
                       </div>
                     )}
@@ -577,7 +655,14 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                       <div className="mt-2 p-3 bg-green-50 rounded-lg">
                         <div className="flex items-center gap-2 text-green-700">
                           <TrendingUp className="h-4 w-4" />
-                          <span className="font-medium">Market Prices</span>
+                          <span className="font-medium">
+                            {language === 'en' ? 'Market Prices' :
+                             language === 'tw' ? 'Gua Bo' :
+                             language === 'ee' ? 'Asi ƒe Ga Home' :
+                             language === 'ga' ? 'Gua Bo' :
+                             language === 'da' ? 'Gua Bo' :
+                             language === 'fa' ? 'Gua Bo' : 'Market Prices'}
+                          </span>
                         </div>
                         <div className="mt-1 text-sm text-green-600">
                           {(message.data as MarketData[]).map((item, index) => (
@@ -594,14 +679,26 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                       <div className="mt-2 p-3 bg-purple-50 rounded-lg">
                         <div className="flex items-center gap-2 text-purple-700">
                           <Building2 className="h-4 w-4" />
-                          <span className="font-medium">Government Programs</span>
+                          <span className="font-medium">
+                            {language === 'en' ? 'Government Programs' :
+                             language === 'tw' ? 'Government Program' :
+                             language === 'ee' ? 'Government Program' :
+                             language === 'ga' ? 'Government Program' :
+                             language === 'da' ? 'Government Program' :
+                             language === 'fa' ? 'Government Program' : 'Government Programs'}
+                          </span>
                         </div>
                         <div className="mt-1 text-sm text-purple-600">
                           {(message.data as SubsidyData[]).map((item, index) => (
                             <div key={index} className="mb-2">
                               <strong>{item.program}</strong><br />
                               {item.description}<br />
-                              Contact: {item.contact}
+                              {language === 'en' ? 'Contact' : 
+                               language === 'tw' ? 'Contact' :
+                               language === 'ee' ? 'Contact' :
+                               language === 'ga' ? 'Contact' :
+                               language === 'da' ? 'Contact' :
+                               language === 'fa' ? 'Contact' : 'Contact'}: {item.contact}
                             </div>
                           ))}
                         </div>
@@ -613,13 +710,39 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                       <div className="mt-2 p-3 bg-orange-50 rounded-lg">
                         <div className="flex items-center gap-2 text-orange-700">
                           <CheckCircle className="h-4 w-4" />
-                          <span className="font-medium">Expert Connection</span>
+                          <span className="font-medium">
+                            {language === 'en' ? 'Expert Connection' :
+                             language === 'tw' ? 'Expert Connection' :
+                             language === 'ee' ? 'Expert Connection' :
+                             language === 'ga' ? 'Expert Connection' :
+                             language === 'da' ? 'Expert Connection' :
+                             language === 'fa' ? 'Expert Connection' : 'Expert Connection'}
+                          </span>
                         </div>
                         <div className="mt-1 text-sm text-orange-600">
-                          Expert: {String((message.data as Record<string, unknown>).expertName)}<br />
-                          Phone: {String((message.data as Record<string, unknown>).expertPhone)}<br />
-                          Email: {String((message.data as Record<string, unknown>).expertEmail)}<br />
-                          Response Time: {String((message.data as Record<string, unknown>).responseTime)}
+                          {language === 'en' ? 'Expert' : 
+                           language === 'tw' ? 'Expert' :
+                           language === 'ee' ? 'Expert' :
+                           language === 'ga' ? 'Expert' :
+                           language === 'da' ? 'Expert' :
+                           language === 'fa' ? 'Expert' : 'Expert'}: {String((message.data as Record<string, unknown>).expertName)}<br />
+                          {language === 'en' ? 'Phone' : 
+                           language === 'tw' ? 'Phone' :
+                           language === 'ee' ? 'Phone' :
+                           language === 'ga' ? 'Phone' :
+                           language === 'da' ? 'Phone' :
+                           language === 'fa' ? 'Phone' : 'Phone'}: {String((message.data as Record<string, unknown>).expertPhone)}<br />
+                          {language === 'en' ? 'Email' : 
+                           language === 'ee' ? 'Email' :
+                           language === 'ga' ? 'Email' :
+                           language === 'da' ? 'Email' :
+                           language === 'fa' ? 'Email' : 'Email'}: {String((message.data as Record<string, unknown>).expertEmail)}<br />
+                          {language === 'en' ? 'Response Time' : 
+                           language === 'tw' ? 'Response Time' :
+                           language === 'ee' ? 'Response Time' :
+                           language === 'ga' ? 'Response Time' :
+                           language === 'da' ? 'Response Time' :
+                           language === 'fa' ? 'Response Time' : 'Response Time'}: {String((message.data as Record<string, unknown>).responseTime)}
                         </div>
                       </div>
                     )}
@@ -652,7 +775,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                         {language === 'en' ? 'Thinking...' :
                          language === 'tw' ? 'Yɛ adwene...' :
                          language === 'ee' ? 'Yɛ adwene...' :
-                         'Yɛ adwene...'}
+                         language === 'ga' ? 'Yɛ adwene...' :
+                         language === 'da' ? 'Yɛ adwene...' :
+                         language === 'fa' ? 'Yɛ adwene...' : 'Yɛ adwene...'}
                       </span>
                     </div>
                   </div>
@@ -686,7 +811,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
                 language === 'en' ? 'Type your message or use voice...' :
                 language === 'tw' ? 'Kyerɛw wo nkra anaa fa nne...' :
                 language === 'ee' ? 'Ŋlɔ wò nya alo zã gbe...' :
-                language === 'ga' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' : 'Type your message...'
+                language === 'ga' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' :
+                language === 'da' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' :
+                language === 'fa' ? 'Ŋmɛ wo nyɛ kɛ zã gbe...' : 'Type your message...'
               }
               disabled={isLoading}
               className="flex-1"
@@ -706,7 +833,9 @@ export const ChatInterface = ({ language: propLanguage }: ChatInterfaceProps) =>
               {language === 'en' ? 'Quick questions:' :
                language === 'tw' ? 'Quick questions:' :
                language === 'ee' ? 'Quick questions:' :
-               'Quick questions:'}
+               language === 'ga' ? 'Quick questions:' :
+               language === 'da' ? 'Quick questions:' :
+               language === 'fa' ? 'Quick questions:' : 'Quick questions:'}
             </p>
             <div className="flex flex-wrap gap-2">
               {getQuickQuestions(language).map((question, index) => (

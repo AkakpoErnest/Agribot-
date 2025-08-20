@@ -36,13 +36,17 @@ const Features = () => {
         en: "AI Agricultural Assistant",
         tw: "AI Kuayɛ Boafoɔ",
         ee: "AI Agblẽnuto Kpeɖeŋutɔ",
-        ga: "AI Kuayɛ Boafoɔ"
+        ga: "AI Kuayɛ Boafoɔ",
+        da: "AI Kuayɛ Boafoɔ",
+        fa: "AI Kuayɛ Boafoɔ"
       },
       description: {
         en: "Get instant answers about crops, pests, and farming techniques with our advanced AI system",
         tw: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan yɛ wo AI system",
         ee: "Xɔ ŋuɖoɖo enumake tso nuku, nudzrala, kple agblẽnɔnɔ ŋu yɛ mía AI system",
-        ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan yɛ wo AI system"
+        ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan yɛ wo AI system",
+        da: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan yɛ wo AI system",
+        fa: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan yɛ wo AI system"
       },
       details: {
         en: [
@@ -124,35 +128,51 @@ const Features = () => {
         en: "Multi-language Support",
         tw: "Kasa Ahodoɔ",
         ee: "Gbe Vovovowo Dzi Kpekpeɖeŋu",
-        ga: "Kasa Ahodoɔ"
+        ga: "Kasa Ahodoɔ",
+        da: "Kasa Ahodoɔ",
+        fa: "Kasa Ahodoɔ"
       },
       description: {
-        en: "Available in Twi, Ewe, Ga, and English for maximum accessibility",
-        tw: "Ɛwɔ Twi, Ewe, Ga, ne Borɔfo kasa mu ma accessibility",
-        ee: "Li le Twi, Ewe, Ga, kple Yevugbe me na accessibility",
-        ga: "Ɛwɔ Twi, Ewe, Ga, ne Borɔfo kasa mu ma accessibility"
+        en: "Available in Twi, Ewe, Ga, Dagbani, Fante, and English for maximum accessibility",
+        tw: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu ma accessibility",
+        ee: "Li le Twi, Ewe, Ga, Dagbani, Fante, kple Yevugbe me na accessibility",
+        ga: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu ma accessibility",
+        da: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu ma accessibility",
+        fa: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu ma accessibility"
       },
       details: {
         en: [
-          "Full interface in 4 major Ghanaian languages",
+          "Full interface in 6 major Ghanaian languages",
           "Automatic language detection",
           "Cultural context awareness",
           "Local agricultural terminology"
         ],
         tw: [
-          "Interface nyinaa wɔ Ghana kasa 4 mu",
+          "Interface nyinaa wɔ Ghana kasa 6 mu",
           "Kasa hunu automatic",
           "Cultural context nimdeɛ",
           "Amanantɔ kuayɛ nsɛm"
         ],
         ee: [
-          "Interface katã le Ghana gbe 4 me",
+          "Interface katã le Ghana gbe 6 me",
           "Gbe didi automatic",
           "Cultural context ƒe nimdeɛ",
           "Nutɔ agblẽnɔnɔ ƒe nyawo"
         ],
         ga: [
-          "Interface nyinaa wɔ Ghana kasa 4 mu",
+          "Interface nyinaa wɔ Ghana kasa 6 mu",
+          "Kasa hunu automatic",
+          "Cultural context nimdeɛ",
+          "Amanantɔ kuayɛ nsɛm"
+        ],
+        da: [
+          "Interface nyinaa wɔ Ghana kasa 6 mu",
+          "Kasa hunu automatic",
+          "Cultural context nimdeɛ",
+          "Amanantɔ kuayɛ nsɛm"
+        ],
+        fa: [
+          "Interface nyinaa wɔ Ghana kasa 6 mu",
           "Kasa hunu automatic",
           "Cultural context nimdeɛ",
           "Amanantɔ kuayɛ nsɛm"
@@ -468,11 +488,15 @@ const Features = () => {
                               (selectedLanguage === 'en' ? 'High Priority' :
                                selectedLanguage === 'tw' ? 'Priority Kɛseɛ' :
                                selectedLanguage === 'ee' ? 'Priority Kɛse' :
-                               selectedLanguage === 'ga' ? 'Priority Kɛseɛ' : 'High Priority') :
+                               selectedLanguage === 'ga' ? 'Priority Kɛseɛ' :
+                               selectedLanguage === 'da' ? 'Priority Kɛseɛ' :
+                               selectedLanguage === 'fa' ? 'Priority Kɛseɛ' : 'High Priority') :
                               (selectedLanguage === 'en' ? 'Medium Priority' :
                                selectedLanguage === 'tw' ? 'Priority Mfinimfini' :
                                selectedLanguage === 'ee' ? 'Priority Mfinimfini' :
-                               selectedLanguage === 'ga' ? 'Priority Mfinimfini' : 'Medium Priority')
+                               selectedLanguage === 'ga' ? 'Priority Mfinimfini' :
+                               selectedLanguage === 'da' ? 'Priority Mfinimfini' :
+                               selectedLanguage === 'fa' ? 'Priority Mfinimfini' : 'Medium Priority')
                             }
                           </Badge>
                         </div>
@@ -492,7 +516,9 @@ const Features = () => {
                           {selectedLanguage === 'en' ? 'Try Now' :
                            selectedLanguage === 'tw' ? 'Sɔ Hwɛ' :
                            selectedLanguage === 'ee' ? 'Te Kpɔ' :
-                           selectedLanguage === 'ga' ? 'Sɔ Hwɛ' : 'Try Now'}
+                           selectedLanguage === 'ga' ? 'Sɔ Hwɛ' :
+                           selectedLanguage === 'da' ? 'Sɔ Hwɛ' :
+                           selectedLanguage === 'fa' ? 'Sɔ Hwɛ' : 'Try Now'}
                         </Button>
                       </div>
                     </div>
@@ -522,7 +548,9 @@ const Features = () => {
                             {selectedLanguage === 'en' ? 'Coming Soon' :
                              selectedLanguage === 'tw' ? 'Ɛreba' :
                              selectedLanguage === 'ee' ? 'Egbɔna' :
-                             selectedLanguage === 'ga' ? 'Ɛreba' : 'Coming Soon'}
+                             selectedLanguage === 'ga' ? 'Ɛreba' :
+                             selectedLanguage === 'da' ? 'Ɛreba' :
+                             selectedLanguage === 'fa' ? 'Ɛreba' : 'Coming Soon'}
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground">
@@ -541,7 +569,9 @@ const Features = () => {
                           {selectedLanguage === 'en' ? 'In Development' :
                            selectedLanguage === 'tw' ? 'Wɔ Development' :
                            selectedLanguage === 'ee' ? 'Le Development' :
-                           selectedLanguage === 'ga' ? 'Wɔ Development' : 'In Development'}
+                           selectedLanguage === 'ga' ? 'Wɔ Development' :
+                           selectedLanguage === 'da' ? 'Wɔ Development' :
+                           selectedLanguage === 'fa' ? 'Wɔ Development' : 'In Development'}
                         </Button>
                       </div>
                     </div>
@@ -560,13 +590,17 @@ const Features = () => {
                 {selectedLanguage === 'en' ? 'Ready to Transform Your Farming?' :
                  selectedLanguage === 'tw' ? 'Wo Ready Sɛ Wo Sesɛ Wo Kuayɛ?' :
                  selectedLanguage === 'ee' ? 'Wò Ready Be Nàsesɛ Wò Agblẽnɔnɔ?' :
-                 selectedLanguage === 'ga' ? 'Wo Ready Sɛ Wo Sesɛ Wo Kuayɛ?' : 'Ready to Transform Your Farming?'}
+                 selectedLanguage === 'ga' ? 'Wo Ready Sɛ Wo Sesɛ Wo Kuayɛ?' :
+                 selectedLanguage === 'da' ? 'Wo Ready Sɛ Wo Sesɛ Wo Kuayɛ?' :
+                 selectedLanguage === 'fa' ? 'Wo Ready Sɛ Wo Sesɛ Wo Kuayɛ?' : 'Ready to Transform Your Farming?'}
               </h2>
               <p className="text-primary-foreground/80">
                 {selectedLanguage === 'en' ? 'Start using Agribot today and experience the future of agricultural assistance' :
                  selectedLanguage === 'tw' ? 'Fi Agribot ase nnɛ na sɔ kuayɛ boafoɔ future hwɛ' :
                  selectedLanguage === 'ee' ? 'Dze Agribot gɔme egbe eye nàsɔ agblẽnɔnɔ kpeɖeŋutɔ ƒe future kpɔ' :
-                 selectedLanguage === 'ga' ? 'Fi Agribot ase nnɛ na sɔ kuayɛ boafoɔ future hwɛ' : 'Start using Agribot today'}
+                 selectedLanguage === 'ga' ? 'Fi Agribot ase nnɛ na sɔ kuayɛ boafoɔ future hwɛ' :
+                 selectedLanguage === 'da' ? 'Fi Agribot ase nnɛ na sɔ kuayɛ boafoɔ future hwɛ' :
+                 selectedLanguage === 'fa' ? 'Fi Agribot ase nnɛ na sɔ kuayɛ boafoɔ future hwɛ' : 'Start using Agribot today'}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/">
@@ -575,7 +609,9 @@ const Features = () => {
                     {selectedLanguage === 'en' ? 'Start Chatting' :
                      selectedLanguage === 'tw' ? 'Fi Nkɔmmɔ Ase' :
                      selectedLanguage === 'ee' ? 'Dze Nubiabia Gɔme' :
-                     selectedLanguage === 'ga' ? 'Fi Nkɔmmɔ Ase' : 'Start Chatting'}
+                     selectedLanguage === 'ga' ? 'Fi Nkɔmmɔ Ase' :
+                     selectedLanguage === 'da' ? 'Fi Nkɔmmɔ Ase' :
+                     selectedLanguage === 'fa' ? 'Fi Nkɔmmɔ Ase' : 'Start Chatting'}
                   </Button>
                 </Link>
                 <Button variant="outline" size="lg" className="gap-2 text-primary-foreground border-primary-foreground">
@@ -583,7 +619,9 @@ const Features = () => {
                   {selectedLanguage === 'en' ? 'Learn More' :
                    selectedLanguage === 'tw' ? 'Kyerɛɛ Wo Ho' :
                    selectedLanguage === 'ee' ? 'Kpɔ Nu Vovovowo' :
-                   selectedLanguage === 'ga' ? 'Kyerɛɛ Wo Ho' : 'Learn More'}
+                   selectedLanguage === 'ga' ? 'Kyerɛɛ Wo Ho' :
+                   selectedLanguage === 'da' ? 'Kyerɛɛ Wo Ho' :
+                   selectedLanguage === 'fa' ? 'Kyerɛɛ Wo Ho' : 'Learn More'}
                 </Button>
               </div>
             </div>

@@ -15,25 +15,33 @@ const Login = () => {
         en: 'Welcome to Agribot',
         tw: 'Akwaaba Agribot',
         ee: 'Woezɔ Agribot',
-        ga: 'Akwaaba Agribot'
+        ga: 'Akwaaba Agribot',
+        da: 'Akwaaba Agribot',
+        fa: 'Akwaaba Agribot'
       },
       tagline: {
         en: 'Your AI-powered agricultural assistant for Ghana',
         tw: 'Wo AI-powered agricultural assistant ma Ghana',
         ee: 'Wò AI-powered agricultural assistant na Ghana',
-        ga: 'Wo AI-powered agricultural assistant ma Ghana'
+        ga: 'Wo AI-powered agricultural assistant ma Ghana',
+        da: 'Wo AI-powered agricultural assistant ma Ghana',
+        fa: 'Wo AI-powered agricultural assistant ma Ghana'
       },
       aiAssistant: {
         en: 'AI Agricultural Assistant',
         tw: 'AI Agricultural Assistant',
         ee: 'AI Agricultural Assistant',
-        ga: 'AI Agricultural Assistant'
+        ga: 'AI Agricultural Assistant',
+        da: 'AI Agricultural Assistant',
+        fa: 'AI Agricultural Assistant'
       },
       aiAssistantDesc: {
         en: 'Get instant answers about crops, pests, and farming techniques',
         tw: 'Fa answers ntɛmɛmɛ wɔ crops, pests, ne farming techniques ho',
         ee: 'Kpɔ answers kpɔkpɔ wɔ crops, pests, kple farming techniques gbɔ',
-        ga: 'Fa answers ntɛmɛmɛ wɔ crops, pests, ne farming techniques ho'
+        ga: 'Fa answers ntɛmɛmɛ wɔ crops, pests, ne farming techniques ho',
+        da: 'Fa answers ntɛmɛmɛ wɔ crops, pests, ne farming techniques ho',
+        fa: 'Fa answers ntɛmɛmɛ wɔ crops, pests, ne farming techniques ho'
       },
       voiceCommunication: {
         en: 'Voice Communication',
@@ -54,10 +62,12 @@ const Login = () => {
         ga: 'Multi-language Support'
       },
       multiLanguageSupportDesc: {
-        en: 'Available in Twi, Ewe, Ga, and English',
-        tw: 'Wɔ Twi, Ewe, Ga, ne English mu',
-        ee: 'Le Twi, Ewe, Ga, kple English me',
-        ga: 'Wɔ Twi, Ewe, Ga, ne English mu'
+        en: 'Available in Twi, Ewe, Ga, Dagbani, Fante, and English',
+        tw: 'Wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English mu',
+        ee: 'Le Twi, Ewe, Ga, Dagbani, Fante, kple English me',
+        ga: 'Wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English mu',
+        da: 'Wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English mu',
+        fa: 'Wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English mu'
       },
       securePrivate: {
         en: 'Secure & Private',

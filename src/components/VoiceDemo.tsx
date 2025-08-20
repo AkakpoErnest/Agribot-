@@ -48,7 +48,14 @@ export const VoiceDemo = () => {
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-lg font-semibold mb-4">Voice Input</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {currentLanguage === 'en' ? 'Voice Input' :
+               currentLanguage === 'tw' ? 'Nne Input' :
+               currentLanguage === 'ee' ? 'Gbe Input' :
+               currentLanguage === 'ga' ? 'Nne Input' :
+               currentLanguage === 'da' ? 'Nne Input' :
+               currentLanguage === 'fa' ? 'Nne Input' : 'Voice Input'}
+            </h3>
             <VoiceRecorder
               language={currentLanguage}
               onMessageReceived={handleMessageReceived}
@@ -56,11 +63,23 @@ export const VoiceDemo = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Detected Messages</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {currentLanguage === 'en' ? 'Detected Messages' :
+               currentLanguage === 'tw' ? 'Nkra a Wɔahwɛ' :
+               currentLanguage === 'ee' ? 'Nyawo siwo Wɔahwɛ' :
+               currentLanguage === 'ga' ? 'Nkra a Wɔahwɛ' :
+               currentLanguage === 'da' ? 'Nkra a Wɔahwɛ' :
+               currentLanguage === 'fa' ? 'Nkra a Wɔahwɛ' : 'Detected Messages'}
+            </h3>
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {messages.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">
-                  No messages yet. Try speaking into the microphone!
+                  {currentLanguage === 'en' ? 'No messages yet. Try speaking into the microphone!' :
+                   currentLanguage === 'tw' ? 'Nkra nni hɔ bio. Sɔ wo nne wɔ microphone mu!' :
+                   currentLanguage === 'ee' ? 'Nyawo meli o hã. Sɔ wo gbe wɔ microphone me!' :
+                   currentLanguage === 'ga' ? 'Nkra nni hɔ bio. Sɔ wo nne wɔ microphone mu!' :
+                   currentLanguage === 'da' ? 'Nkra nni hɔ bio. Sɔ wo nne wɔ microphone mu!' :
+                   currentLanguage === 'fa' ? 'Nkra nni hɔ bio. Sɔ wo nne wɔ microphone mu!' : 'No messages yet. Try speaking into the microphone!'}
                 </p>
               ) : (
                 messages.map((msg, index) => (
@@ -87,14 +106,23 @@ export const VoiceDemo = () => {
       </Card>
 
       <Card className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50">
-        <h3 className="text-lg font-semibold mb-4">🌍 Language Support</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          🌍 {currentLanguage === 'en' ? 'Language Support' :
+              currentLanguage === 'tw' ? 'Kasa Boafo' :
+              currentLanguage === 'ee' ? 'Gbe Kpeɖeŋu' :
+              currentLanguage === 'ga' ? 'Kasa Boafo' :
+              currentLanguage === 'da' ? 'Kasa Boafo' :
+              currentLanguage === 'fa' ? 'Kasa Boafo' : 'Language Support'}
+        </h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {supportedLanguages.map(lang => (
             <div key={lang.code} className="text-center p-4 bg-white rounded-lg shadow-sm">
               <div className="text-2xl mb-2">
                 {lang.code === 'tw' ? '🇬🇭' : 
                  lang.code === 'ee' ? '🇬🇭' : 
-                 lang.code === 'ga' ? '🇬🇭' : '🇬🇧'}
+                 lang.code === 'ga' ? '🇬🇭' :
+                 lang.code === 'da' ? '🇬🇭' :
+                 lang.code === 'fa' ? '🇬🇭' : '🇬🇧'}
               </div>
               <h4 className="font-semibold">{lang.nativeName}</h4>
               <p className="text-sm text-muted-foreground">{lang.name}</p>
@@ -105,23 +133,70 @@ export const VoiceDemo = () => {
       </Card>
 
       <Card className="p-6 bg-gradient-to-r from-purple-50 to-pink-50">
-        <h3 className="text-lg font-semibold mb-4">💡 How It Works</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          💡 {currentLanguage === 'en' ? 'How It Works' :
+              currentLanguage === 'tw' ? 'Sɛ Ɛyɛ Adwuma' :
+              currentLanguage === 'ee' ? 'Aleke Ɛyɛ Dɔwɔwɔ' :
+              currentLanguage === 'ga' ? 'Sɛ Ɛyɛ Adwuma' :
+              currentLanguage === 'da' ? 'Sɛ Ɛyɛ Adwuma' :
+              currentLanguage === 'fa' ? 'Sɛ Ɛyɛ Adwuma' : 'How It Works'}
+        </h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-start gap-3">
             <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
-            <p><strong>Speak:</strong> Click the microphone and speak in any supported language</p>
+            <p><strong>{currentLanguage === 'en' ? 'Speak:' : 
+                         currentLanguage === 'tw' ? 'Kasa:' :
+                         currentLanguage === 'ee' ? 'Ƒo nu:' :
+                         currentLanguage === 'ga' ? 'Kasa:' :
+                         currentLanguage === 'da' ? 'Kasa:' :
+                         currentLanguage === 'fa' ? 'Kasa:' : 'Speak:'}</strong> {currentLanguage === 'en' ? 'Click the microphone and speak in any supported language' : 
+                                                                                    currentLanguage === 'tw' ? 'Tow microphone na kasa wɔ kasa biara a ɛwɔ hɔ' :
+                                                                                    currentLanguage === 'ee' ? 'Tow microphone eye ɖo nu le gbe biara si le dɔwɔwɔ me' :
+                                                                                    currentLanguage === 'ga' ? 'Tow microphone na kasa wɔ kasa biara a ɛwɔ hɔ' :
+                                                                                    currentLanguage === 'da' ? 'Tow microphone na kasa wɔ kasa biara a ɛwɔ hɔ' :
+                                                                                    currentLanguage === 'fa' ? 'Tow microphone na kasa wɔ kasa biara a ɛwɔ hɔ' : 'Click the microphone and speak in any supported language'}</p>
           </div>
           <div className="flex items-start gap-3">
             <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
-            <p><strong>Detect:</strong> Our AI analyzes speech patterns to identify the language</p>
+            <p><strong>{currentLanguage === 'en' ? 'Detect:' : 
+                         currentLanguage === 'tw' ? 'Hwɛ:' :
+                         currentLanguage === 'ee' ? 'Hwɛ:' :
+                         currentLanguage === 'ga' ? 'Hwɛ:' :
+                         currentLanguage === 'da' ? 'Hwɛ:' :
+                         currentLanguage === 'fa' ? 'Hwɛ:' : 'Detect:'}</strong> {currentLanguage === 'en' ? 'Our AI analyzes speech patterns to identify the language' : 
+                                                                                    currentLanguage === 'tw' ? 'Yɛn AI hwɛ nne pattern ma ɛhwɛ kasa' :
+                                                                                    currentLanguage === 'ee' ? 'Mía AI hwɛ gbe pattern ma míeɖe gbe' :
+                                                                                    currentLanguage === 'ga' ? 'Yɛn AI hwɛ nne pattern ma ɛhwɛ kasa' :
+                                                                                    currentLanguage === 'da' ? 'Yɛn AI hwɛ nne pattern ma ɛhwɛ kasa' :
+                                                                                    currentLanguage === 'fa' ? 'Yɛn AI hwɛ nne pattern ma ɛhwɛ kasa' : 'Our AI analyzes speech patterns to identify the language'}</p>
           </div>
           <div className="flex items-start gap-3">
             <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
-            <p><strong>Transcribe:</strong> Speech is converted to text in the detected language</p>
+            <p><strong>{currentLanguage === 'en' ? 'Transcribe:' : 
+                         currentLanguage === 'tw' ? 'Kyerɛw:' :
+                         currentLanguage === 'ee' ? 'Ŋlɔ:' :
+                         currentLanguage === 'ga' ? 'Kyerɛw:' :
+                         currentLanguage === 'da' ? 'Kyerɛw:' :
+                         currentLanguage === 'fa' ? 'Kyerɛw:' : 'Transcribe:'}</strong> {currentLanguage === 'en' ? 'Speech is converted to text in the detected language' : 
+                                                                                    currentLanguage === 'tw' ? 'Nne yɛ text wɔ kasa a ɛhwɛ' :
+                                                                                    currentLanguage === 'ee' ? 'Gbe yɛ text le gbe si míeɖe' :
+                                                                                    currentLanguage === 'ga' ? 'Nne yɛ text wɔ kasa a ɛhwɛ' :
+                                                                                    currentLanguage === 'da' ? 'Nne yɛ text wɔ kasa a ɛhwɛ' :
+                                                                                    currentLanguage === 'fa' ? 'Nne yɛ text wɔ kasa a ɛhwɛ' : 'Speech is converted to text in the detected language'}</p>
           </div>
           <div className="flex items-start gap-3">
             <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">4</div>
-            <p><strong>Respond:</strong> The bot can now understand and respond appropriately</p>
+            <p><strong>{currentLanguage === 'en' ? 'Respond:' : 
+                         currentLanguage === 'tw' ? 'Gyae mmuae:' :
+                         currentLanguage === 'ee' ? 'Gyae ŋuɖoɖo:' :
+                         currentLanguage === 'ga' ? 'Gyae mmuae:' :
+                         currentLanguage === 'da' ? 'Gyae mmuae:' :
+                         currentLanguage === 'fa' ? 'Gyae mmuae:' : 'Respond:'}</strong> {currentLanguage === 'en' ? 'The bot can now understand and respond appropriately' : 
+                                                                                    currentLanguage === 'tw' ? 'Bot no tumi ase na ɛgyae mmuae' :
+                                                                                    currentLanguage === 'ee' ? 'Bot no tumi ase eye ɛgyae ŋuɖoɖo' :
+                                                                                    currentLanguage === 'ga' ? 'Bot no tumi ase na ɛgyae mmuae' :
+                                                                                    currentLanguage === 'da' ? 'Bot no tumi ase na ɛgyae mmuae' :
+                                                                                    currentLanguage === 'fa' ? 'Bot no tumi ase na ɛgyae mmuae' : 'The bot can now understand and respond appropriately'}</p>
           </div>
         </div>
       </Card>

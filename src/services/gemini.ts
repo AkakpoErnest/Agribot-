@@ -134,7 +134,9 @@ Please provide practical, actionable agricultural advice for Ghanaian farmers:`;
         'en': 'English',
         'tw': 'Twi (Akan)',
         'ee': 'Ewe',
-        'ga': 'Ga'
+        'ga': 'Ga',
+        'da': 'Dagbani',
+        'fa': 'Fante'
       };
 
       const prompt = `Please translate and respond to this message in ${languageNames[targetLanguage as keyof typeof languageNames] || 'English'}:

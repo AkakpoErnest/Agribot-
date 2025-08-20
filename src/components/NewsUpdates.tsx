@@ -39,11 +39,15 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
           title: language === 'en' ? 'New Fertilizer Subsidy Program Announced' :
                  language === 'tw' ? 'Fertilizer Subsidy Program Foforɔ' :
                  language === 'ee' ? 'Fertilizer Subsidy Program Yeye' :
-                 language === 'ga' ? 'Fertilizer Subsidy Program Foforɔ' : 'New Fertilizer Subsidy Program',
+                 language === 'ga' ? 'Fertilizer Subsidy Program Foforɔ' :
+                 language === 'da' ? 'Fertilizer Subsidy Program Foforɔ' :
+                 language === 'fa' ? 'Fertilizer Subsidy Program Foforɔ' : 'New Fertilizer Subsidy Program',
           content: language === 'en' ? 'The Ministry of Agriculture has announced a new 50% subsidy on NPK and Urea fertilizers for registered farmers. Applications open from next month.' :
                    language === 'tw' ? 'Kuayɛ Ministry ayɛ fertilizer subsidy 50% ma registered farmers. Application bɛfi bosome a ɛba so ase.' :
                    language === 'ee' ? 'Agblẽnɔnɔ Ministry ɖe fertilizer subsidy 50% na agblẽnɔlawo siwo le dɔwɔwɔ me. Application bɛdze ɣleti si le dɔwɔwɔ me.' :
-                   language === 'ga' ? 'Kuayɛ Ministry ayɛ fertilizer subsidy 50% ma registered farmers. Application bɛfi bosome a ɛba so ase.' : 'New fertilizer subsidy program',
+                   language === 'ga' ? 'Kuayɛ Ministry ayɛ fertilizer subsidy 50% ma registered farmers. Application bɛfi bosome a ɛba so ase.' :
+                   language === 'da' ? 'Kuayɛ Ministry ayɛ fertilizer subsidy 50% ma registered farmers. Application bɛfi bosome a ɛba so ase.' :
+                   language === 'fa' ? 'Kuayɛ Ministry ayɛ fertilizer subsidy 50% ma registered farmers. Application bɛfi bosome a ɛba so ase.' : 'New fertilizer subsidy program',
           category: 'news',
           date: '2024-01-15',
           priority: 'high',
@@ -54,11 +58,15 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
           title: language === 'en' ? 'Heavy Rainfall Expected This Week' :
                  language === 'tw' ? 'Nsutɔ Kɛseɛ Bɛba Saa Wiik Yi' :
                  language === 'ee' ? 'Nɔ ƒe Kɛse Bɛdze Ɣleti Sia' :
-                 language === 'ga' ? 'Nsutɔ Kɛseɛ Bɛba Saa Wiik Yi' : 'Heavy Rainfall Expected',
+                 language === 'ga' ? 'Nsutɔ Kɛseɛ Bɛba Saa Wiik Yi' :
+                 language === 'da' ? 'Nsutɔ Kɛseɛ Bɛba Saa Wiik Yi' :
+                 language === 'fa' ? 'Nsutɔ Kɛseɛ Bɛba Saa Wiik Yi' : 'Heavy Rainfall Expected',
           content: language === 'en' ? 'Weather forecast predicts heavy rainfall across major farming regions. Farmers advised to delay planting and protect existing crops.' :
                    language === 'tw' ? 'Ewiem forecast ka nsutɔ kɛseɛ bɛba kuayɛ mpɔtam nyinaa. Akuafoɔ wɔ advice ma wo nka dua na wo hwɛ aduan a ɛwɔ hɔ.' :
                    language === 'ee' ? 'Yame forecast ɖe nɔ kɛse bɛdze agblẽnɔnɔ nutɔwo nyinaa. Agblẽnɔlawo wɔ advice ma wo nka ɖe eye wo hã agblẽnɔnɔ siwo le dɔwɔwɔ.' :
-                   language === 'ga' ? 'Ewiem forecast ka nsutɔ kɛseɛ bɛba kuayɛ mpɔtam nyinaa. Akuafoɔ wɔ advice ma wo nka dua na wo hwɛ aduan a ɛwɔ hɔ.' : 'Heavy rainfall expected',
+                   language === 'ga' ? 'Ewiem forecast ka nsutɔ kɛseɛ bɛba kuayɛ mpɔtam nyinaa. Akuafoɔ wɔ advice ma wo nka dua na wo hwɛ aduan a ɛwɔ hɔ.' :
+                   language === 'da' ? 'Ewiem forecast ka nsutɔ kɛseɛ bɛba kuayɛ mpɔtam nyinaa. Akuafoɔ wɔ advice ma wo nka dua na wo hwɛ aduan a ɛwɔ hɔ.' :
+                   language === 'fa' ? 'Ewiem forecast ka nsutɔ kɛseɛ bɛba kuayɛ mpɔtam nyinaa. Akuafoɔ wɔ advice ma wo nka dua na wo hwɛ aduan a ɛwɔ hɔ.' : 'Heavy rainfall expected',
           category: 'weather',
           date: '2024-01-14',
           priority: 'high',
@@ -69,11 +77,15 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
           title: language === 'en' ? 'Tomato Prices Rise by 25%' :
                  language === 'tw' ? 'Ntoses Bo So 25%' :
                  language === 'ee' ? 'Ntoses ƒe Ga ƒo 25%' :
-                 language === 'ga' ? 'Ntoses Bo So 25%' : 'Tomato Prices Rise',
+                 language === 'ga' ? 'Ntoses Bo So 25%' :
+                 language === 'da' ? 'Ntoses Bo So 25%' :
+                 language === 'fa' ? 'Ntoses Bo So 25%' : 'Tomato Prices Rise',
           content: language === 'en' ? 'Tomato prices have increased significantly in major markets. Kumasi market shows highest prices at GH₵ 18 per kg.' :
                    language === 'tw' ? 'Ntoses bo so kɛseɛ wɔ gua kɛseɛ mu. Kumasi gua ka bo kɛseɛ wɔ GH₵ 18 ma kg biara.' :
                    language === 'ee' ? 'Ntoses ƒe ga ƒo kɛse le asi kɛsewo me. Kumasi asi ka ga kɛse le GH₵ 18 na kg biako.' :
-                   language === 'ga' ? 'Ntoses bo so kɛseɛ wɔ gua kɛseɛ mu. Kumasi gua ka bo kɛseɛ wɔ GH₵ 18 ma kg biara.' : 'Tomato prices increased',
+                   language === 'ga' ? 'Ntoses bo so kɛseɛ wɔ gua kɛseɛ mu. Kumasi gua ka bo kɛseɛ wɔ GH₵ 18 ma kg biara.' :
+                   language === 'da' ? 'Ntoses bo so kɛseɛ wɔ gua kɛseɛ mu. Kumasi gua ka bo kɛseɛ wɔ GH₵ 18 ma kg biara.' :
+                   language === 'fa' ? 'Ntoses bo so kɛseɛ wɔ gua kɛseɛ mu. Kumasi gua ka bo kɛseɛ wɔ GH₵ 18 ma kg biara.' : 'Tomato prices increased',
           category: 'market',
           date: '2024-01-13',
           priority: 'medium',
@@ -84,11 +96,15 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
           title: language === 'en' ? 'Pest Alert: Armyworm Infestation Detected' :
                  language === 'tw' ? 'Mmoawa Alert: Kwatɔ Ahyɛ' :
                  language === 'ee' ? 'Nudzrala Alert: Kwatɔ ƒe Dɔwɔwɔ' :
-                 language === 'ga' ? 'Mmoawa Alert: Kwatɔ Ahyɛ' : 'Pest Alert: Armyworm',
+                 language === 'ga' ? 'Mmoawa Alert: Kwatɔ Ahyɛ' :
+                 language === 'da' ? 'Mmoawa Alert: Kwatɔ Ahyɛ' :
+                 language === 'fa' ? 'Mmoawa Alert: Kwatɔ Ahyɛ' : 'Pest Alert: Armyworm',
           content: language === 'en' ? 'Armyworm infestation detected in Ashanti region. Farmers advised to monitor crops and apply recommended pesticides immediately.' :
                    language === 'tw' ? 'Kwatɔ ahyɛ wɔ Ashanti mpɔtam. Akuafoɔ wɔ advice ma wo hwɛ aduan na wo fa pesticide a wo ayɛ.' :
                    language === 'ee' ? 'Kwatɔ ƒe dɔwɔwɔ le Ashanti nutɔ me. Agblẽnɔlawo wɔ advice ma wo kpɔ agblẽnɔnɔ eye wo zã pesticide siwo woayɛ.' :
-                   language === 'ga' ? 'Kwatɔ ahyɛ wɔ Ashanti mpɔtam. Akuafoɔ wɔ advice ma wo hwɛ aduan na wo fa pesticide a wo ayɛ.' : 'Armyworm infestation detected',
+                   language === 'ga' ? 'Kwatɔ ahyɛ wɔ Ashanti mpɔtam. Akuafoɔ wɔ advice ma wo hwɛ aduan na wo fa pesticide a wo ayɛ.' :
+                   language === 'da' ? 'Kwatɔ ahyɛ wɔ Ashanti mpɔtam. Akuafoɔ wɔ advice ma wo hwɛ aduan na wo fa pesticide a wo ayɛ.' :
+                   language === 'fa' ? 'Kwatɔ ahyɛ wɔ Ashanti mpɔtam. Akuafoɔ wɔ advice ma wo hwɛ aduan na wo fa pesticide a wo ayɛ.' : 'Armyworm infestation detected',
           category: 'alert',
           date: '2024-01-12',
           priority: 'high',
@@ -131,37 +147,108 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
     }
   };
 
+  const getText = (key: string) => {
+    const texts = {
+      all: { 
+        en: 'All', 
+        tw: 'Nyinaa', 
+        ee: 'Nyinaa', 
+        ga: 'Nyinaa', 
+        da: 'Nyinaa',
+        fa: 'Nyinaa'
+      },
+      news: { 
+        en: 'News', 
+        tw: 'Nsɛm', 
+        ee: 'Nyawo', 
+        ga: 'Nsɛm', 
+        da: 'Nsɛm',
+        fa: 'Nsɛm'
+      },
+      weather: { 
+        en: 'Weather', 
+        tw: 'Ewiem', 
+        ee: 'Yame', 
+        ga: 'Ewiem', 
+        da: 'Ewiem',
+        fa: 'Ewiem'
+      },
+      market: { 
+        en: 'Market', 
+        tw: 'Gua', 
+        ee: 'Asi', 
+        ga: 'Gua', 
+        da: 'Gua',
+        fa: 'Gua'
+      },
+      alerts: { 
+        en: 'Alerts', 
+        tw: 'Alert', 
+        ee: 'Alert', 
+        ga: 'Alert', 
+        da: 'Alert',
+        fa: 'Alert'
+      }
+    };
+
+    return texts[key]?.[language] || texts[key]?.en || key;
+  };
+
+  const getTitle = () => {
+    return language === 'en' ? 'News & Updates' :
+           language === 'tw' ? 'Nsɛm ne Nsɛm Foforɔ' :
+           language === 'ee' ? 'Nyawo kple Nyawo Yeye' :
+           language === 'ga' ? 'Nsɛm ne Nsɛm Foforɔ' :
+           language === 'da' ? 'Nsɛm ne Nsɛm Foforɔ' :
+           language === 'fa' ? 'Nsɛm ne Nsɛm Foforɔ' : 'News & Updates';
+  };
+
+  const getDescription = () => {
+    return language === 'en' ? 'Stay informed with latest updates' :
+           language === 'tw' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
+           language === 'ee' ? 'Hwɛ nyawo yeye wɔ agbledede, yame, kple asi ŋu' :
+           language === 'ga' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
+           language === 'da' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
+           language === 'fa' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' : 'Stay informed with latest updates';
+  };
+
   const filteredNews = selectedCategory === 'all' 
     ? newsItems 
     : newsItems.filter(item => item.category === selectedCategory);
 
   const categories = [
-    { key: 'all', label: language === 'en' ? 'All' : language === 'tw' ? 'Nyinaa' : language === 'ee' ? 'Nyinaa' : language === 'ga' ? 'Nyinaa' : language === 'fa' ? 'Nyinaa' : language === 'fr' ? 'Tout' : 'All' },
-    { key: 'news', label: language === 'en' ? 'News' : language === 'tw' ? 'Nsɛm' : language === 'ee' ? 'Nyawo' : language === 'ga' ? 'Nsɛm' : language === 'fa' ? 'Nsɛm' : language === 'fr' ? 'Actualités' : 'News' },
-    { key: 'weather', label: language === 'en' ? 'Weather' : language === 'tw' ? 'Ewiem' : language === 'ee' ? 'Yame' : language === 'ga' ? 'Ewiem' : language === 'fa' ? 'Ewiem' : language === 'fr' ? 'Météo' : 'Weather' },
-    { key: 'market', label: language === 'en' ? 'Market' : language === 'tw' ? 'Gua' : language === 'ee' ? 'Asi' : language === 'ga' ? 'Gua' : language === 'fa' ? 'Gua' : language === 'fr' ? 'Marché' : 'Market' },
-    { key: 'alert', label: language === 'en' ? 'Alerts' : language === 'tw' ? 'Alert' : language === 'ee' ? 'Alert' : language === 'ga' ? 'Alert' : language === 'fa' ? 'Alert' : language === 'fr' ? 'Alertes' : 'Alerts' }
+    { key: 'all', label: getText('all') },
+    { key: 'news', label: getText('news') },
+    { key: 'weather', label: getText('weather') },
+    { key: 'market', label: getText('market') },
+    { key: 'alert', label: getText('alerts') }
   ];
+
+  const getReadMoreText = () => {
+    return language === 'en' ? 'Read More' :
+           language === 'tw' ? 'Kenkan Bio' :
+           language === 'ee' ? 'Xlẽe Bio' :
+           language === 'ga' ? 'Kenkan Bio' :
+           language === 'da' ? 'Kenkan Bio' : 'Read More';
+  };
+
+  const getViewAllText = () => {
+    return language === 'en' ? 'View All News' :
+           language === 'tw' ? 'Hwɛ Nsɛm Nyinaa' :
+           language === 'ee' ? 'Hwɛ Nyawo Nyui' :
+           language === 'ga' ? 'Hwɛ Nsɛm Nyinaa' :
+           language === 'da' ? 'Hwɛ Nsɛm Nyinaa' : 'View All News';
+  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {language === 'en' ? 'News & Updates' :
-             language === 'tw' ? 'Nsɛm ne Nsɛm Foforɔ' :
-             language === 'ee' ? 'Nyawo kple Nyawo Yeye' :
-             language === 'ga' ? 'Nsɛm ne Nsɛm Foforɔ' :
-             language === 'fa' ? 'Nsɛm ne Nsɛm Foforɔ' :
-             language === 'fr' ? 'Actualités et Mises à jour' : 'News & Updates'}
+            {getTitle()}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {language === 'en' ? 'Stay informed with the latest agricultural news, weather alerts, and market updates' :
-             language === 'tw' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
-             language === 'ee' ? 'Kpɔ nyawo yeye le agblẽnɔnɔ, yame, kple asi ŋu' :
-             language === 'ga' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
-             language === 'fa' ? 'Hwɛ nsɛm foforɔ wɔ kuayɛ, ewiem, ne gua ho' :
-             language === 'fr' ? 'Restez informé des dernières actualités agricoles, alertes météo et mises à jour du marché' : 'Stay informed with latest updates'}
+            {getDescription()}
           </p>
         </div>
 
@@ -212,12 +299,7 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
                 </div>
                 <Button variant="ghost" size="sm" className="gap-1">
                   <ExternalLink className="h-3 w-3" />
-                  {language === 'en' ? 'Read More' :
-                   language === 'tw' ? 'Kenkan Bio' :
-                   language === 'ee' ? 'Xlẽe Bio' :
-                   language === 'ga' ? 'Kenkan Bio' :
-                   language === 'fa' ? 'Kenkan Bio' :
-                   language === 'fr' ? 'Lire Plus' : 'Read More'}
+                  {getReadMoreText()}
                 </Button>
               </div>
             </Card>
@@ -228,12 +310,7 @@ export const NewsUpdates = ({ language }: NewsUpdatesProps) => {
         <div className="text-center mt-8">
           <Button variant="outline" size="lg" className="gap-2">
             <Newspaper className="h-4 w-4" />
-            {language === 'en' ? 'View All News' :
-             language === 'tw' ? 'Hwɛ Nsɛm Nyinaa' :
-             language === 'ee' ? 'Kpɔ Nyawo Nyinaa' :
-             language === 'ga' ? 'Hwɛ Nsɛm Nyinaa' :
-             language === 'fa' ? 'Hwɛ Nsɛm Nyinaa' :
-             language === 'fr' ? 'Voir Toutes les Actualités' : 'View All News'}
+            {getViewAllText()}
           </Button>
         </div>
       </div>

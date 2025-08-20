@@ -139,25 +139,51 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
     return texts[language as keyof typeof texts] || texts.en;
   };
 
+  const getMeetOurTeamText = () => {
+    return language === 'en' ? 'Meet Our Team' :
+           language === 'tw' ? 'Hwɛ Yɛn Fekuo' :
+           language === 'ee' ? 'Hwɛ Mía Fekuo' :
+           language === 'ga' ? 'Hwɛ Yɛn Fekuo' :
+           language === 'da' ? 'Hwɛ Yɛn Fekuo' :
+           language === 'fa' ? 'Hwɛ Yɛn Fekuo' : 'Meet Our Team';
+  };
+
+  const getTeamDescriptionText = () => {
+    return language === 'en' ? 'The passionate developers and designers behind Agribot' :
+           language === 'tw' ? 'Developer ne designer a ɛyɛ Agribot no' :
+           language === 'ee' ? 'Developer kple designer si ɖe Agribot ŋu' :
+           language === 'ga' ? 'Developer ne designer a ɛyɛ Agribot no' :
+           language === 'da' ? 'Developer ne designer a ɛyɛ Agribot no' :
+           language === 'fa' ? 'Developer ne designer a ɛyɛ Agribot no' : 'The passionate developers and designers behind Agribot';
+  };
+
+  const getOurMissionText = () => {
+    return language === 'en' ? 'Our Mission' :
+           language === 'tw' ? 'Yɛn Adwuma' :
+           language === 'ee' ? 'Mía Dɔ' :
+           language === 'ga' ? 'Yɛn Adwuma' :
+           language === 'da' ? 'Yɛn Adwuma' :
+           language === 'fa' ? 'Yɛn Adwuma' : 'Our Mission';
+  };
+
+  const getMissionDescriptionText = () => {
+    return language === 'en' ? 'As Level 400 students at Ho Technical University, we are passionate about leveraging technology to solve real agricultural challenges in Ghana. Our work focuses on connecting farmers, extension officers, and customers through innovative digital solutions.' :
+           language === 'tw' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative digital solutions.' :
+           language === 'ee' ? 'Sɛ Level 400 students wɔ Ho Technical University, míeɖe sɛ míeɖe mfidie ma míeɖe agbledede nyawo si ɖe Ghana me. Mía dɔ nye sɛ míeɖe akuafo, extension officers, kple customers ho innovative digital solutions.' :
+           language === 'ga' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative digital solutions.' :
+           language === 'da' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative digital solutions.' :
+           language === 'fa' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative digital solutions.' : 'As Level 400 students at Ho Technical University, we are passionate about leveraging technology to solve real challenges in Ghana. Our work focuses on connecting farmers, extension officers, and customers through innovative digital solutions.';
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4">
         <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 animate-pulse">
-            {language === 'en' ? 'Meet Our Team' :
-             language === 'tw' ? 'Hwɛ Yɛn Fekuo' :
-             language === 'ee' ? 'Kpɔ Míawo ƒe Hame' :
-             language === 'ga' ? 'Hwɛ Yɛn Fekuo' :
-             language === 'fa' ? 'Hwɛ Yɛn Fekuo' :
-             language === 'fr' ? 'Rencontrez Notre Équipe' : 'Meet Our Team'}
+            {getMeetOurTeamText()}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {language === 'en' ? 'The passionate developers and designers behind Agribot' :
-             language === 'tw' ? 'Developer ne designer a ɛyɛ Agribot no' :
-             language === 'ee' ? 'Developer kple designer siwo wɔa dɔ Agribot ŋu' :
-             language === 'ga' ? 'Developer ne designer a ɛyɛ Agribot no' :
-             language === 'fa' ? 'Developer ne designer a ɛyɛ Agribot no' :
-             language === 'fr' ? 'Les développeurs et designers passionnés derrière Agribot' : 'The passionate developers and designers behind Agribot'}
+            {getTeamDescriptionText()}
           </p>
         </div>
 
@@ -279,20 +305,10 @@ export const TeamSection = ({ language: propLanguage }: TeamSectionProps) => {
             <div className="text-primary-foreground">
               <h3 className="text-xl font-bold mb-3 flex items-center justify-center gap-2">
                 <BookOpen className="h-5 w-5 animate-pulse" />
-                {language === 'en' ? 'Our Mission' :
-                 language === 'tw' ? 'Yɛn Adwuma' :
-                 language === 'ee' ? 'Míawo ƒe Dɔwɔwɔ' :
-                 language === 'ga' ? 'Yɛn Adwuma' :
-                 language === 'fa' ? 'Yɛn Adwuma' :
-                 language === 'fr' ? 'Notre Mission' : 'Our Mission'}
+                {getOurMissionText()}
               </h3>
               <p className="text-primary-foreground/90 leading-relaxed">
-                {language === 'en' ? 'As Level 400 students at Ho Technical University, we are passionate about leveraging technology to solve real-world agricultural challenges in Ghana. Our mission is to bridge the communication gap between farmers, extension officers, and customers through innovative multilingual solutions.' :
-                 language === 'tw' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
-                 language === 'ee' ? 'Esi míawo nye Level 400 students le Ho Technical University, míawo lɔ̃ nu siwo wɔa dɔ mɔnu ma míawoa ɖe agblẽnɔnɔ ƒe dɔwɔwɔ le Ghana. Míawo ƒe dɔwɔwɔ nye nu siwo wɔa dɔ agblẽnɔlawo, extension officers, kple asiwo ƒe dɔwɔwɔ ŋu.' :
-                 language === 'ga' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
-                 language === 'fa' ? 'Sɛ Level 400 students wɔ Ho Technical University, yɛpɛ sɛ yɛfa mfidie ma yɛyɛ kuayɛ nsɛm a ɛhaw Ghana. Yɛn adwuma nye sɛ yɛka akuafo, extension officers, ne customers ho yɛ innovative multilingual solutions.' :
-                 language === 'fr' ? 'Comme étudiants de niveau 400 à l\'Université Technologique de Ho, nous sommes passionnés par l\'exploitation de la technologie pour résoudre les défis agricoles réels au Ghana. Notre mission est de combler la lacune de communication entre les agriculteurs, les agents d\'extension et les clients grâce à des solutions multilingues innovantes.' : 'Our mission statement'}
+                {getMissionDescriptionText()}
               </p>
             </div>
           </Card>

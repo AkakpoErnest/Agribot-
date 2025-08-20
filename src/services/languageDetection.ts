@@ -64,6 +64,23 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePattern> = {
     ],
     confidence: 0.8
   },
+  da: {
+    words: [
+      'n', 'a', 'ka', 'da', 'la', 'ma', 'na', 'ta', 'sa', 'ba', 'ga', 'ha',
+      'ya', 'wa', 'pa', 'ra', 'fa', 'va', 'za', 'xa', 'ca', 'ja', 'qa', 'xa',
+      'n + verb', 'a + verb', 'ka + verb', 'da + verb', 'la + verb', 'ma + verb'
+    ],
+    phrases: [
+      'n yɛli', 'a yɛli', 'ka yɛli', 'da yɛli', 'la yɛli', 'ma yɛli',
+      'n kɔ', 'a kɔ', 'ka kɔ', 'da kɔ', 'la kɔ', 'ma kɔ',
+      'n ba', 'a ba', 'ka ba', 'da ba', 'la ba', 'ma ba'
+    ],
+    grammar: [
+      'n + verb', 'a + verb', 'ka + verb', 'da + verb', 'la + verb',
+      'verb + n', 'verb + a', 'verb + ka', 'verb + da', 'verb + la'
+    ],
+    confidence: 0.85
+  },
   fa: {
     words: [
       'me', 'wo', 'yɛ', 'ne', 'wɔ', 'ɛyɛ', 'ɛno', 'ɛne', 'ɛwɔ', 'ma', 'ka', 'da',
@@ -80,21 +97,6 @@ const LANGUAGE_PATTERNS: Record<string, LanguagePattern> = {
     grammar: [
       'me + verb', 'wo + verb', 'yɛ + verb', 'ɛ + verb', 'no + verb',
       'verb + me', 'verb + wo', 'verb + yɛ', 'verb + ɛ', 'verb + no'
-    ],
-    confidence: 0.85
-  },
-  fr: {
-    words: [
-      'le', 'la', 'les', 'un', 'une', 'des', 'et', 'ou', 'mais', 'dans', 'sur', 'à',
-      'est', 'sont', 'était', 'étaient', 'être', 'été', 'étant', 'avoir', 'a', 'avait',
-      'faire', 'fait', 'faisait', 'vouloir', 'voulait', 'pouvoir', 'pouvait', 'devoir', 'devait'
-    ],
-    phrases: [
-      'comment allez-vous', 'qu\'est-ce que c\'est', 'où êtes-vous', 'quand voulez-vous', 'pourquoi avez-vous',
-      'pouvez-vous aider', 'merci', 'vous êtes bienvenu', 'excusez-moi', 'je suis désolé'
-    ],
-    grammar: [
-      'sujet + verbe', 'verbe + objet', 'adjectif + nom', 'adverbe + verbe'
     ],
     confidence: 0.9
   },
@@ -215,8 +217,8 @@ export class LanguageDetector {
       tw: { name: 'Twi', nativeName: 'Twi', region: 'Ashanti, Central Ghana' },
       ee: { name: 'Ewe', nativeName: 'Eʋegbe', region: 'Volta Region, Ghana' },
       ga: { name: 'Ga', nativeName: 'Ga', region: 'Greater Accra Region, Ghana' },
+      da: { name: 'Dagbani', nativeName: 'Dagbani', region: 'Northern Region, Ghana' },
       fa: { name: 'Fante', nativeName: 'Fante', region: 'Central Region, Ghana' },
-      fr: { name: 'French', nativeName: 'Français', region: 'International, West Africa' },
       en: { name: 'English', nativeName: 'English', region: 'Ghana (Official)' }
     };
     

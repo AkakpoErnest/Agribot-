@@ -42,6 +42,8 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
         'tw': 'en-US', // Twi - use English recognition for now
         'ee': 'en-US', // Ewe - use English recognition for now
         'ga': 'en-US', // Ga - use English recognition for now
+        'da': 'en-US', // Dagbani - use English recognition for now
+        'fa': 'en-US', // Fante - use English recognition for now
       };
       
       recognition.lang = languageMap[language] || 'en-US';
@@ -162,16 +164,47 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
     return 'Language detected';
   };
 
+  const getVoiceMessageText = () => {
+    return language === 'en' ? 'Voice Message' :
+           language === 'tw' ? 'Wo nne nkra' :
+           language === 'ee' ? 'Wò gbe nkra' :
+           language === 'ga' ? 'Wo nne nkra' :
+           language === 'da' ? 'Wo nne nkra' :
+           language === 'fa' ? 'Wo nne nkra' : 'Voice Message';
+  };
+
+  const getListeningText = () => {
+    return language === 'en' ? 'Listening... Tap to stop' :
+           language === 'tw' ? 'Tie... Tow na egyae' :
+           language === 'ee' ? 'Dɔ... Tow na egyae' :
+           language === 'ga' ? 'Tie... Tow na egyae' :
+           language === 'da' ? 'Tie... Tow na egyae' :
+           language === 'fa' ? 'Tie... Tow na egyae' : 'Listening... Tap to stop';
+  };
+
+  const getTapToStartText = () => {
+    return language === 'en' ? 'Tap to start voice recognition' :
+           language === 'tw' ? 'Tow na fi ase tie wo nne' :
+           language === 'ee' ? 'Tow na fi ase dɔ wò gbe' :
+           language === 'ga' ? 'Tow na fi ase tie wo nne' :
+           language === 'da' ? 'Tow na fi ase tie wo nne' :
+           language === 'fa' ? 'Tow na fi ase tie wo nne' : 'Tap to start voice recognition';
+  };
+
+  const getSendMessageText = () => {
+    return language === 'en' ? 'Send Message' :
+           language === 'tw' ? 'Soma nkra' :
+           language === 'ee' ? 'Ɖo nkra' :
+           language === 'ga' ? 'Soma nkra' :
+           language === 'da' ? 'Soma nkra' :
+           language === 'fa' ? 'Soma nkra' : 'Send Message';
+  };
+
   return (
     <Card className="p-6 bg-gradient-earth border-2">
       <div className="text-center space-y-4">
         <h3 className="text-lg font-semibold text-foreground">
-          {language === 'en' ? 'Voice Message' : 
-           language === 'tw' ? 'Wo nne nkra' :
-           language === 'ee' ? 'Wò nya' :
-           language === 'ga' ? 'Wo nyɛ' :
-           language === 'fa' ? 'Wo nne nkra' :
-           language === 'fr' ? 'Message Vocal' : 'Voice Message'}
+          {getVoiceMessageText()}
         </h3>
         
         <div className="flex flex-col items-center gap-4">
@@ -193,25 +226,20 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
           
           <p className="text-sm text-muted-foreground max-w-xs">
             {isRecording 
-              ? (language === 'en' ? 'Listening... Tap to stop' :
-                 language === 'tw' ? 'Tie... Tow na egyae' :
-                 language === 'ee' ? 'Dzidzi... Tɔ be nàtso' :
-                 language === 'ga' ? 'Tie... Tɔ nà bɔ' :
-                 language === 'fa' ? 'Tie... Tow na egyae' :
-                 language === 'fr' ? 'Écoute... Appuyez pour arrêter' : 'Listening... Tap to stop')
-              : (language === 'en' ? 'Tap to start voice recognition' :
-                 language === 'tw' ? 'Tow na fi ase tie wo nne' :
-                 language === 'ee' ? 'Tɔ nàdze gɔmedzedze' :
-                 language === 'ga' ? 'Tɔ nà bɔ gɔme' :
-                 language === 'fa' ? 'Tow na fi ase tie wo nne' :
-                 language === 'fr' ? 'Appuyez pour démarrer la reconnaissance vocale' : 'Tap to start voice recognition')
+              ? getListeningText()
+              : getTapToStartText()
             }
           </p>
           
           {isProcessing && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-              Processing speech...
+              {language === 'en' ? 'Processing speech...' :
+               language === 'tw' ? 'Yɛ nne...' :
+               language === 'ee' ? 'Yɛ gbe...' :
+               language === 'ga' ? 'Yɛ nne...' :
+               language === 'da' ? 'Yɛ nne...' :
+               language === 'fa' ? 'Yɛ nne...' : 'Processing speech...'}
             </div>
           )}
           
@@ -224,7 +252,14 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
           
           {transcribedText && (
             <div className="w-full max-w-md">
-              <p className="text-sm font-medium mb-2">Transcribed Text:</p>
+              <p className="text-sm font-medium mb-2">
+                {language === 'en' ? 'Transcribed Text:' :
+                 language === 'tw' ? 'Nkra a Wɔakyerɛw:' :
+                 language === 'ee' ? 'Nyawo siwo Wɔaŋlɔ:' :
+                 language === 'ga' ? 'Nkra a Wɔakyerɛw:' :
+                 language === 'da' ? 'Nkra a Wɔakyerɛw:' :
+                 language === 'fa' ? 'Nkra a Wɔakyerɛw:' : 'Transcribed Text:'}
+              </p>
               <div className="bg-background/50 p-3 rounded-lg text-sm text-left">
                 {transcribedText}
               </div>
@@ -234,19 +269,19 @@ export const VoiceRecorder = ({ language, onMessageReceived }: VoiceRecorderProp
           {hasRecording && (
             <div className="flex gap-2">
               {audioBlob && (
-                <Button variant="outline" onClick={playRecording} size="sm">
-                  <Volume2 className="h-4 w-4 mr-2" />
-                  Play
-                </Button>
+                                  <Button variant="outline" onClick={playRecording} size="sm">
+                    <Volume2 className="h-4 w-4 mr-2" />
+                    {language === 'en' ? 'Play' :
+                     language === 'tw' ? 'Play' :
+                     language === 'ee' ? 'Play' :
+                     language === 'ga' ? 'Play' :
+                     language === 'da' ? 'Play' :
+                     language === 'fa' ? 'Play' : 'Play'}
+                  </Button>
               )}
               <Button variant="ghana" onClick={sendMessage} className="gap-2">
                 <Send className="h-4 w-4" />
-                {language === 'en' ? 'Send Message' :
-                 language === 'tw' ? 'Soma nkra' :
-                 language === 'ee' ? 'Dɔ nya' :
-                 language === 'ga' ? 'Soma' :
-                 language === 'fa' ? 'Soma nkra' :
-                 language === 'fr' ? 'Envoyer le Message' : 'Send Message'}
+                {getSendMessageText()}
               </Button>
             </div>
           )}

@@ -29,13 +29,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "AI Agricultural Assistant",
         tw: "AI Kuayɛ Boafoɔ",
         ee: "AI Agblẽnuto Kpeɖeŋutɔ",
-        ga: "AI Kuayɛ Boafoɔ"
+        ga: "AI Kuayɛ Boafoɔ",
+        da: "AI Kuayɛ Boafoɔ",
+        fa: "AI Kuayɛ Boafoɔ"
       },
       description: {
         en: "Get instant answers about crops, pests, and farming techniques",
         tw: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho",
         ee: "Xɔ ŋuɖoɖo enumake tso nuku, nudzrala, kple agblẽnɔnɔ ŋu",
-        ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho"
+        ga: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho",
+        da: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho",
+        fa: "Nya mmuae ntɛm fa aduan, mmoawa, ne kuayɛ akwan ho"
       },
       status: "active"
     },
@@ -45,13 +49,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Voice Communication",
         tw: "Nne Nkitaho",
         ee: "Gbeɖoɖo",
-        ga: "Nne Nkitaho"
+        ga: "Nne Nkitaho",
+        da: "Nne Nkitaho",
+        fa: "Nne Nkitaho"
       },
       description: {
         en: "Speak in your local language and get responses",
         tw: "Kasa wo amantɔ kasa mu na gye mmuae",
         ee: "Ƒo nu le wò nutɔwo ƒe gbe me eye nàxɔ ŋuɖoɖo",
-        ga: "Kasa wo amantɔ kasa mu na gye mmuae"
+        ga: "Kasa wo amantɔ kasa mu na gye mmuae",
+        da: "Kasa wo amantɔ kasa mu na gye mmuae",
+        fa: "Kasa wo amantɔ kasa mu na gye mmuae"
       },
       status: "active"
     },
@@ -61,13 +69,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Multi-language Support",
         tw: "Kasa Ahodoɔ",
         ee: "Gbe Vovovowo Dzi Kpekpeɖeŋu",
-        ga: "Kasa Ahodoɔ"
+        ga: "Kasa Ahodoɔ",
+        da: "Kasa Ahodoɔ",
+        fa: "Kasa Ahodoɔ"
       },
       description: {
-        en: "Available in Twi, Ewe, Ga, and English",
-        tw: "Ɛwɔ Twi, Ewe, Ga, ne Borɔfo kasa mu",
-        ee: "Li le Twi, Ewe, Ga, kple Yevugbe me",
-        ga: "Ɛwɔ Twi, Ewe, Ga, ne Borɔfo kasa mu"
+        en: "Available in Twi, Ewe, Ga, Dagbani, Fante, and English",
+        tw: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu",
+        ee: "Li le Twi, Ewe, Ga, Dagbani, Fante, kple Yevugbe me",
+        ga: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu",
+        da: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu",
+        fa: "Ɛwɔ Twi, Ewe, Ga, Dagbani, Fante, ne Borɔfo kasa mu"
       },
       status: "active"
     },
@@ -77,13 +89,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Crop Disease Detection",
         tw: "Aduan Yadeɛ Nhunmu",
         ee: "Nuku Ƒe Dɔléle Didi",
-        ga: "Aduan Yadeɛ Nhunmu"
+        ga: "Aduan Yadeɛ Nhunmu",
+        da: "Aduan Yadeɛ Nhunmu",
+        fa: "Aduan Yadeɛ Nhunmu"
       },
       description: {
         en: "Take photos to identify plant diseases instantly",
         tw: "Gye mfoni na hu aduan yadeɛ ntɛm",
         ee: "Ɖe foto be nàdze nuku ƒe dɔléle enumake",
-        ga: "Gye mfoni na hu aduan yadeɛ ntɛm"
+        ga: "Gye mfoni na hu aduan yadeɛ ntɛm",
+        da: "Gye mfoni na hu aduan yadeɛ ntɛm",
+        fa: "Gye mfoni na hu aduan yadeɛ ntɛm"
       },
       status: "coming-soon"
     },
@@ -93,13 +109,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Weather Integration",
         tw: "Ewiem Nsɛm",
         ee: "Yame Ƒe Nɔnɔme",
-        ga: "Ewiem Nsɛm"
+        ga: "Ewiem Nsɛm",
+        da: "Ewiem Nsɛm",
+        fa: "Ewiem Nsɛm"
       },
       description: {
         en: "Get weather-based farming recommendations",
         tw: "Nya ewiem nsɛm a ɛfa kuayɛ ho",
         ee: "Xɔ agblẽnɔnɔ ɖoɖo si ɖo yame ƒe nɔnɔme ŋu",
-        ga: "Nya ewiem nsɛm a ɛfa kuayɛ ho"
+        ga: "Nya ewiem nsɛm a ɛfa kuayɛ ho",
+        da: "Nya ewiem nsɛm a ɛfa kuayɛ ho",
+        fa: "Nya ewiem nsɛm a ɛfa kuayɛ ho"
       },
       status: "coming-soon"
     },
@@ -109,13 +129,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Market Prices",
         tw: "Gua Bo",
         ee: "Asi Ƒe Ga Home",
-        ga: "Gua Bo"
+        ga: "Gua Bo",
+        da: "Gua Bo",
+        fa: "Gua Bo"
       },
       description: {
         en: "Real-time crop prices and market trends",
         tw: "Aduan bo a ɛrekɔ so ne gua mu nsɛm",
         ee: "Nuku Ƒe ga home kple asi me nɔnɔme",
-        ga: "Aduan bo a ɛrekɔ so ne gua mu nsɛm"
+        ga: "Aduan bo a ɛrekɔ so ne gua mu nsɛm",
+        da: "Aduan bo a ɛrekɔ so ne gua mu nsɛm",
+        fa: "Aduan bo a ɛrekɔ so ne gua mu nsɛm"
       },
       status: "coming-soon"
     },
@@ -141,13 +165,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Location Services",
         tw: "Mmeae Dwumadie",
         ee: "Teƒe Ƒe Dɔwɔwɔ",
-        ga: "Mmeae Dwumadie"
+        ga: "Mmeae Dwumadie",
+        da: "Mmeae Dwumadie",
+        fa: "Mmeae Dwumadie"
       },
       description: {
         en: "Get location-specific agricultural advice",
         tw: "Nya kuayɛ afotu a ɛfa wo beaeɛ ho",
         ee: "Xɔ agblẽnɔnɔ ɖoɖo si ku ɖe wò nɔƒe ŋu",
-        ga: "Nya kuayɛ afotu a ɛfa wo beaeɛ ho"
+        ga: "Nya kuayɛ afotu a ɛfa wo beaeɛ ho",
+        da: "Nya kuayɛ afotu a ɛfa wo beaeɛ ho",
+        fa: "Nya kuayɛ afotu a ɛfa wo beaeɛ ho"
       },
       status: "coming-soon"
     },
@@ -157,13 +185,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
         en: "Offline Support",
         tw: "Intanɛt Nkyerɛe",
         ee: "Internet Manɔmee Kpekpeɖeŋu",
-        ga: "Intanɛt Nkyerɛe"
+        ga: "Intanɛt Nkyerɛe",
+        da: "Intanɛt Nkyerɛe",
+        fa: "Intanɛt Nkyerɛe"
       },
       description: {
         en: "Core features work without internet connection",
         tw: "Ntitiriw nneɛma yɛ adwuma sɛ intanɛt nni hɔ mpo",
         ee: "Nu vevitɔwo wɔa dɔ togbɔ be internet meli o hã",
-        ga: "Ntitiriw nneɛma yɛ adwuma sɛ intanɛt nni hɔ mpo"
+        ga: "Ntitiriw nneɛma yɛ adwuma sɛ intanɛt nni hɔ mpo",
+        da: "Ntitiriw nneɛma yɛ adwuma sɛ intanɛt nni hɔ mpo",
+        fa: "Ntitiriw nneɛma yɛ adwuma sɛ intanɛt nni hɔ mpo"
       },
       status: "coming-soon"
     }
@@ -179,13 +211,17 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
           {language === 'en' ? 'AI-Powered Agricultural Features' :
            language === 'tw' ? 'AI Kuayɛ Nneɛma' :
            language === 'ee' ? 'AI Ŋusẽ Agblẽnɔnɔ Nɔɔ̃wo' :
-           language === 'ga' ? 'AI Kuayɛ Nneɛma' : 'AI-Powered Agricultural Features'}
+           language === 'ga' ? 'AI Kuayɛ Nneɛma' :
+           language === 'da' ? 'AI Kuayɛ Nneɛma' :
+           language === 'fa' ? 'AI Kuayɛ Nneɛma' : 'AI-Powered Agricultural Features'}
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           {language === 'en' ? 'Cutting-edge technology to revolutionize farming in Ghana' :
            language === 'tw' ? 'Mfidie foforɔ a ɛbɛsesa kuayɛ wɔ Ghana' :
            language === 'ee' ? 'Mɔnu yeye siwo atrɔ̃ agblẽnɔnɔ le Ghana' :
-           language === 'ga' ? 'Mfidie foforɔ a ɛbɛsesa kuayɛ wɔ Ghana' : 'Cutting-edge technology to revolutionize farming in Ghana'}
+           language === 'ga' ? 'Mfidie foforɔ a ɛbɛsesa kuayɛ wɔ Ghana' :
+           language === 'da' ? 'Mfidie foforɔ a ɛbɛsesa kuayɛ wɔ Ghana' :
+           language === 'fa' ? 'Mfidie foforɔ a ɛbɛsesa kuayɛ wɔ Ghana' : 'Cutting-edge technology to revolutionize farming in Ghana'}
         </p>
       </div>
 
@@ -216,11 +252,15 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
                         ? (language === 'en' ? 'Active' : 
                            language === 'tw' ? 'Yɛ Adwuma' :
                            language === 'ee' ? 'Le Dɔwɔm' :
-                           language === 'ga' ? 'Yɛ Adwuma' : 'Active')
+                           language === 'ga' ? 'Yɛ Adwuma' :
+                           language === 'da' ? 'Yɛ Adwuma' :
+                           language === 'fa' ? 'Yɛ Adwuma' : 'Active')
                         : (language === 'en' ? 'Coming Soon' :
                            language === 'tw' ? 'Ɛreba' :
                            language === 'ee' ? 'Egbɔna' :
-                           language === 'ga' ? 'Ɛreba' : 'Coming Soon')
+                           language === 'ga' ? 'Ɛreba' :
+                           language === 'da' ? 'Ɛreba' :
+                           language === 'fa' ? 'Ɛreba' : 'Coming Soon')
                       }
                     </Badge>
                   </div>
@@ -233,7 +273,9 @@ export const FeatureShowcase = ({ language: propLanguage }: FeatureShowcaseProps
                       {language === 'en' ? 'Try Now' :
                        language === 'tw' ? 'Sɔ Hwɛ' :
                        language === 'ee' ? 'Te Kpɔ' :
-                       language === 'ga' ? 'Sɔ Hwɛ' : 'Try Now'}
+                       language === 'ga' ? 'Sɔ Hwɛ' :
+                       language === 'da' ? 'Sɔ Hwɛ' :
+                       language === 'fa' ? 'Sɔ Hwɛ' : 'Try Now'}
                     </Button>
                   )}
                 </div>

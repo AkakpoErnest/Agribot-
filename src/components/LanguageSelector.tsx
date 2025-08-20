@@ -7,8 +7,8 @@ const languages = [
   { code: 'tw', name: 'Twi', flag: '🇬🇭' },
   { code: 'ee', name: 'Ewe', flag: '🇬🇭' },
   { code: 'ga', name: 'Ga', flag: '🇬🇭' },
+  { code: 'da', name: 'Dagbani', flag: '🇬🇭' },
   { code: 'fa', name: 'Fante', flag: '🇬🇭' },
-  { code: 'fr', name: 'French', flag: '🇫🇷' },
 ];
 
 export const LanguageSelector = () => {
@@ -21,12 +21,17 @@ export const LanguageSelector = () => {
       </h3>
       <div className="grid grid-cols-3 gap-3">
         {languages.map((lang) => (
-          <Button
-            key={lang.code}
-            variant={language === lang.code ? "ghana" : "earth"}
-            className="h-auto p-4 flex flex-col items-center gap-2 text-center"
-            onClick={() => setLanguage(lang.code as any)}
-          >
+                      <Button
+              key={lang.code}
+              variant={language === lang.code ? "ghana" : "earth"}
+              className={`h-auto p-4 flex flex-col items-center gap-2 text-center ${
+                language === lang.code ? 'ring-2 ring-primary' : ''
+              }`}
+              onClick={() => {
+                console.log('Setting language to:', lang.code);
+                setLanguage(lang.code as any);
+              }}
+            >
             <span className="text-2xl">{lang.flag}</span>
             <span className="font-medium">{lang.name}</span>
           </Button>

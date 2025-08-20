@@ -17,7 +17,10 @@ import agribotLogo from "/agribot-logo.png";
 
 const Index = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Debug: Log current language
+  console.log('Current language in Index:', language);
 
   const getRoleInfo = (role: string) => {
     const roleInfo = {
@@ -30,143 +33,191 @@ const Index = () => {
 
   // Multilingual text content
   const getText = (key: string) => {
+    const { language } = useLanguage();
     const texts = {
       signIn: {
         en: 'Sign In',
         tw: 'Sign In',
         ee: 'Sign In',
-        ga: 'Sign In'
+        ga: 'Sign In',
+        da: 'Sign In',
+        fa: 'Sign In'
       },
       myProfile: {
         en: 'My Profile',
         tw: 'Me Profile',
         ee: 'Nye Profile',
-        ga: 'Me Profile'
+        ga: 'Me Profile',
+        da: 'Me Profile',
+        fa: 'Me Profile'
       },
       settings: {
         en: 'Settings',
         tw: 'Settings',
         ee: 'Settings',
-        ga: 'Settings'
+        ga: 'Settings',
+        da: 'Settings',
+        fa: 'Settings'
       },
       logout: {
         en: 'Logout',
         tw: 'Logout',
         ee: 'Logout',
-        ga: 'Logout'
+        ga: 'Logout',
+        da: 'Logout',
+        fa: 'Logout'
       },
       heroTitle: {
         en: 'Agribot',
         tw: 'Agribot',
         ee: 'Agribot',
-        ga: 'Agribot'
+        ga: 'Agribot',
+        da: 'Agribot',
+        fa: 'Agribot'
       },
       heroSubtitle: {
         en: "Bridging Communication in Ghana's Agriculture",
         tw: 'Ka Communication Ho Wɔ Ghana Kuayɛ Mu',
         ee: 'Ka Communication Gbɔ Wɔ Ghana Agblẽnɔnɔ Me',
-        ga: 'Ka Communication Ho Wɔ Ghana Kuayɛ Mu'
+        ga: 'Ka Communication Ho Wɔ Ghana Kuayɛ Mu',
+        da: 'Ka Communication Ho Wɔ Ghana Kuayɛ Mu',
+        fa: 'Ka Communication Ho Wɔ Ghana Kuayɛ Mu'
       },
       heroDescription: {
-        en: 'Connect farmers, extension officers, and customers through multilingual voice communication in Twi, Ewe, Ga, and English',
-        tw: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, ne English',
-        ee: 'Ka farmers, extension officers, kple customers gbɔ wɔ multilingual voice communication me wɔ Twi, Ewe, Ga, kple English',
-        ga: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, ne English'
+        en: 'Connect farmers, extension officers, and customers through multilingual voice communication in Twi, Ewe, Ga, Dagbani, Fante, and English',
+        tw: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English',
+        ee: 'Ka farmers, extension officers, kple customers gbɔ wɔ multilingual voice communication me wɔ Twi, Ewe, Ga, Dagbani, Fante, kple English',
+        ga: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English',
+        da: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English',
+        fa: 'Ka farmers, extension officers, ne customers ho wɔ multilingual voice communication mu wɔ Twi, Ewe, Ga, Dagbani, Fante, ne English'
       },
       welcomeBack: {
         en: 'Welcome back, {name}! Ready to continue your agricultural journey?',
         tw: 'Akwaaba bio, {name}! Wo ready na wo continue wo agricultural journey?',
         ee: 'Woezɔ bio, {name}! Wò ready na wò continue wò agricultural journey?',
-        ga: 'Akwaaba bio, {name}! Wo ready na wo continue wo agricultural journey?'
+        ga: 'Akwaaba bio, {name}! Wo ready na wo continue wo agricultural journey?',
+        da: 'Akwaaba bio, {name}! Wo ready na wo continue wo agricultural journey?',
+        fa: 'Akwaaba bio, {name}! Wo ready na wo continue wo agricultural journey?'
       },
       startAiChat: {
         en: 'Start AI Chat',
         tw: 'Fi AI Nkɔmmɔ Ase',
         ee: 'Dze AI Nubiabia Gɔme',
-        ga: 'Fi AI Nkɔmmɔ Ase'
+        ga: 'Fi AI Nkɔmmɔ Ase',
+        da: 'Fi AI Nkɔmmɔ Ase',
+        fa: 'Fi AI Nkɔmmɔ Ase'
       },
       chooseLanguage: {
         en: 'Choose Your Language',
         tw: 'Paw Wo Kasa',
         ee: 'Tia Wò Gbe',
-        ga: 'Paw Wo Kasa'
+        ga: 'Paw Wo Kasa',
+        da: 'Paw Wo Kasa',
+        fa: 'Paw Wo Kasa'
       },
       chooseLanguageDesc: {
         en: 'Select your preferred language to enhance your experience',
         tw: 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo',
         ee: 'Tia wò gbe si wòlɔ̃ eye nàwɔ wò dɔwɔwɔ',
-        ga: 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo'
+        ga: 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo',
+        da: 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo',
+        fa: 'Paw wo kasa a wo pɛ na ma wo adwuma yɛ wo'
       },
       chatWithAgribot: {
         en: 'Chat with Agribot',
         tw: 'Di Nkɔmmɔ Yɛ Agribot',
         ee: 'Dze Nubiabia Yɛ Agribot',
-        ga: 'Di Nkɔmmɔ Yɛ Agribot'
+        ga: 'Di Nkɔmmɔ Yɛ Agribot',
+        da: 'Di Nkɔmmɔ Yɛ Agribot',
+        fa: 'Di Nkɔmmɔ Yɛ Agribot'
       },
       chatWithAgribotDesc: {
         en: 'Start chatting with our AI agricultural assistant',
         tw: 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ',
         ee: 'Dze nubiabia gɔme yɛ mía AI agblẽnɔnɔ kpeɖeŋutɔ',
-        ga: 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ'
+        ga: 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ',
+        da: 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ',
+        fa: 'Fi nkɔmmɔ ase yɛ yɛn AI kuayɛ boafoɔ'
       },
       features: {
         en: 'Features',
         tw: 'Features',
         ee: 'Features',
-        ga: 'Features'
+        ga: 'Features',
+        da: 'Features',
+        fa: 'Features'
       },
       featuresDesc: {
         en: 'Discover the powerful features of Agribot',
         tw: 'Hu Agribot features a ɛyɛ den',
         ee: 'Kpɔ Agribot features siwo le dzen',
-        ga: 'Hu Agribot features a ɛyɛ den'
+        ga: 'Hu Agribot features a ɛyɛ den',
+        da: 'Hu Agribot features a ɛyɛ den',
+        fa: 'Hu Agribot features a ɛyɛ den'
       },
       newsUpdates: {
         en: 'News & Updates',
         tw: 'News & Updates',
         ee: 'News & Updates',
-        ga: 'News & Updates'
+        ga: 'News & Updates',
+        da: 'News & Updates',
+        fa: 'News & Updates'
       },
       newsUpdatesDesc: {
         en: 'Stay updated with the latest agricultural news and market information',
         tw: 'Rest wo updated wɔ agricultural news ne market information a ɛfata',
         ee: 'Dze wò updated wɔ agricultural news kple market information siwo le gbɔgbɔ',
-        ga: 'Rest wo updated wɔ agricultural news ne market information a ɛfata'
+        ga: 'Rest wo updated wɔ agricultural news ne market information a ɛfata',
+        da: 'Rest wo updated wɔ agricultural news ne market information a ɛfata',
+        fa: 'Rest wo updated wɔ agricultural news ne market information a ɛfata'
       },
       team: {
         en: 'Our Team',
         tw: 'Yen Team',
         ee: 'Mía Team',
-        ga: 'Yen Team'
+        ga: 'Yen Team',
+        da: 'Yen Team',
+        fa: 'Yen Team'
       },
       teamDesc: {
         en: 'Meet the developers and designers behind Agribot',
         tw: 'Hu developers ne designers a ɛwɔ Agribot akyi',
         ee: 'Kpɔ developers kple designers siwo le Agribot megbe',
-        ga: 'Hu developers ne designers a ɛwɔ Agribot akyi'
+        ga: 'Hu developers ne designers a ɛwɔ Agribot akyi',
+        da: 'Hu developers ne designers a ɛwɔ Agribot akyi',
+        fa: 'Hu developers ne designers a ɛwɔ Agribot akyi'
       },
       statistics: {
         en: 'Statistics',
         tw: 'Statistics',
         ee: 'Statistics',
-        ga: 'Statistics'
+        ga: 'Statistics',
+        da: 'Statistics',
+        fa: 'Statistics'
       },
       statisticsDesc: {
         en: 'Agribot by the numbers',
         tw: 'Agribot wɔ numbers mu',
         ee: 'Agribot wɔ numbers me',
-        ga: 'Agribot wɔ numbers mu'
+        ga: 'Agribot wɔ numbers mu',
+        da: 'Agribot wɔ numbers mu',
+        fa: 'Agribot wɔ numbers mu'
       },
       footer: {
         en: '© 2024 Agribot. Made with ❤️ for Ghana\'s agricultural community.',
         tw: '© 2024 Agribot. Yɛ wɔ ❤️ ho ma Ghana kuayɛ community.',
         ee: '© 2024 Agribot. Wɔ wɔ ❤️ gbɔ na Ghana agblẽnɔnɔ community.',
-        ga: '© 2024 Agribot. Yɛ wɔ ❤️ ho ma Ghana kuayɛ community.'
+        ga: '© 2024 Agribot. Yɛ wɔ ❤️ ho ma Ghana kuayɛ community.',
+        da: '© 2024 Agribot. Yɛ wɔ ❤️ ho ma Ghana kuayɛ community.',
+        fa: '© 2024 Agribot. Yɛ wɔ ❤️ ho ma Ghana kuayɛ community.'
       }
     };
     
     const textGroup = texts[key as keyof typeof texts];
-    let text = textGroup?.en || key;
+    let text = textGroup?.[language as keyof typeof textGroup] || textGroup?.en || key;
+    
+    // Debug: Log text selection
+    console.log(`Text for key "${key}" in language "${language}":`, text);
     
     // Replace placeholders
     if (key === 'welcomeBack' && user?.name) {
@@ -300,6 +351,14 @@ const Index = () => {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {getText('chooseLanguageDesc')}
             </p>
+            {/* Debug: Show current language */}
+            <div className="mt-4 p-2 bg-blue-100 rounded">
+              <p className="text-sm text-blue-800">
+                Current Language: <strong>{language}</strong> | 
+                Hero Title: <strong>{getText('heroTitle')}</strong> | 
+                Hero Subtitle: <strong>{getText('heroSubtitle')}</strong>
+              </p>
+            </div>
           </div>
 
           {/* Language Selector */}
@@ -367,7 +426,7 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold mb-2">4</div>
+              <div className="text-4xl font-bold mb-2">6</div>
               <div className="text-primary-foreground/80">Languages Supported</div>
             </div>
             <div className="text-center">

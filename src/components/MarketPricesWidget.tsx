@@ -51,17 +51,23 @@ export const MarketPricesWidget = ({ language, location }: MarketPricesWidgetPro
         return language === 'en' ? 'Rising' :
                language === 'tw' ? 'Ɛrekɔ so' :
                language === 'ee' ? 'Le dzo' :
-               language === 'ga' ? 'Ɛrekɔ so' : 'Rising';
+               language === 'ga' ? 'Ɛrekɔ so' :
+               language === 'da' ? 'Ɛrekɔ so' :
+               language === 'fa' ? 'Ɛrekɔ so' : 'Rising';
       case 'down':
         return language === 'en' ? 'Falling' :
                language === 'tw' ? 'Ɛresan' :
                language === 'ee' ? 'Le gbɔna' :
-               language === 'ga' ? 'Ɛresan' : 'Falling';
+               language === 'ga' ? 'Ɛresan' :
+               language === 'da' ? 'Ɛresan' :
+               language === 'fa' ? 'Ɛresan' : 'Falling';
       case 'stable':
         return language === 'en' ? 'Stable' :
                language === 'tw' ? 'Ɛyɛ adwuma' :
                language === 'ee' ? 'Le dɔwɔm' :
-               language === 'ga' ? 'Ɛyɛ adwuma' : 'Stable';
+               language === 'ga' ? 'Ɛyɛ adwuma' :
+               language === 'da' ? 'Ɛyɛ adwuma' :
+               language === 'fa' ? 'Ɛyɛ adwuma' : 'Stable';
       default:
         return '';
     }
@@ -86,7 +92,9 @@ export const MarketPricesWidget = ({ language, location }: MarketPricesWidgetPro
             {language === 'en' ? 'Market data unavailable' :
              language === 'tw' ? 'Gua nsɛm nni hɔ' :
              language === 'ee' ? 'Asi ƒe nyawo meli o' :
-             language === 'ga' ? 'Gua nsɛm nni hɔ' : 'Market data unavailable'}
+             language === 'ga' ? 'Gua nsɛm nni hɔ' :
+             language === 'da' ? 'Gua nsɛm nni hɔ' :
+             language === 'fa' ? 'Gua nsɛm nni hɔ' : 'Market data unavailable'}
           </p>
         </div>
       </Card>
@@ -102,13 +110,17 @@ export const MarketPricesWidget = ({ language, location }: MarketPricesWidgetPro
             {language === 'en' ? 'Market Prices' :
              language === 'tw' ? 'Gua Bo' :
              language === 'ee' ? 'Asi ƒe Ga Home' :
-             language === 'ga' ? 'Gua Bo' : 'Market Prices'}
+             language === 'ga' ? 'Gua Bo' :
+             language === 'da' ? 'Gua Bo' :
+             language === 'fa' ? 'Gua Bo' : 'Market Prices'}
           </h3>
           <Badge variant="secondary" className="text-xs">
             {language === 'en' ? 'Live' :
              language === 'tw' ? 'Ɛrekɔ so' :
              language === 'ee' ? 'Le dɔwɔm' :
-             language === 'ga' ? 'Ɛrekɔ so' : 'Live'}
+             language === 'ga' ? 'Ɛrekɔ so' :
+             language === 'da' ? 'Ɛrekɔ so' :
+             language === 'fa' ? 'Ɛrekɔ so' : 'Live'}
           </Badge>
         </div>
 

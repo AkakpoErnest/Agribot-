@@ -50,17 +50,23 @@ export const WeatherWidget = ({ language, location = 'Accra' }: WeatherWidgetPro
       return language === 'en' ? 'High temperature - water crops more frequently' :
              language === 'tw' ? 'Ewiem yɛ hyew - gua aduan nsuo pii' :
              language === 'ee' ? 'Yame le dzo - na nukuwo nɔ' :
-             language === 'ga' ? 'Ewiem yɛ hyew - gua aduan nsuo pii' : '';
+             language === 'ga' ? 'Ewiem yɛ hyew - gua aduan nsuo pii' :
+             language === 'da' ? 'Ewiem yɛ hyew - gua aduan nsuo pii' :
+             language === 'fa' ? 'Ewiem yɛ hyew - gua aduan nsuo pii' : '';
     } else if (condition.includes('rain')) {
       return language === 'en' ? 'Rain expected - good for planting' :
              language === 'tw' ? 'Osutɔ reba - ɛyɛ pa sɛ woaburow' :
              language === 'ee' ? 'Tsidzadza le gbɔna - ɖe nukuwo' :
-             language === 'ga' ? 'Osutɔ reba - ɛyɛ pa sɛ woaburow' : '';
+             language === 'ga' ? 'Osutɔ reba - ɛyɛ pa sɛ woaburow' :
+             language === 'da' ? 'Osutɔ reba - ɛyɛ pa sɛ woaburow' :
+             language === 'fa' ? 'Osutɔ reba - ɛyɛ pa sɛ woaburow' : '';
     } else {
       return language === 'en' ? 'Good weather for farming activities' :
              language === 'tw' ? 'Ewiem yɛ pa ma kuayɛ adwuma' :
              language === 'ee' ? 'Yame le dɔwɔm na agblẽnɔnɔ' :
-             language === 'ga' ? 'Ewiem yɛ pa ma kuayɛ adwuma' : '';
+             language === 'ga' ? 'Ewiem yɛ pa ma kuayɛ adwuma' :
+             language === 'da' ? 'Ewiem yɛ pa ma kuayɛ adwuma' :
+             language === 'fa' ? 'Ewiem yɛ pa ma kuayɛ adwuma' : '';
     }
   };
 
@@ -83,7 +89,9 @@ export const WeatherWidget = ({ language, location = 'Accra' }: WeatherWidgetPro
             {language === 'en' ? 'Weather data unavailable' :
              language === 'tw' ? 'Ewiem nsɛm nni hɔ' :
              language === 'ee' ? 'Yame ƒe nyawo meli o' :
-             language === 'ga' ? 'Ewiem nsɛm nni hɔ' : 'Weather data unavailable'}
+             language === 'ga' ? 'Ewiem nsɛm nni hɔ' :
+             language === 'da' ? 'Ewiem nsɛm nni hɔ' :
+             language === 'fa' ? 'Ewiem nsɛm nni hɔ' : 'Weather data unavailable'}
           </p>
         </div>
       </Card>
@@ -99,7 +107,9 @@ export const WeatherWidget = ({ language, location = 'Accra' }: WeatherWidgetPro
             {language === 'en' ? 'Weather' :
              language === 'tw' ? 'Ewiem' :
              language === 'ee' ? 'Yame' :
-             language === 'ga' ? 'Ewiem' : 'Weather'}
+             language === 'ga' ? 'Ewiem' :
+             language === 'da' ? 'Ewiem' :
+             language === 'fa' ? 'Ewiem' : 'Weather'}
           </h3>
           <Badge variant="secondary" className="text-xs">
             {location}
@@ -139,7 +149,9 @@ export const WeatherWidget = ({ language, location = 'Accra' }: WeatherWidgetPro
           {language === 'en' ? 'Last updated: ' :
            language === 'tw' ? 'Wɔayɛ no bio: ' :
            language === 'ee' ? 'Wɔwɔe bio: ' :
-           language === 'ga' ? 'Wɔayɛ no bio: ' : 'Last updated: '}
+           language === 'ga' ? 'Wɔayɛ no bio: ' :
+           language === 'da' ? 'Wɔayɛ no bio: ' :
+           language === 'fa' ? 'Wɔayɛ no bio: ' : 'Last updated: '}
           {new Date(weather.timestamp).toLocaleTimeString()}
         </div>
       </div>
