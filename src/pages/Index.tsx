@@ -5,7 +5,7 @@ import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatInterface } from "@/components/ChatInterface";
 import { FeatureShowcase } from "@/components/FeatureShowcase";
 import { TeamSection } from "@/components/TeamSection";
-import { Bot, Zap, Languages, User, LogOut, Settings } from 'lucide-react';
+import { Bot, Zap, Languages, User, LogOut, Settings, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -106,6 +106,14 @@ const Index = () => {
         ga: 'Fi AI Nkɔmmɔ Ase',
         da: 'Fi AI Nkɔmmɔ Ase',
         fa: 'Fi AI Nkɔmmɔ Ase'
+      },
+      downloadApp: {
+        en: 'Download App',
+        tw: 'Download App',
+        ee: 'Download App',
+        ga: 'Download App',
+        da: 'Download App',
+        fa: 'Download App'
       },
       chooseLanguage: {
         en: 'Choose Your Language',
@@ -333,6 +341,16 @@ const Index = () => {
                 <Bot className="h-5 w-5" />
                 {getText('startAiChat')}
               </Button>
+              
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="gap-2 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20"
+                onClick={() => window.open('/AgriBot_v1.2_Correct_API.apk', '_blank')}
+              >
+                <Download className="h-5 w-5" />
+                {getText('downloadApp')}
+              </Button>
             </div>
           </div>
         </div>
@@ -453,9 +471,22 @@ const Index = () => {
               <img src={agribotLogo} alt="Agribot Logo" className="h-8 w-auto bg-white/10 rounded-lg p-1" />
               <span className="font-semibold">Agribot</span>
             </div>
-            <p className="text-sm text-primary-foreground/80 text-center md:text-right">
-              {getText('footer')}
-            </p>
+            
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="gap-2 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/20"
+                onClick={() => window.open('/AgriBot_v1.2_Correct_API.apk', '_blank')}
+              >
+                <Download className="h-4 w-4" />
+                {getText('downloadApp')}
+              </Button>
+              
+              <p className="text-sm text-primary-foreground/80 text-center md:text-right">
+                {getText('footer')}
+              </p>
+            </div>
           </div>
         </div>
       </footer>
